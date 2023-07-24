@@ -28,8 +28,7 @@
     </parent>
 
 
-    <artifactId>dida-api</artifactId>
-
+    <artifactId>dida-common</artifactId>
 
 
 </project>
