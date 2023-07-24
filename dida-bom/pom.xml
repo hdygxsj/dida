@@ -27,8 +27,21 @@
         <version>${revision}</version>
     </parent>
 
-
+    <properties>
+        <spring-boot.version>2.7.3</spring-boot.version>
+    </properties>
     <artifactId>dida-bom</artifactId>
 
+    <dependencyManagement>
+        <dependencies>
+            <dependency>
+                <groupId>org.springframework.boot</groupId>
+                <artifactId>spring-boot-starter-parent</artifactId>
+                <version>${spring-boot.version}</version>
+                <type>pom</type>
+                <scope>import</scope>
+            </dependency>
+        </dependencies>
+    </dependencyManagement>
 
 </project>
