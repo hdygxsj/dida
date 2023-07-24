@@ -27,8 +27,11 @@
         <version>${revision}</version>
     </parent>
 
+    <packaging>pom</packaging>
+
     <properties>
         <spring-boot.version>2.7.3</spring-boot.version>
+        <h2.version>2.1.210</h2.version>
     </properties>
     <artifactId>dida-bom</artifactId>
 
@@ -40,6 +43,11 @@
                 <version>${spring-boot.version}</version>
                 <type>pom</type>
                 <scope>import</scope>
+            </dependency>
+            <dependency>
+                <groupId>com.h2database</groupId>
+                <artifactId>h2</artifactId>
+                <version>${h2.version}</version>
             </dependency>
         </dependencies>
     </dependencyManagement>
