@@ -1,0 +1,6 @@
+*.flattened-pom.xml
+.idea/
+*.iml
+.idea/*
+**/*reduced-pom.xml
+target/

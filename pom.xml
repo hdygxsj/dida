@@ -1,0 +1,142 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project xmlns="http://maven.apache.org/POM/4.0.0"
+         xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+         xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+    <modelVersion>4.0.0</modelVersion>
+
+    <groupId>com.hdygxsj.dida</groupId>
+    <artifactId>dida</artifactId>
+    <version>${revision}</version>
+
+    <properties>
+        <checkstyle.fails.on.error>true</checkstyle.fails.on.error>
+        <docker.tag>${project.version}</docker.tag>
+        <lombok.version>1.18.0</lombok.version>
+        <java.version>1.8</java.version>
+        <maven.compiler.source>${java.version}</maven.compiler.source>
+        <maven.compiler.target>${java.version}</maven.compiler.target>
+        <flatten-maven-plugin.version>1.5.0</flatten-maven-plugin.version>
+        <maven-license-maven-plugin>1.20</maven-license-maven-plugin>
+        <maven-checkstyle-plugin.version>3.1.2</maven-checkstyle-plugin.version>
+    </properties>
+
+    <modules>
+        <module>dida-ui</module>
+        <module>dida-api</module>
+        <module>dida-bom</module>
+    </modules>
+
+    <packaging>pom</packaging>
+
+    <dependencyManagement>
+        <dependencies>
+
+        </dependencies>
+    </dependencyManagement>
+
+    <build>
+        <finalName>${project.artifactId}-${project.version}</finalName>
+        <pluginManagement>
+            <plugins>
+                <plugin>
+                    <groupId>org.codehaus.mojo</groupId>
+                    <artifactId>license-maven-plugin</artifactId>
+                    <version>${maven-license-maven-plugin}</version>
+                    <configuration>
+                        <outputDirectory>${project.basedir}/dida-dist/target/</outputDirectory>
+                        <thirdPartyFilename>THIRD-PARTY.txt</thirdPartyFilename>
+                        <sortArtifactByName>false</sortArtifactByName>
+                        <useMissingFile>false</useMissingFile>
+                        <addJavaLicenseAfterPackage>true</addJavaLicenseAfterPackage>
+                        <socketTimeout>30000</socketTimeout>
+                        <connectTimeout>30000</connectTimeout>
+                        <connectionRequestTimeout>30000</connectionRequestTimeout>
+                        <excludedScopes>test,provided</excludedScopes>
+                    </configuration>
+                </plugin>
+                <plugin>
+                    <groupId>org.codehaus.mojo</groupId>
+                    <artifactId>flatten-maven-plugin</artifactId>
+                    <version>${flatten-maven-plugin.version}</version>
+                    <configuration>
+                        <updatePomFile>true</updatePomFile>
+                        <flattenMode>resolveCiFriendliesOnly</flattenMode>
+                    </configuration>
+                    <executions>
+                        <execution>
+                            <id>flatten</id>
+                            <phase>process-resources</phase>
+                            <goals>
+                                <goal>flatten</goal>
+                            </goals>
+                        </execution>
+                        <execution>
+                            <id>flatten.clean</id>
+                            <phase>clean</phase>
+                            <goals>
+                                <goal>clean</goal>
+                            </goals>
+                        </execution>
+                    </executions>
+                </plugin>
+                <plugin>
+                    <groupId>org.apache.maven.plugins</groupId>
+                    <artifactId>maven-checkstyle-plugin</artifactId>
+                    <version>${maven-checkstyle-plugin.version}</version>
+                    <configuration>
+                        <!--suppress UnresolvedMavenProperty -->
+                        <configLocation>${maven.multiModuleProjectDirectory}/tools/checkstyle/checkStyle.xml
+                        </configLocation>
+                        <encoding>UTF-8</encoding>
+                        <consoleOutput>true</consoleOutput>
+                        <includeTestSourceDirectory>true</includeTestSourceDirectory>
+                        <failOnViolation>${checkstyle.fails.on.error}</failOnViolation>
+                        <sourceDirectories>
+                            <sourceDirectory>${project.build.sourceDirectory}</sourceDirectory>
+                            <sourceDirectory>${project.build.testSourceDirectory}</sourceDirectory>
+                        </sourceDirectories>
+                        <resourceIncludes>
+                            **/*.properties,
+                            **/*.sh,
+                            **/*.bat,
+                            **/*.yml,
+                            **/*.yaml,
+                            **/*.xml
+                        </resourceIncludes>
+                        <resourceExcludes>
+                            **/.asf.yaml,
+                            **/.github/**
+                        </resourceExcludes>
+                        <excludes>
+                        </excludes>
+                    </configuration>
+                    <executions>
+                        <execution>
+                            <id>validate</id>
+                            <phase>process-sources</phase>
+                            <goals>
+                                <goal>check</goal>
+                            </goals>
+                        </execution>
+                    </executions>
+                </plugin>
+            </plugins>
+        </pluginManagement>
+
+        <plugins>
+            <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-checkstyle-plugin</artifactId>
+            </plugin>
+            <plugin>
+                <groupId>org.codehaus.mojo</groupId>
+                <artifactId>license-maven-plugin</artifactId>
+            </plugin>
+            <plugin>
+                <groupId>org.codehaus.mojo</groupId>
+                <artifactId>flatten-maven-plugin</artifactId>
+            </plugin>
+        </plugins>
+    </build>
+
+</project>
