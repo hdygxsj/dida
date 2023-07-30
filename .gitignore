@@ -4,3 +4,5 @@
 .idea/*
 **/*reduced-pom.xml
 target/
+**/package-lock.json
+**/*drawio*

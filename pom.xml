@@ -36,6 +36,7 @@
         <checkstyle.fails.on.error>true</checkstyle.fails.on.error>
         <docker.tag>${project.version}</docker.tag>
         <lombok.version>1.18.0</lombok.version>
+        <revision>0.1.0-SNAPSHOT</revision>
         <java.version>1.8</java.version>
         <maven.compiler.source>${java.version}</maven.compiler.source>
         <maven.compiler.target>${java.version}</maven.compiler.target>
@@ -43,6 +44,7 @@
         <maven-license-maven-plugin>1.20</maven-license-maven-plugin>
         <maven-checkstyle-plugin.version>3.1.2</maven-checkstyle-plugin.version>
         <build.ui.skip>false</build.ui.skip>
+        <lombok.version>1.18.24</lombok.version>
     </properties>
 
     <modules>
@@ -52,13 +54,28 @@
         <module>dida-spi</module>
         <module>dida-dist</module>
         <module>dida-common</module>
+        <module>dida-plugin</module>
+
     </modules>
+
+    <dependencies>
+        <dependency>
+            <groupId>org.projectlombok</groupId>
+            <artifactId>lombok</artifactId>
+            <scope>compile</scope>
+        </dependency>
+    </dependencies>
 
     <packaging>pom</packaging>
 
     <dependencyManagement>
         <dependencies>
-
+            <dependency>
+                <groupId>org.projectlombok</groupId>
+                <artifactId>lombok</artifactId>
+                <version>${lombok.version}</version>
+                <scope>compile</scope>
+            </dependency>
         </dependencies>
     </dependencyManagement>
 
