@@ -36,6 +36,7 @@
         <mysql.version>8.0.28</mysql.version>
         <mybatis.version>3.5.3</mybatis.version>
         <springdoc-openapi-ui.version>1.6.9</springdoc-openapi-ui.version>
+        <velocaity.version>2.0</velocaity.version>
     </properties>
     <artifactId>dida-bom</artifactId>
 
@@ -72,6 +73,17 @@
                 <groupId>org.springdoc</groupId>
                 <artifactId>springdoc-openapi-ui</artifactId>
                 <version>${springdoc-openapi-ui.version}</version>
+            </dependency>
+            <dependency>
+                <groupId>com.baomidou</groupId>
+                <artifactId>mybatis-plus-generator</artifactId>
+                <version>${mybatis-plus.version}</version>
+                <scope>test</scope>
+            </dependency>
+            <dependency>
+                <groupId>org.apache.velocity</groupId>
+                <artifactId>velocity-engine-core</artifactId>
+                <version>${velocaity.version}</version>
             </dependency>
         </dependencies>
     </dependencyManagement>
