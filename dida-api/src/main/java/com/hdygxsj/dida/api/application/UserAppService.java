@@ -2,7 +2,7 @@ package com.hdygxsj.dida.api.application;
 
 import com.hdygxsj.dida.api.domain.entity.UserDO;
 import com.hdygxsj.dida.api.domain.service.UserDomainService;
-import com.hdygxsj.dida.api.exceptions.ServiceException;
+import com.hdygxsj.dida.api.tools.Result;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -22,7 +22,7 @@ public class UserAppService {
 
     @GetMapping
     @Operation
-    public List<UserDO> listAll(){
-        throw new ServiceException(-1,"系统错误");
+    public Result<List<UserDO> > listAll(){
+        return Result.success(userDomainService.listAll());
     }
 }

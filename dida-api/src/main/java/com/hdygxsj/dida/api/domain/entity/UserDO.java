@@ -2,6 +2,7 @@ package com.hdygxsj.dida.api.domain.entity;
 
 
 import com.baomidou.mybatisplus.annotation.TableField;
+import com.baomidou.mybatisplus.annotation.TableId;
 import com.baomidou.mybatisplus.annotation.TableName;
 import lombok.Data;
 
@@ -10,6 +11,8 @@ import java.time.LocalDateTime;
 @Data
 @TableName("dida_user")
 public class UserDO {
+
+    @TableId
     private String username;
     private String password;
     @TableField("super")
