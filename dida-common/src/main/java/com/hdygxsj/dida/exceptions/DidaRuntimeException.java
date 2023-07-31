@@ -13,5 +13,26 @@
  * limitations under the License.
  */
 
-public class Test {
+package com.hdygxsj.dida.exceptions;
+
+public class DidaRuntimeException extends RuntimeException{
+    public DidaRuntimeException() {
+        super();
+    }
+
+    public DidaRuntimeException(String message) {
+        super(message);
+    }
+
+    public DidaRuntimeException(String message, Throwable cause) {
+        super(message, cause);
+    }
+
+    public DidaRuntimeException(Throwable cause) {
+        super(cause);
+    }
+
+    protected DidaRuntimeException(String message, Throwable cause, boolean enableSuppression, boolean writableStackTrace) {
+        super(message, cause, enableSuppression, writableStackTrace);
+    }
 }
