@@ -21,6 +21,7 @@ import com.hdygxsj.dida.api.domain.service.UserDomainService;
 import com.hdygxsj.dida.api.enums.ApiStatus;
 import com.hdygxsj.dida.api.tools.Result;
 import com.hdygxsj.dida.security.Sm4;
+import io.swagger.v3.oas.annotations.tags.Tag;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.PutMapping;
@@ -34,6 +35,7 @@ import java.util.concurrent.TimeUnit;
 
 @RequestMapping("api/v1/login")
 @RestController
+@Tag(name = "login")
 public class LoginAppService {
 
     @Autowired

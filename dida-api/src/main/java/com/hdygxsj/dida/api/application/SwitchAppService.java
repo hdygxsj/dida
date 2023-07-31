@@ -15,25 +15,5 @@
 
 package com.hdygxsj.dida.api.application;
 
-import com.hdygxsj.dida.api.domain.service.TokenDomainService;
-import com.hdygxsj.dida.api.tools.Result;
-import io.swagger.v3.oas.annotations.tags.Tag;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.PutMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
-
-@RequestMapping("api/v1/token")
-@RestController
-@Tag(name = "token")
-public class TokenAppService {
-
-    @Autowired
-    private TokenDomainService tokenDomainService;
-
-    @PutMapping("{token}")
-    public Result<Boolean> refreshToken(@PathVariable("token") String token) {
-        return Result.success(tokenDomainService.refresh(token));
-    }
+public class SwitchAppService {
 }
