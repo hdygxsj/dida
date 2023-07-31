@@ -15,8 +15,23 @@
 
 package com.hdygxsj.dida.plugin.engine;
 
+import com.google.auto.service.AutoService;
+import com.hdygxsj.dida.spi.engine.Engine;
 import com.hdygxsj.dida.spi.engine.EngineFactory;
+
+import java.util.Properties;
 
 @AutoService(EngineFactory.class)
 public class NacosEngineFactory implements EngineFactory {
+    @Override
+    public String name() {
+        return "nacos";
+    }
+
+    @Override
+    public Engine getEngine(Properties properties) {
+        NacosEngine nacosEngine = new NacosEngine();
+
+        return nacosEngine;
+    }
 }

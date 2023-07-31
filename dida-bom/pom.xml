@@ -34,7 +34,7 @@
         <mybatis.version>3.5.3</mybatis.version>
         <springdoc-openapi-ui.version>1.6.9</springdoc-openapi-ui.version>
         <velocaity.version>2.0</velocaity.version>
-        <autoservice.version>1.0.1</autoservice.version>
+        <auto-service.version>1.0.1</auto-service.version>
     </properties>
     <artifactId>dida-bom</artifactId>
 
@@ -43,7 +43,7 @@
             <dependency>
                 <groupId>com.google.auto.service</groupId>
                 <artifactId>auto-service</artifactId>
-                <version>${autoservice.version}</version>
+                <version>${auto-service.version}</version>
             </dependency>
             <dependency>
                 <groupId>org.springframework.boot</groupId>

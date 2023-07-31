@@ -15,7 +15,11 @@
 
 package com.hdygxsj.dida.spi.engine;
 
+import java.util.Properties;
+
 public interface EngineFactory {
 
+    String name();
 
+    Engine getEngine(Properties properties);
 }

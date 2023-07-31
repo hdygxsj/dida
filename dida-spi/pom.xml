@@ -32,6 +32,8 @@
                 <groupId>com.hdygxsj.dida</groupId>
                 <artifactId>dida-bom</artifactId>
                 <version>${project.version}</version>
+                <type>pom</type>
+                <scope>import</scope>
             </dependency>
         </dependencies>
     </dependencyManagement>
