@@ -29,7 +29,7 @@ public class TokenDomainServiceImpl implements TokenDomainService {
         LocalDateTime now = LocalDateTime.now();
         long epochMilli = now.toInstant(ZoneOffset.of("+8")).toEpochMilli();
         StrFormatter.format("{}-{}", username, epochMilli);
-        String token = format;
+
         return null;
     }
 
