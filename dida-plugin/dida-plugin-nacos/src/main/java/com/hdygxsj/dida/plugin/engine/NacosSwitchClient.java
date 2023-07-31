@@ -13,13 +13,18 @@
  * limitations under the License.
  */
 
-package com.hdygxsj.dida.spi.engine;
+package com.hdygxsj.dida.plugin.engine;
 
-import java.util.Properties;
+import com.hdygxsj.dida.spi.engine.SwitchClient;
 
-public interface EngineFactory {
+public class NacosSwitchClient implements SwitchClient {
+    @Override
+    public void setValue(String group, String namespace, String key, String value) {
 
-    String name();
+    }
 
-    Engine getEngine(Properties properties);
+    @Override
+    public String getValue(String group, String namespace, String key) {
+        return null;
+    }
 }

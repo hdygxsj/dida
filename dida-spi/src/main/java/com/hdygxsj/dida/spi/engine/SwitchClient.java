@@ -13,25 +13,17 @@
  * limitations under the License.
  */
 
-package com.hdygxsj.dida.plugin.engine;
+package com.hdygxsj.dida.spi.engine;
 
-import com.google.auto.service.AutoService;
-import com.hdygxsj.dida.spi.engine.Engine;
-import com.hdygxsj.dida.spi.engine.EngineFactory;
+public interface SwitchClient {
 
-import java.util.Properties;
+    void setValue(String group,String namespace,String key,String value);
 
-@AutoService(EngineFactory.class)
-public class NacosEngineFactory implements EngineFactory {
-    @Override
-    public String name() {
-        return "nacos";
+    String getValue(String group,String namespace,String key);
+
+    default void beforeSetValue(String group,String namespace,String key){
+
     }
 
-    @Override
-    public Engine getEngine(Properties properties) {
-        NacosEngine nacosEngine = new NacosEngine();
-
-        return nacosEngine;
-    }
+    default void afterSetValue(String group,String namespace,String key){}
 }

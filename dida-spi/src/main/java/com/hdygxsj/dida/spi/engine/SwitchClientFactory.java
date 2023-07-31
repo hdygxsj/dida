@@ -15,15 +15,11 @@
 
 package com.hdygxsj.dida.spi.engine;
 
-public interface Engine {
+import java.util.Properties;
 
-    void setValue(String group,String namespace,String key,String value);
+public interface SwitchClientFactory {
 
-    String getValue(String group,String namespace,String key);
+    String name();
 
-    default void beforeSetValue(String group,String namespace,String key){
-
-    }
-
-    default void afterSetValue(String group,String namespace,String key){}
+    SwitchClient getSwitchClient(Properties properties);
 }

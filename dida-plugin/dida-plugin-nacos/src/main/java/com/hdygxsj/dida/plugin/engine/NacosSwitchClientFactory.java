@@ -15,16 +15,23 @@
 
 package com.hdygxsj.dida.plugin.engine;
 
-import com.hdygxsj.dida.spi.engine.Engine;
+import com.google.auto.service.AutoService;
+import com.hdygxsj.dida.spi.engine.SwitchClient;
+import com.hdygxsj.dida.spi.engine.SwitchClientFactory;
 
-public class NacosEngine implements Engine {
+import java.util.Properties;
+
+@AutoService(SwitchClientFactory.class)
+public class NacosSwitchClientFactory implements SwitchClientFactory {
     @Override
-    public void setValue(String group, String namespace, String key, String value) {
-
+    public String name() {
+        return "nacos";
     }
 
     @Override
-    public String getValue(String group, String namespace, String key) {
-        return null;
+    public SwitchClient getSwitchClient(Properties properties) {
+        SwitchClient nacosSwitchClient = new NacosSwitchClient();
+
+        return nacosSwitchClient;
     }
 }

@@ -17,8 +17,8 @@ package com.hdygxsj.dida.client;
 
 import cn.hutool.core.util.StrUtil;
 import com.hdygxsj.dida.exceptions.Asset;
-import com.hdygxsj.dida.spi.engine.Engine;
-import com.hdygxsj.dida.spi.engine.EngineFactory;
+import com.hdygxsj.dida.spi.engine.SwitchClient;
+import com.hdygxsj.dida.spi.engine.SwitchClientFactory;
 
 import java.util.Iterator;
 import java.util.Properties;
@@ -59,23 +59,23 @@ public class DidaClient {
         return null;
     }
 
-    public Engine getEngine(){
+    public SwitchClient getEngine(){
         String engineType = getEngineType();
         Asset.isTrue(StrUtil.isNotBlank(engineType),"dida平台异常，无法获取引擎类型");
-        ServiceLoader<EngineFactory> serviceLoader = ServiceLoader.load(EngineFactory.class);
-        Iterator<EngineFactory> services = serviceLoader.iterator();
-        Engine engine = null;
+        ServiceLoader<SwitchClientFactory> serviceLoader = ServiceLoader.load(SwitchClientFactory.class);
+        Iterator<SwitchClientFactory> services = serviceLoader.iterator();
+        SwitchClient switchClient = null;
         while(services.hasNext()){
-            EngineFactory engineFactory = services.next();
+            SwitchClientFactory engineFactory = services.next();
             String name = engineFactory.name();
             if(!engineType.equals(name)){
                 continue;
             }
             Properties engineProperties = getEngineProperties();
-            engine = engineFactory.getEngine(engineProperties);
+            switchClient = engineFactory.getSwitchClient(engineProperties);
         }
-        Asset.notNull(engine,"未装载引擎类型插件："+engineType);
-        return engine;
+        Asset.notNull(switchClient,"未装载引擎类型插件："+engineType);
+        return switchClient;
     }
 
      void setHost(String host) {
