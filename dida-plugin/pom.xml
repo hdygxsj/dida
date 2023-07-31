@@ -10,9 +10,22 @@
         <version>${revision}</version>
     </parent>
 
+    <packaging>pom</packaging>
 
     <artifactId>dida-plugin</artifactId>
 
+    <modules>
+        <module>dida-plugin-base</module>
+        <module>dida-plugin-zookeeper</module>
+        <module>dida-plugin-nacos</module>
+    </modules>
 
+    <dependencies>
+        <dependency>
+            <groupId>com.hdygxsj.dida</groupId>
+            <artifactId>dida-spi</artifactId>
+            <version>${project.version}</version>
+        </dependency>
+    </dependencies>
 
 </project>
