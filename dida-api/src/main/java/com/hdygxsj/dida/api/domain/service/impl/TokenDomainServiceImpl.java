@@ -13,22 +13,30 @@
  * limitations under the License.
  */
 
-package com.hdygxsj.dida.api.enums;
+package com.hdygxsj.dida.api.domain.service.impl;
 
-import lombok.Getter;
+import cn.hutool.core.text.StrFormatter;
+import com.hdygxsj.dida.api.domain.service.TokenDomainService;
+import org.springframework.stereotype.Service;
 
-@Getter
-public enum ApiStatus {
-    SUCCESS(0,"成功"),
-    INTERNAL_SERVER_ERROR_ARGS(10000,  "服务端异常: {0}"),
-    LOGIN_FAILED(10001,"账号或密码错误：{0}");
+import java.time.LocalDateTime;
+import java.time.ZoneOffset;
 
-    ApiStatus(int code, String message) {
-        this.code = code;
-        this.message = message;
+@Service
+public class TokenDomainServiceImpl implements TokenDomainService {
+    @Override
+    public String genToken(String username) {
+        LocalDateTime now = LocalDateTime.now();
+        long epochMilli = now.toInstant(ZoneOffset.of("+8")).toEpochMilli();
+        StrFormatter.format("{}-{}", username, epochMilli);
+        String token = format;
+        return null;
     }
 
-    private int code;
+    @Override
+    public void refresh(String token){
 
-    private String message;
+    }
+
+
 }

@@ -43,6 +43,7 @@
         <build.ui.skip>false</build.ui.skip>
         <hutool.version>5.8.11</hutool.version>
         <lombok.version>1.18.24</lombok.version>
+        <boundcycastle.version>1.69</boundcycastle.version>
     </properties>
 
     <modules>
@@ -62,6 +63,7 @@
             <artifactId>lombok</artifactId>
             <scope>compile</scope>
         </dependency>
+
     </dependencies>
 
     <packaging>pom</packaging>
@@ -78,6 +80,11 @@
                 <groupId>cn.hutool</groupId>
                 <artifactId>hutool-all</artifactId>
                 <version>${hutool.version}</version>
+            </dependency>
+            <dependency>
+                <groupId>org.bouncycastle</groupId>
+                <artifactId>bcprov-jdk15to18</artifactId>
+                <version>${boundcycastle.version}</version>
             </dependency>
         </dependencies>
     </dependencyManagement>

@@ -21,4 +21,12 @@ import java.util.List;
 
 public interface UserDomainService {
     List<UserDO> listAll();
+
+    boolean checkUser(String username,String password);
+
+    UserDO get(String username);
+
+    boolean exist(String username);
+
+    void create(UserDO userDO);
 }

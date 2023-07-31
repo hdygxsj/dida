@@ -16,9 +16,11 @@
 package com.hdygxsj.dida.api.domain.service.impl;
 
 
+import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
 import com.hdygxsj.dida.api.domain.entity.UserDO;
 import com.hdygxsj.dida.api.domain.service.UserDomainService;
 import com.hdygxsj.dida.api.mapper.UserMapper;
+import com.hdygxsj.dida.exceptions.Assert;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -31,9 +33,33 @@ public class UserDomainServiceImpl implements UserDomainService {
     private UserMapper userMapper;
 
     @Override
-    public List<UserDO> listAll(){
+    public List<UserDO> listAll() {
         return userMapper.selectList(null);
     }
 
+    @Override
+    public boolean checkUser(String username, String password) {
+        UserDO userDO = new UserDO();
+        userDO.setUsername(username);
+        userDO.setPassword(password);
+        return userMapper.selectOne(new QueryWrapper<>(userDO)) != null;
+    }
+
+    @Override
+    public UserDO get(String username){
+        return userMapper.selectById(username);
+    }
+
+    @Override
+    public boolean exist(String username){
+        return get(username)!=null;
+    }
+
+
+    @Override
+    public void create(UserDO userDO) {
+        Assert.isTrue(exist(userDO.getUsername()),"用户已存在");
+        userMapper.insert(userDO);
+    }
 }
 

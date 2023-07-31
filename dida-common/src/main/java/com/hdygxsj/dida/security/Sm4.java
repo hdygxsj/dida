@@ -13,22 +13,35 @@
  * limitations under the License.
  */
 
-package com.hdygxsj.dida.api.enums;
+package com.hdygxsj.dida.security;
 
-import lombok.Getter;
+import cn.hutool.crypto.symmetric.SM4;
+import com.hdygxsj.dida.exceptions.DidaRuntimeException;
 
-@Getter
-public enum ApiStatus {
-    SUCCESS(0,"成功"),
-    INTERNAL_SERVER_ERROR_ARGS(10000,  "服务端异常: {0}"),
-    LOGIN_FAILED(10001,"账号或密码错误：{0}");
+import java.nio.charset.StandardCharsets;
 
-    ApiStatus(int code, String message) {
-        this.code = code;
-        this.message = message;
+public class Sm4 {
+
+
+    private static final SM4 sm4 = new SM4("567502e0e087c22f".getBytes(StandardCharsets.UTF_8));
+
+    /**
+     * 加密
+     */
+    public static final int ENCRYPT = 0;
+
+    /**
+     * 解密
+     */
+    public static final int  DECRYPT = 1;
+
+    public static String execute(String text,int mode){
+        if(mode == 0){
+            return sm4.encryptHex(text);
+        }else if(mode == 1){
+            return sm4.decryptStr(text,StandardCharsets.UTF_8);
+        }
+        throw new DidaRuntimeException("不支持的密码学操作");
     }
 
-    private int code;
-
-    private String message;
 }

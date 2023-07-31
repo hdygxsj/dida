@@ -13,22 +13,33 @@
  * limitations under the License.
  */
 
-package com.hdygxsj.dida.api.enums;
+package com.hdygxsj.dida.exceptions;
 
-import lombok.Getter;
+public class Assert {
 
-@Getter
-public enum ApiStatus {
-    SUCCESS(0,"成功"),
-    INTERNAL_SERVER_ERROR_ARGS(10000,  "服务端异常: {0}"),
-    LOGIN_FAILED(10001,"账号或密码错误：{0}");
-
-    ApiStatus(int code, String message) {
-        this.code = code;
-        this.message = message;
+    private Assert() {
     }
 
-    private int code;
+    public static void isTrue(boolean exp, RuntimeException exception) {
+        if (!exp) {
+            throw exception;
+        }
+    }
 
-    private String message;
+    public static void isTrue(boolean exp, String msg) {
+        if (!exp) {
+            throw new DidaRuntimeException(msg);
+        }
+    }
+
+    public static void notNull(Object obj, String msg) {
+        if (obj == null) {
+            throw new DidaRuntimeException(msg);
+        }
+    }
+    public static void notNull(Object obj, RuntimeException exception) {
+        if (obj == null) {
+            throw exception;
+        }
+    }
 }

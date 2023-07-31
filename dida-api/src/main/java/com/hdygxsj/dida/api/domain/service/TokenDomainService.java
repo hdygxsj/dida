@@ -13,33 +13,11 @@
  * limitations under the License.
  */
 
-package com.hdygxsj.dida.exceptions;
+package com.hdygxsj.dida.api.domain.service;
 
-public class Asset {
+public interface TokenDomainService {
 
-    private Asset() {
-    }
+    String genToken(String username);
 
-    public static void isTrue(boolean exp, RuntimeException exception) {
-        if (!exp) {
-            throw exception;
-        }
-    }
-
-    public static void isTrue(boolean exp, String msg) {
-        if (!exp) {
-            throw new DidaRuntimeException(msg);
-        }
-    }
-
-    public static void notNull(Object obj, String msg) {
-        if (obj == null) {
-            throw new DidaRuntimeException(msg);
-        }
-    }
-    public static void notNull(Object obj, RuntimeException exception) {
-        if (obj == null) {
-            throw exception;
-        }
-    }
+    void refresh(String token);
 }

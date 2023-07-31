@@ -13,41 +13,33 @@
  * limitations under the License.
  */
 
-package com.hdygxsj.dida.client;
-
-import cn.hutool.core.util.StrUtil;
+import cn.hutool.crypto.SmUtil;
+import cn.hutool.crypto.symmetric.SM4;
 import com.hdygxsj.dida.exceptions.Assert;
+import lombok.extern.slf4j.Slf4j;
+import org.junit.jupiter.api.Test;
 
-public class DidaClientBuilder {
+import java.nio.charset.StandardCharsets;
 
-    private String host;
+@Slf4j
+public class SmUtilTest {
 
-    private String username;
-
-    private String password;
-
-    private String token;
-    public DidaClient build(){
-        DidaClient didaClient = new DidaClient();
-        Assert.isTrue( StrUtil.isNotBlank(host),"host为空");
-        didaClient.setHost(host);
-        if(token!=null){
-            didaClient.setToken(token);
-            return didaClient;
-        }
-        Assert.isTrue(StrUtil.isAllNotBlank(host,username,password),"username 、password不能为空");
-        didaClient.setUsername(username);
-        didaClient.setPassword(password);
-
-        return didaClient;
+    @Test
+    public void sm3(){
+        String str = "aaaaa";
+        log.info( SmUtil.sm3(str));
     }
+    private static final byte[] testPrivateKey = "567502e0e087c22f".getBytes(StandardCharsets.UTF_8);
 
-    private DidaClientBuilder(){}
-
-    public DidaClientBuilder builder(){
-        return new DidaClientBuilder();
+    @Test
+    public void sm4(){
+        String str = "sdadsada";
+        SM4 sm4 = SmUtil.sm4(testPrivateKey);
+        String encryptHex = sm4.encryptHex(str);
+        log.info(encryptHex);
+        String decryptStr = sm4.decryptStr(encryptHex, StandardCharsets.UTF_8);
+        log.info(decryptStr);
+        Assert.isTrue(str.equals(decryptStr),"加密错误");
     }
-
-
 
 }
