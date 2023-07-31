@@ -13,6 +13,7 @@
   ~ See the License for the specific language governing permissions and
   ~ limitations under the License.
   -->
+
 <project xmlns="http://maven.apache.org/POM/4.0.0"
          xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
          xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
@@ -20,23 +21,12 @@
 
     <parent>
         <groupId>com.hdygxsj.dida</groupId>
-        <artifactId>dida</artifactId>
+        <artifactId>dida-plugin</artifactId>
         <version>${revision}</version>
     </parent>
 
 
-    <artifactId>dida-common</artifactId>
+    <artifactId>dida-plugin-mysql</artifactId>
 
-    <dependencies>
-        <dependency>
-            <groupId>cn.hutool</groupId>
-            <artifactId>hutool-all</artifactId>
-        </dependency>
-        <dependency>
-            <groupId>org.bouncycastle</groupId>
-            <artifactId>bcprov-jdk18on</artifactId>
-        </dependency>
-
-    </dependencies>
 
 </project>

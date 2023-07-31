@@ -14,8 +14,8 @@
  */
 
 import cn.hutool.crypto.SmUtil;
-import cn.hutool.crypto.symmetric.SM4;
 import com.hdygxsj.dida.exceptions.Assert;
+import com.hdygxsj.dida.security.Sm4;
 import lombok.extern.slf4j.Slf4j;
 import org.junit.jupiter.api.Test;
 
@@ -25,21 +25,21 @@ import java.nio.charset.StandardCharsets;
 public class SmUtilTest {
 
     @Test
-    public void sm3(){
+    public void sm3() {
         String str = "aaaaa";
-        log.info( SmUtil.sm3(str));
+        log.info(SmUtil.sm3(str));
     }
+
     private static final byte[] testPrivateKey = "567502e0e087c22f".getBytes(StandardCharsets.UTF_8);
 
     @Test
-    public void sm4(){
-        String str = "sdadsada";
-        SM4 sm4 = SmUtil.sm4(testPrivateKey);
-        String encryptHex = sm4.encryptHex(str);
+    public void sm4() {
+        String str = "admin";
+        String encryptHex = Sm4.execute(str, Sm4.ENCRYPT);
         log.info(encryptHex);
-        String decryptStr = sm4.decryptStr(encryptHex, StandardCharsets.UTF_8);
+        String decryptStr = Sm4.execute(encryptHex, Sm4.DECRYPT);
         log.info(decryptStr);
-        Assert.isTrue(str.equals(decryptStr),"加密错误");
+        Assert.isTrue(str.equals(decryptStr), "加密错误");
     }
 
 }

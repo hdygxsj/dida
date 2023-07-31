@@ -39,10 +39,11 @@ public class UserDomainServiceImpl implements UserDomainService {
 
     @Override
     public boolean checkUser(String username, String password) {
-        UserDO userDO = new UserDO();
-        userDO.setUsername(username);
-        userDO.setPassword(password);
-        return userMapper.selectOne(new QueryWrapper<>(userDO)) != null;
+        QueryWrapper<UserDO> queryWrapper = new QueryWrapper<>();
+        queryWrapper.eq("username",username);
+        queryWrapper.eq("password",password);
+        queryWrapper.eq("type",1);
+        return userMapper.selectOne(queryWrapper) != null;
     }
 
     @Override

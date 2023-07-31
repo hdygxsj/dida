@@ -93,10 +93,6 @@ public class Result<T> {
     }
 
 
-    public static <T> Result<T> errorWithArgs(ApiStatus status, Object... args) {
-        return new Result<>(status.getCode(), MessageFormat.format(status.getMessage(), args));
-    }
-
     public Boolean checkResult() {
         return this.code == ApiStatus.SUCCESS.getCode();
     }

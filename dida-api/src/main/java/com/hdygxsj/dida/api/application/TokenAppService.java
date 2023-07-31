@@ -13,36 +13,25 @@
  * limitations under the License.
  */
 
-package com.hdygxsj.dida.security;
+package com.hdygxsj.dida.api.application;
 
-import cn.hutool.crypto.symmetric.SM4;
-import com.hdygxsj.dida.exceptions.DidaRuntimeException;
+import com.hdygxsj.dida.api.domain.service.TokenDomainService;
+import com.hdygxsj.dida.api.tools.Result;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.PutMapping;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RestController;
 
-import java.nio.charset.StandardCharsets;
+@RequestMapping("api/v1/token")
+@RestController
+public class TokenAppService {
 
-public class Sm4 {
+    @Autowired
+    private TokenDomainService tokenDomainService;
 
-
-    /**
-     * 加密
-     */
-    public static final int ENCRYPT = 0;
-
-    /**
-     * 解密
-     */
-    public static final int  DECRYPT = 1;
-
-    private static final SM4 sm4 = new SM4("567502e0e087c22f".getBytes(StandardCharsets.UTF_8));
-
-    public static String execute(String text,int mode){
-
-        if(mode == 0){
-            return sm4.encryptHex(text);
-        }else if(mode == 1){
-            return sm4.decryptStr(text);
-        }
-        throw new DidaRuntimeException("不支持的密码学操作");
+    @PutMapping("{token}")
+    public Result<Boolean> refreshToken(@PathVariable("token") String token) {
+        return Result.success(tokenDomainService.refresh(token));
     }
-
 }

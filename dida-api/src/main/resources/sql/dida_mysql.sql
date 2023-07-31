@@ -112,3 +112,4 @@ create table if not exists dida.dida_user_role_rel
     primary key (username, role_code)
 );
 
+INSERT INTO dida.dida_user (username, password, create_time, type, update_time, super) VALUES ('admin', '0f94644c67a7ee820f769bafd7e527ec', '2023-08-01 00:09:59', 1, '2023-08-01 00:09:59', 1);

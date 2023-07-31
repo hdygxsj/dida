@@ -20,8 +20,8 @@ import lombok.Getter;
 @Getter
 public enum ApiStatus {
     SUCCESS(0,"成功"),
-    INTERNAL_SERVER_ERROR_ARGS(10000,  "服务端异常: {0}"),
-    LOGIN_FAILED(10001,"账号或密码错误：{0}");
+    INTERNAL_SERVER_ERROR_ARGS(10000,  "服务端异常"),
+    LOGIN_FAILED(10001,"账号或密码错误");
 
     ApiStatus(int code, String message) {
         this.code = code;

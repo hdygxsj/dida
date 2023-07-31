@@ -33,6 +33,8 @@
         <module>dida-plugin-base</module>
         <module>dida-plugin-zookeeper</module>
         <module>dida-plugin-nacos</module>
+        <module>dida-plugin-mysql</module>
+        <module>dida-plugin-redis</module>
     </modules>
 
     <dependencies>

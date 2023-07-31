@@ -15,9 +15,15 @@
 
 package com.hdygxsj.dida.api.domain.service;
 
+import com.hdygxsj.dida.api.domain.entity.TokenDO;
+
 public interface TokenDomainService {
 
-    String genToken(String username);
+    TokenDO genToken(String username);
 
-    void refresh(String token);
+    void add(TokenDO tokenDO);
+
+    boolean refresh(String token);
+
+    TokenDO get(String username, String realIp);
 }

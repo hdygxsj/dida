@@ -48,7 +48,7 @@ public class TokenDO implements Serializable {
 
     private String loginIp;
 
-    private Integer expTime;
+    private Long expTime;
 
     private LocalDateTime createTime;
 

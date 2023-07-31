@@ -39,7 +39,7 @@ public class ApiExceptionHandler {
         ApiException ma = hm.getMethodAnnotation(ApiException.class);
         if(ma == null){
             log.error(e.getMessage(),e);
-            return Result.errorWithArgs(ApiStatus.INTERNAL_SERVER_ERROR_ARGS,e.getMessage());
+            return Result.error(ApiStatus.INTERNAL_SERVER_ERROR_ARGS);
         }
         ApiStatus apiStatus = ma.value();
         log.error(apiStatus.getMessage(),e);
