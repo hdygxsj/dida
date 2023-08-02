@@ -17,7 +17,7 @@ package com.hdygxsj.dida.api.application;
 
 import com.hdygxsj.dida.api.domain.entity.UserDO;
 import com.hdygxsj.dida.api.domain.service.UserDomainService;
-import com.hdygxsj.dida.api.tools.Result;
+import com.hdygxsj.dida.tools.Result;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import org.springframework.beans.factory.annotation.Autowired;

@@ -18,20 +18,16 @@ package com.hdygxsj.dida.api.application;
 import com.hdygxsj.dida.api.domain.entity.TokenDO;
 import com.hdygxsj.dida.api.domain.service.TokenDomainService;
 import com.hdygxsj.dida.api.domain.service.UserDomainService;
-import com.hdygxsj.dida.api.enums.ApiStatus;
-import com.hdygxsj.dida.api.tools.Result;
+import com.hdygxsj.dida.enums.ApiStatus;
+import com.hdygxsj.dida.tools.Result;
 import com.hdygxsj.dida.security.Sm4;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestAttribute;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
-import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.bind.annotation.RestController;
-
-import java.util.concurrent.TimeUnit;
 
 @RequestMapping("api/v1/login")
 @RestController

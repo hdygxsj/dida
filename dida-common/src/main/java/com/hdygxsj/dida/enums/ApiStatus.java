@@ -13,22 +13,22 @@
  * limitations under the License.
  */
 
-package com.hdygxsj.dida.api;
+package com.hdygxsj.dida.enums;
 
+import lombok.Getter;
 
-import org.mybatis.spring.annotation.MapperScan;
-import org.springframework.boot.SpringApplication;
-import org.springframework.boot.autoconfigure.SpringBootApplication;
-import org.springframework.boot.context.properties.ConfigurationPropertiesScan;
-import org.springframework.context.annotation.ComponentScan;
+@Getter
+public enum ApiStatus {
+    SUCCESS(0,"成功"),
+    INTERNAL_SERVER_ERROR_ARGS(10000,  "服务端异常"),
+    LOGIN_FAILED(10001,"账号或密码错误");
 
-@SpringBootApplication
-@MapperScan(basePackages = {"com.hdygxsj.dida.api.mapper"})
-@ComponentScan("com.hdygxsj.dida")
-public class ApiApplicationServer {
-
-
-    public static void main(String[] args) {
-        SpringApplication.run(ApiApplicationServer.class);
+    ApiStatus(int code, String message) {
+        this.code = code;
+        this.message = message;
     }
+
+    private int code;
+
+    private String message;
 }

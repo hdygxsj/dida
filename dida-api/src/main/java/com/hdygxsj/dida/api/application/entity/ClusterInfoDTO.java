@@ -13,22 +13,13 @@
  * limitations under the License.
  */
 
-package com.hdygxsj.dida.api;
+package com.hdygxsj.dida.api.application.entity;
+
+import java.time.LocalDateTime;
+
+public class ClusterInfoDTO {
+
+    private String engineType;
 
 
-import org.mybatis.spring.annotation.MapperScan;
-import org.springframework.boot.SpringApplication;
-import org.springframework.boot.autoconfigure.SpringBootApplication;
-import org.springframework.boot.context.properties.ConfigurationPropertiesScan;
-import org.springframework.context.annotation.ComponentScan;
-
-@SpringBootApplication
-@MapperScan(basePackages = {"com.hdygxsj.dida.api.mapper"})
-@ComponentScan("com.hdygxsj.dida")
-public class ApiApplicationServer {
-
-
-    public static void main(String[] args) {
-        SpringApplication.run(ApiApplicationServer.class);
-    }
 }

@@ -44,6 +44,7 @@
         <hutool.version>5.8.11</hutool.version>
         <lombok.version>1.18.24</lombok.version>
         <boundcycastle.version>1.71</boundcycastle.version>
+        <fastjson.version>1.2.70</fastjson.version>
     </properties>
 
     <modules>
@@ -63,7 +64,10 @@
             <artifactId>lombok</artifactId>
             <scope>compile</scope>
         </dependency>
-
+        <dependency>
+            <groupId>com.alibaba</groupId>
+            <artifactId>fastjson</artifactId>
+        </dependency>
     </dependencies>
 
     <packaging>pom</packaging>
@@ -85,6 +89,11 @@
                 <groupId>org.bouncycastle</groupId>
                 <artifactId>bcprov-jdk18on</artifactId>
                 <version>${boundcycastle.version}</version>
+            </dependency>
+            <dependency>
+                <groupId>com.alibaba</groupId>
+                <artifactId>fastjson</artifactId>
+                <version>${fastjson.version}</version>
             </dependency>
         </dependencies>
     </dependencyManagement>

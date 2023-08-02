@@ -12,9 +12,9 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package com.hdygxsj.dida.api.exceptions;
+package com.hdygxsj.dida.exceptions;
 
-import com.hdygxsj.dida.api.enums.ApiStatus;
+import com.hdygxsj.dida.enums.ApiStatus;
 import lombok.Data;
 
 import java.text.MessageFormat;

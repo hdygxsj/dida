@@ -13,10 +13,11 @@
  * limitations under the License.
  */
 
-package com.hdygxsj.dida.api.exceptions;
+package com.hdygxsj.dida.exceptions;
 
-import com.hdygxsj.dida.api.enums.ApiStatus;
-import com.hdygxsj.dida.api.tools.Result;
+
+import com.hdygxsj.dida.enums.ApiStatus;
+import com.hdygxsj.dida.tools.Result;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.ResponseBody;
@@ -32,6 +33,12 @@ public class ApiExceptionHandler {
     public Result exception(ServiceException e, HandlerMethod hm){
         log.error("serviceException: ",e);
         return Result.error(e.getCode(),e.getMessage());
+    }
+
+    @ExceptionHandler(DidaRuntimeException.class)
+    public Result exception(DidaRuntimeException e, HandlerMethod hm){
+        log.error("DidaRuntimeException: ",e);
+        return Result.error(ApiStatus.INTERNAL_SERVER_ERROR_ARGS.getCode(),e.getMessage());
     }
 
     @ExceptionHandler(Exception.class)

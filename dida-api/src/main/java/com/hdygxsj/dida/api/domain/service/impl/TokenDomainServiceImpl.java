@@ -22,6 +22,8 @@ import com.hdygxsj.dida.api.domain.service.TokenDomainService;
 import com.hdygxsj.dida.api.mapper.TokenMapper;
 import com.hdygxsj.dida.security.Sm4;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.boot.SpringApplication;
+import org.springframework.context.ApplicationContext;
 import org.springframework.stereotype.Service;
 
 import java.time.Instant;
@@ -35,8 +37,10 @@ public class TokenDomainServiceImpl implements TokenDomainService {
     @Autowired
     private TokenMapper tokenMapper;
 
+
     @Override
     public TokenDO genToken(String username) {
+
         LocalDateTime now = LocalDateTime.now();
         long epochMilli = now.toInstant(ZoneOffset.of("+8")).toEpochMilli();
         String temp = StrFormatter.format("{}-{}", username, epochMilli);

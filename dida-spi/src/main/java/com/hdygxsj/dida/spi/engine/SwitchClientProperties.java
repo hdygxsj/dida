@@ -13,22 +13,11 @@
  * limitations under the License.
  */
 
-package com.hdygxsj.dida.api;
+package com.hdygxsj.dida.spi.engine;
 
+import java.util.Properties;
 
-import org.mybatis.spring.annotation.MapperScan;
-import org.springframework.boot.SpringApplication;
-import org.springframework.boot.autoconfigure.SpringBootApplication;
-import org.springframework.boot.context.properties.ConfigurationPropertiesScan;
-import org.springframework.context.annotation.ComponentScan;
+public interface SwitchClientProperties {
 
-@SpringBootApplication
-@MapperScan(basePackages = {"com.hdygxsj.dida.api.mapper"})
-@ComponentScan("com.hdygxsj.dida")
-public class ApiApplicationServer {
-
-
-    public static void main(String[] args) {
-        SpringApplication.run(ApiApplicationServer.class);
-    }
+    Properties toProperties();
 }

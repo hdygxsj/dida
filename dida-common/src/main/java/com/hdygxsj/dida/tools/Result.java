@@ -13,15 +13,13 @@
  * limitations under the License.
  */
 
-package com.hdygxsj.dida.api.tools;
+package com.hdygxsj.dida.tools;
 
 
-import com.hdygxsj.dida.api.enums.ApiStatus;
+import com.hdygxsj.dida.enums.ApiStatus;
 import lombok.Getter;
 import lombok.Setter;
 import lombok.ToString;
-
-import java.text.MessageFormat;
 
 
 @Getter

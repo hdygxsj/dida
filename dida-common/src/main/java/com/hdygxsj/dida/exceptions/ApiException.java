@@ -13,22 +13,18 @@
  * limitations under the License.
  */
 
-package com.hdygxsj.dida.api.enums;
+package com.hdygxsj.dida.exceptions;
 
-import lombok.Getter;
+import com.hdygxsj.dida.enums.ApiStatus;
 
-@Getter
-public enum ApiStatus {
-    SUCCESS(0,"成功"),
-    INTERNAL_SERVER_ERROR_ARGS(10000,  "服务端异常"),
-    LOGIN_FAILED(10001,"账号或密码错误");
+import java.lang.annotation.ElementType;
+import java.lang.annotation.Retention;
+import java.lang.annotation.RetentionPolicy;
+import java.lang.annotation.Target;
 
-    ApiStatus(int code, String message) {
-        this.code = code;
-        this.message = message;
-    }
+@Retention(RetentionPolicy.RUNTIME)
+@Target(ElementType.METHOD)
+public @interface ApiException {
 
-    private int code;
-
-    private String message;
+    ApiStatus value();
 }

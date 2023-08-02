@@ -13,18 +13,22 @@
  * limitations under the License.
  */
 
-package com.hdygxsj.dida.api.exceptions;
+package com.hdygxsj.dida.api.application;
 
-import com.hdygxsj.dida.api.enums.ApiStatus;
+import com.hdygxsj.dida.api.application.entity.ClusterInfoDTO;
+import com.hdygxsj.dida.tools.Result;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RestController;
 
-import java.lang.annotation.ElementType;
-import java.lang.annotation.Retention;
-import java.lang.annotation.RetentionPolicy;
-import java.lang.annotation.Target;
+@RestController
+@RequestMapping("api/v1/cluster")
+public class DidaAppService {
 
-@Retention(RetentionPolicy.RUNTIME)
-@Target(ElementType.METHOD)
-public @interface ApiException {
 
-    ApiStatus value();
+    @GetMapping("info")
+    public Result<ClusterInfoDTO> info(){
+        ClusterInfoDTO data = new ClusterInfoDTO();
+        return Result.success(data);
+    }
 }

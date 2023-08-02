@@ -37,12 +37,25 @@
         <module>dida-plugin-redis</module>
     </modules>
 
-    <dependencies>
-        <dependency>
-            <groupId>com.hdygxsj.dida</groupId>
-            <artifactId>dida-spi</artifactId>
-            <version>${project.version}</version>
-        </dependency>
-    </dependencies>
+    <properties>
+        <nacos.version>2.1.0</nacos.version>
+    </properties>
+
+    <dependencyManagement>
+        <dependencies>
+            <dependency>
+                <groupId>com.hdygxsj.dida</groupId>
+                <artifactId>dida-bom</artifactId>
+                <version>${project.version}</version>
+                <type>pom</type>
+                <scope>import</scope>
+            </dependency>
+            <dependency>
+                <groupId>com.alibaba.nacos</groupId>
+                <artifactId>nacos-client</artifactId>
+                <version>${nacos.version}</version>
+            </dependency>
+        </dependencies>
+    </dependencyManagement>
 
 </project>

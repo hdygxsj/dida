@@ -13,23 +13,12 @@
  * limitations under the License.
  */
 
-package com.hdygxsj.dida.spi.enums;
+package com.hdygxsj.dida.api.domain.service;
 
-import lombok.Getter;
-
-@Getter
-public enum EngineType {
-    ZOOKEEPER(0,"zookeeper"),
-
-    NACOS(1,"nacos");
+public interface SwitchDomainService {
 
 
-    private final int code;
+    void setValue(String group, String namespace, String key, String value);
 
-    private final String descp;
-
-    EngineType(int code, String descp) {
-        this.code = code;
-        this.descp = descp;
-    }
+    String getValue(String group, String namespace, String key);
 }

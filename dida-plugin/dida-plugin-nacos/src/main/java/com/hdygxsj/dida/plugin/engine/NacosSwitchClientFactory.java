@@ -30,8 +30,6 @@ public class NacosSwitchClientFactory implements SwitchClientFactory {
 
     @Override
     public SwitchClient getSwitchClient(Properties properties) {
-        SwitchClient nacosSwitchClient = new NacosSwitchClient();
-
-        return nacosSwitchClient;
+        return new NacosSwitchClient(properties);
     }
 }
