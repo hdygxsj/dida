@@ -26,4 +26,10 @@ public interface TokenDomainService {
     boolean refresh(String token);
 
     TokenDO get(String username, String realIp);
+
+    String getUsernameByToken(TokenDO tokenDO);
+
+    boolean checkToken(TokenDO tokenDO);
+
+    char genCheckCode(String token);
 }

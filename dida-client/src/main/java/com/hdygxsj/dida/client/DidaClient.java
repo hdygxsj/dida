@@ -34,63 +34,68 @@ public class DidaClient {
 
     private String token;
 
-    DidaClient(){
+    /**
+     * 授权类型 0-用户名授权，1-token授权
+     */
+    private int authType;
+
+    DidaClient() {
 
     }
 
     /**
      * 重连
      */
-    public void reconnect(){
+    public void reconnect() {
 
     }
 
-    public void check(){
+    public void check() {
 
     }
 
-    public String getEngineType(){
+    public String getEngineType() {
         //todo
         return null;
     }
 
-    public Properties getEngineProperties(){
+    public Properties getEngineProperties() {
         //todo
         return null;
     }
 
-    public SwitchClient getEngine(){
+    public SwitchClient getEngine() {
         String engineType = getEngineType();
-        Assert.isTrue(StrUtil.isNotBlank(engineType),"dida平台异常，无法获取引擎类型");
+        Assert.isTrue(StrUtil.isNotBlank(engineType), "dida平台异常，无法获取引擎类型");
         ServiceLoader<SwitchClientFactory> serviceLoader = ServiceLoader.load(SwitchClientFactory.class);
         Iterator<SwitchClientFactory> services = serviceLoader.iterator();
         SwitchClient switchClient = null;
-        while(services.hasNext()){
+        while (services.hasNext()) {
             SwitchClientFactory engineFactory = services.next();
             String name = engineFactory.name();
-            if(!engineType.equals(name)){
+            if (!engineType.equals(name)) {
                 continue;
             }
             Properties engineProperties = getEngineProperties();
             switchClient = engineFactory.getSwitchClient(engineProperties);
         }
-        Assert.notNull(switchClient,"未装载引擎类型插件："+engineType);
+        Assert.notNull(switchClient, "未装载引擎类型插件：" + engineType);
         return switchClient;
     }
 
-     void setHost(String host) {
+    void setHost(String host) {
         this.host = host;
     }
 
-     void setUsername(String username) {
+    void setUsername(String username) {
         this.username = username;
     }
 
-     void setPassword(String password) {
+    void setPassword(String password) {
         this.password = password;
     }
 
-     void setToken(String token) {
+    void setToken(String token) {
         this.token = token;
     }
 }
