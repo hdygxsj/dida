@@ -13,21 +13,7 @@
  * limitations under the License.
  */
 
-package com.hdygxsj.dida.api.application.entity;
+package com.hdygxsj.dida.api.application;
 
-import lombok.Getter;
-import lombok.Setter;
-import lombok.ToString;
-
-import java.util.Properties;
-
-@Getter
-@Setter
-@ToString
-public class ClusterInfoDTO {
-
-    private String engineType;
-
-    private Properties enginProperties;
-
+public class HealthAppService {
 }

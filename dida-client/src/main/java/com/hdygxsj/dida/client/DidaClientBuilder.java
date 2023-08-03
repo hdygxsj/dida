@@ -17,6 +17,7 @@ package com.hdygxsj.dida.client;
 
 import cn.hutool.core.util.StrUtil;
 import com.hdygxsj.dida.exceptions.Assert;
+import okhttp3.OkHttpClient;
 
 public class DidaClientBuilder {
 
@@ -27,27 +28,41 @@ public class DidaClientBuilder {
     private String password;
 
     private String token;
-    public DidaClient build(){
-        DidaClient didaClient = new DidaClient();
-        Assert.isTrue( StrUtil.isNotBlank(host),"host为空");
-        didaClient.setHost(host);
-        if(token!=null){
-            didaClient.setToken(token);
-            return didaClient;
-        }
-        Assert.isTrue(StrUtil.isAllNotBlank(host,username,password),"username 、password不能为空");
-        didaClient.setUsername(username);
-        didaClient.setPassword(password);
 
-        return didaClient;
+    public DidaClient build() {
+        Assert.isTrue(StrUtil.isNotBlank(host), "host为空");
+        if (token != null) {
+            return new DidaClient(token, new OkHttpClient());
+        }
+        Assert.isTrue(StrUtil.isAllNotBlank(host, username, password), "username 、password不能为空");
+        return new DidaClient(host, username, password, new OkHttpClient());
     }
 
-    private DidaClientBuilder(){}
+    private DidaClientBuilder() {
+    }
 
-    public DidaClientBuilder builder(){
+    public DidaClientBuilder host(String host){
+        this.host = host;
+        return this;
+    }
+    public DidaClientBuilder username(String username){
+        this.username = username;
+        return this;
+    }
+    public DidaClientBuilder password(String password){
+        this.password = password;
+        return this;
+    }
+    public DidaClientBuilder token(String token){
+        this.token = token;
+        return this;
+    }
+
+
+
+    public static DidaClientBuilder builder() {
         return new DidaClientBuilder();
     }
-
 
 
 }

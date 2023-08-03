@@ -17,6 +17,7 @@ package com.hdygxsj.dida.spi.engine;
 
 public interface SwitchClient {
 
+    String getType();
     void setValue(String group,String namespace,String key,String value);
 
     String getValue(String group,String namespace,String key);

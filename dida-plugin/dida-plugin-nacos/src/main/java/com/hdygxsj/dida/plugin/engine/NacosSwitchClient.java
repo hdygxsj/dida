@@ -39,6 +39,7 @@ import java.util.concurrent.TimeUnit;
 @Component
 @ConditionalOnProperty(prefix = "engine", name = "type", havingValue = "nacos")
 @Slf4j
+
 public class NacosSwitchClient implements SwitchClient {
 
 
@@ -56,7 +57,7 @@ public class NacosSwitchClient implements SwitchClient {
 
     private static final Map<String, JSONObject> switchConfigCache = new ConcurrentHashMap<>();
 
-    private final static String type = "nacos";
+    private final  String type = "nacos";
 
     private final ConfigService configService;
 
@@ -76,6 +77,11 @@ public class NacosSwitchClient implements SwitchClient {
         }
     }
 
+
+    @Override
+    public String getType() {
+        return this.type;
+    }
 
     @Override
     public void setValue(String group, String namespace, String key, String value) {

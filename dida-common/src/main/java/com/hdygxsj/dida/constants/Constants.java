@@ -13,22 +13,19 @@
  * limitations under the License.
  */
 
-package com.hdygxsj.dida.api.application;
+package com.hdygxsj.dida.constants;
 
-import com.hdygxsj.dida.api.application.entity.ClusterInfoDTO;
-import com.hdygxsj.dida.tools.Result;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+public class Constants {
 
-@RestController
-@RequestMapping("api/v1/cluster")
-public class DidaAppService {
+    private Constants(){}
 
+    public static final String API_CONTEXT = "dida";
 
-    @GetMapping("info")
-    public Result<ClusterInfoDTO> info(){
-        ClusterInfoDTO data = new ClusterInfoDTO();
-        return Result.success(data);
-    }
+    public static final String QUESTION_MARK = "?";
+
+    public static final String EQUAL_MARK = "=";
+
+    public static final String AND_MARK = "&";
+
+    public static final String REQUEST_CONTENT_TYPE = "application/x-www-form-urlencoded";
 }

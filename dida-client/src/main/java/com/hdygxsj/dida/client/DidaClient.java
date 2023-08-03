@@ -16,11 +16,19 @@
 package com.hdygxsj.dida.client;
 
 import cn.hutool.core.util.StrUtil;
+import com.alibaba.fastjson.JSON;
+import com.hdygxsj.dida.constants.Constants;
 import com.hdygxsj.dida.exceptions.Assert;
+import com.hdygxsj.dida.exceptions.DidaRuntimeException;
+import com.hdygxsj.dida.http.RequestClient;
 import com.hdygxsj.dida.spi.engine.SwitchClient;
 import com.hdygxsj.dida.spi.engine.SwitchClientFactory;
+import com.hdygxsj.dida.tools.Result;
+import okhttp3.OkHttpClient;
 
+import java.util.HashMap;
 import java.util.Iterator;
+import java.util.Map;
 import java.util.Properties;
 import java.util.ServiceLoader;
 
@@ -39,15 +47,18 @@ public class DidaClient {
      */
     private int authType;
 
-    DidaClient() {
 
-    }
+    private final RequestClient httpClient;
+
+    private String type;
+
+    private Properties properties;
 
     /**
      * 重连
      */
     public void reconnect() {
-
+        connect();
     }
 
     public void check() {
@@ -55,13 +66,61 @@ public class DidaClient {
     }
 
     public String getEngineType() {
-        //todo
-        return null;
+        return this.type;
     }
 
     public Properties getEngineProperties() {
-        //todo
-        return null;
+        return this.properties;
+    }
+
+    DidaClient(String host, String username, String password, OkHttpClient okHttpClient) {
+        this.httpClient = new RequestClient(okHttpClient);
+        this.host = host;
+        this.username = username;
+        this.password = password;
+        authType = 0;
+        connect();
+    }
+
+    SwitchClient switchClient;
+
+    DidaClient(String token, OkHttpClient okHttpClient) {
+        this.httpClient = new RequestClient(okHttpClient);
+        this.token = token;
+        authType = 1;
+        connect();
+    }
+
+    public void connect() {
+        if (authType == 0) {
+            Map<String, Object> requests = new HashMap<>();
+            try {
+                requests.put("username",username);
+                requests.put("password",password);
+                Result<Object> tokenResult = httpClient.post(createRequestUrl("api/v1/login"), null, requests);
+                if (tokenResult.isFailed()) {
+                    throw new DidaRuntimeException("客户端创建失败，无法与服务端创建连接" + tokenResult.getMessage());
+                }
+                this.token = String.valueOf( tokenResult.getData());
+
+            } catch (Exception ex) {
+                throw new DidaRuntimeException("客户端创建失败，无法与服务端创建连接" + ex.getMessage());
+            }
+        }
+        try{
+            Map<String, String> headers = getHeaders();
+            Result<Object> clusterInfoDTOResult = httpClient.get(createRequestUrl("api/v1/cluster/info/"), headers, null);
+            ClusterInfoDTO clusterInfoDTO = JSON.parseObject(String.valueOf(clusterInfoDTOResult.getData()),ClusterInfoDTO.class);
+            this.type = clusterInfoDTO.getEngineType();
+            this.properties = clusterInfoDTO.getEnginProperties();
+            this.switchClient = getEngine();
+        }catch (Exception ex) {
+            throw new DidaRuntimeException("客户端创建失败，无法与服务端创建连接" + ex.getMessage());
+        }
+    }
+
+    private String createRequestUrl(String path){
+        return String.format("http://%s/%s/%s",host, Constants.API_CONTEXT,path);
     }
 
     public SwitchClient getEngine() {
@@ -83,19 +142,16 @@ public class DidaClient {
         return switchClient;
     }
 
-    void setHost(String host) {
-        this.host = host;
+    private Map<String, String> getHeaders() {
+        Map<String, String> headers = new HashMap<>();
+        headers.put("token", token);
+        return headers;
     }
 
-    void setUsername(String username) {
-        this.username = username;
+
+    public String getValue(String group, String namespace, String key) {
+        return switchClient.getValue(group, namespace, key);
     }
 
-    void setPassword(String password) {
-        this.password = password;
-    }
 
-    void setToken(String token) {
-        this.token = token;
-    }
 }

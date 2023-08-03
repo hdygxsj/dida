@@ -13,7 +13,7 @@
  * limitations under the License.
  */
 
-package com.hdygxsj.dida.api.application.entity;
+package com.hdygxsj.dida.client;
 
 import lombok.Getter;
 import lombok.Setter;

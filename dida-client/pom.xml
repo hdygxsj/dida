@@ -25,6 +25,17 @@
         <version>${revision}</version>
     </parent>
 
+    <dependencyManagement>
+        <dependencies>
+            <dependency>
+                <groupId>com.hdygxsj.dida</groupId>
+                <artifactId>dida-bom</artifactId>
+                <version>${project.version}</version>
+                <type>pom</type>
+                <scope>import</scope>
+            </dependency>
+        </dependencies>
+    </dependencyManagement>
 
 
     <artifactId>dida-client</artifactId>
@@ -43,6 +54,16 @@
         <dependency>
             <groupId>com.squareup.okhttp3</groupId>
             <artifactId>okhttp</artifactId>
+        </dependency>
+        <dependency>
+            <groupId>org.springframework.boot</groupId>
+            <artifactId>spring-boot-starter-test</artifactId>
+            <scope>test</scope>
+        </dependency>
+        <dependency>
+            <groupId>com.hdygxsj.dida</groupId>
+            <artifactId>dida-plugin-nacos</artifactId>
+            <version>${project.version}</version>
         </dependency>
     </dependencies>
 

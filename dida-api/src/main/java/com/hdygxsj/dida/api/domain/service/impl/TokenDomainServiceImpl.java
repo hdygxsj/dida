@@ -48,7 +48,7 @@ public class TokenDomainServiceImpl implements TokenDomainService {
         String token = Sm4.execute(temp, Sm4.ENCRYPT);
         TokenDO tokenDO = new TokenDO();
         char checkCode = genCheckCode(token);
-        token = tokenMapper + String.valueOf(checkCode);
+        token = token + checkCode;
         tokenDO.setUsername(username);
         tokenDO.setToken(token);
         tokenDO.setExpTime(TimeUnit.MINUTES.toMicros(30));
@@ -88,7 +88,9 @@ public class TokenDomainServiceImpl implements TokenDomainService {
     public TokenDO get(String username, String realIp) {
         QueryWrapper<TokenDO> queryWrapper = new QueryWrapper<>();
         queryWrapper.eq("username", username);
-        queryWrapper.eq("login_ip", realIp);
+        queryWrapper.eq(realIp != null, "login_ip", realIp);
+        queryWrapper.isNull(realIp == null, "login_ip");
+        queryWrapper.orderByDesc("update_time");
         return tokenMapper.selectOne(queryWrapper);
     }
 
