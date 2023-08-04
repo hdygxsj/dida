@@ -15,6 +15,8 @@
 
 package com.hdygxsj.dida.exceptions;
 
+import cn.hutool.core.util.StrUtil;
+
 public class Assert {
 
     private Assert() {
@@ -40,6 +42,12 @@ public class Assert {
     public static void notNull(Object obj, RuntimeException exception) {
         if (obj == null) {
             throw exception;
+        }
+    }
+
+    public static void notBlank(String str, String message) {
+        if(StrUtil.isBlank(str)){
+            throw new DidaRuntimeException(message);
         }
     }
 }

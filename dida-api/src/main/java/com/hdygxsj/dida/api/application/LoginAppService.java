@@ -19,6 +19,7 @@ import com.hdygxsj.dida.api.domain.entity.TokenDO;
 import com.hdygxsj.dida.api.domain.service.TokenDomainService;
 import com.hdygxsj.dida.api.domain.service.UserDomainService;
 import com.hdygxsj.dida.enums.ApiStatus;
+import com.hdygxsj.dida.exceptions.Assert;
 import com.hdygxsj.dida.tools.Result;
 import com.hdygxsj.dida.security.Sm4;
 import io.swagger.v3.oas.annotations.tags.Tag;
@@ -44,6 +45,8 @@ public class LoginAppService {
     public Result<TokenDO> login(@RequestParam(required = false) String username,
                                 @RequestParam(required = false) String password,
                                 @RequestAttribute(value = "ip",required = false) String ip) {
+        Assert.notBlank(username,"用户名不能为空");
+        Assert.notBlank(password,"密码不能为空");
         boolean validUser = userDomainService.checkUser(username, Sm4.execute(password,Sm4.ENCRYPT));
         if (!validUser) {
             return Result.error(ApiStatus.LOGIN_FAILED);

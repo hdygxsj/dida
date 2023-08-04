@@ -28,6 +28,7 @@ import org.springframework.stereotype.Service;
 
 import java.time.Instant;
 import java.time.LocalDateTime;
+import java.time.ZoneId;
 import java.time.ZoneOffset;
 import java.util.Optional;
 import java.util.concurrent.TimeUnit;
@@ -72,8 +73,8 @@ public class TokenDomainServiceImpl implements TokenDomainService {
         if (tokenDO.getExpTime() == null) {
             return true;
         }
-        if ((updateTime.toInstant(ZoneOffset.UTC).toEpochMilli() + tokenDO.getExpTime())
-                < Instant.now().atOffset(ZoneOffset.UTC).toInstant().toEpochMilli()) {
+        if ((updateTime.atZone(ZoneId.systemDefault()).toInstant().toEpochMilli() + tokenDO.getExpTime())
+                < Instant.now().toEpochMilli()) {
             tokenMapper.deleteById(tokenDO.getId());
             return false;
         }
