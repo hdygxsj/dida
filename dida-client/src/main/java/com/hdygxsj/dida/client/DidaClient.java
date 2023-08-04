@@ -113,6 +113,7 @@ public class DidaClient {
             ClusterInfoDTO clusterInfoDTO = JSON.parseObject(String.valueOf(clusterInfoDTOResult.getData()),ClusterInfoDTO.class);
             this.type = clusterInfoDTO.getEngineType();
             this.properties = clusterInfoDTO.getEnginProperties();
+
             this.switchClient = getEngine();
         }catch (Exception ex) {
             throw new DidaRuntimeException("客户端创建失败，无法与服务端创建连接" + ex.getMessage());
