@@ -13,23 +13,28 @@
  * limitations under the License.
  */
 
-package com.hdygxsj.dida.api.permission;
+package com.hdygxsj.dida.api.authentication;
 
+import lombok.Getter;
 
-import com.hdygxsj.dida.enums.ApiStatus;
-import com.hdygxsj.dida.exceptions.ServiceException;
-import org.aspectj.lang.ProceedingJoinPoint;
-import org.aspectj.lang.annotation.Around;
-import org.aspectj.lang.annotation.Aspect;
-import org.springframework.stereotype.Component;
+@Getter
+public enum OpRight {
+    READ(1, 1),
+    WRITE(2, 1 << 1),
+    UPDATE(3, 1 << 2),
+    DELETE(4, 1 << 3),
+    WATCH(5, 1 << 4);
 
-@Aspect
-@Component
-public class PermissionAspect {
+    int code;
 
-    @Around("@annotation(Permission)")
-    public Object permissionCheck(ProceedingJoinPoint proceedingJoinPoint) throws Throwable {
-        Object target = proceedingJoinPoint.getTarget();
-        throw new ServiceException(ApiStatus.INSUFFICIENT_PERMISSION);
+    int bitInt;
+
+    OpRight(int code, int bitInt) {
+        this.code = code;
+        this.bitInt = bitInt;
+    }
+
+    public static void main(String[] args) {
+        System.out.println(1 >> 1);
     }
 }

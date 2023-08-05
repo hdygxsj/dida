@@ -13,7 +13,7 @@
  * limitations under the License.
  */
 
-package com.hdygxsj.dida.api.permission;
+package com.hdygxsj.dida.api.authentication;
 
 import com.hdygxsj.dida.api.domain.entity.UserDO;
 import com.hdygxsj.dida.api.domain.service.UserDomainService;

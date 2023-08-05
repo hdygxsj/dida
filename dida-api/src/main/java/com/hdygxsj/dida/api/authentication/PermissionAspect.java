@@ -13,26 +13,23 @@
  * limitations under the License.
  */
 
-package com.hdygxsj.dida.api.permission;
+package com.hdygxsj.dida.api.authentication;
 
-import lombok.Getter;
 
-@Getter
-public enum OpObjType {
-    SYSTEM("system", "系统"),
-    CLUSTER("cluster", "集群"),
-    ROLE("role", "角色"),
-    GROUP("group", "组"),
-    NAMESPACE("namespace", "命名空间"),
-    SWITCH("switch","开关"),
-    USER_ROLE("user_role","用户权限");
+import com.hdygxsj.dida.enums.ApiStatus;
+import com.hdygxsj.dida.exceptions.ServiceException;
+import org.aspectj.lang.ProceedingJoinPoint;
+import org.aspectj.lang.annotation.Around;
+import org.aspectj.lang.annotation.Aspect;
+import org.springframework.stereotype.Component;
 
-    private String type;
+@Aspect
+@Component
+public class PermissionAspect {
 
-    private String descp;
-
-    OpObjType(String type, String descp) {
-        this.type = type;
-        this.descp = descp;
+    @Around("@annotation(com.hdygxsj.dida.api.authentication.Permission)")
+    public Object permissionCheck(ProceedingJoinPoint proceedingJoinPoint) throws Throwable {
+        Object target = proceedingJoinPoint.getTarget();
+        throw new ServiceException(ApiStatus.INSUFFICIENT_PERMISSION);
     }
 }

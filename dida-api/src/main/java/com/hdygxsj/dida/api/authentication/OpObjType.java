@@ -13,28 +13,26 @@
  * limitations under the License.
  */
 
-package com.hdygxsj.dida.api.permission;
+package com.hdygxsj.dida.api.authentication;
 
 import lombok.Getter;
 
 @Getter
-public enum OpRight {
-    READ(1, 1),
-    WRITE(2, 1 << 1),
-    UPDATE(3, 1 << 2),
-    DELETE(4, 1 << 3),
-    WATCH(5, 1 << 4);
+public enum OpObjType {
+    SYSTEM("system", "系统"),
+    CLUSTER("cluster", "集群"),
+    ROLE("role", "角色"),
+    GROUP("group", "组"),
+    NAMESPACE("namespace", "命名空间"),
+    SWITCH("switch","开关"),
+    USER_ROLE("user_role","用户权限");
 
-    int code;
+    private String type;
 
-    int bitInt;
+    private String descp;
 
-    OpRight(int code, int bitInt) {
-        this.code = code;
-        this.bitInt = bitInt;
-    }
-
-    public static void main(String[] args) {
-        System.out.println(1 >> 1);
+    OpObjType(String type, String descp) {
+        this.type = type;
+        this.descp = descp;
     }
 }

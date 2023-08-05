@@ -13,7 +13,7 @@
  * limitations under the License.
  */
 
-package com.hdygxsj.dida.api.permission;
+package com.hdygxsj.dida.api.authentication;
 
 
 import java.lang.annotation.Documented;
