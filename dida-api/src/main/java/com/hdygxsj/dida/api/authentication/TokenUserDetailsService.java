@@ -36,6 +36,7 @@ public class TokenUserDetailsService implements UserDetailsService {
 
     @Autowired
     private UserDomainService userDomainService;
+
     @Override
     public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
         UserDO userDO = userDomainService.get(username);

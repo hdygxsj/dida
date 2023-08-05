@@ -15,7 +15,9 @@
 
 package com.hdygxsj.dida.api.authentication;
 
+import com.hdygxsj.dida.api.application.LoginAppService;
 import org.apache.http.HttpStatus;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.security.core.AuthenticationException;
 import org.springframework.security.web.authentication.AuthenticationFailureHandler;
@@ -32,11 +34,11 @@ public class LoginAuthenticationFailureHandler implements AuthenticationFailureH
     @Value("${login.page:login}")
     private String loginPage;
 
+
     @Override
     public void onAuthenticationFailure(HttpServletRequest request,
                                         HttpServletResponse response,
                                         AuthenticationException exception) throws IOException, ServletException {
-        response.setStatus(HttpStatus.SC_UNAUTHORIZED);
-        response.sendRedirect(loginPage + "?redirect=" + request.getRequestURI());
+        response.setStatus(HttpStatus.SC_OK);
     }
 }

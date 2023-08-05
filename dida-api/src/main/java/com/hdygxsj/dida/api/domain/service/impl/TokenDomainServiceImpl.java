@@ -145,11 +145,12 @@ public class TokenDomainServiceImpl implements TokenDomainService {
     @Override
     public char genCheckCode(String token) {
         char[] charArray = token.toCharArray();
+        String xcode = "1234567890abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXFZ";
         int xor = charArray[0];
         for (int i = 1; i < charArray.length; i++) {
-            xor = (int) charArray[i] ^ xor;
+            xor =   (charArray[i] + xor )%(xcode.length()-1);
         }
-        return (char) xor;
+        return xcode.charAt(xor);
     }
 
 }

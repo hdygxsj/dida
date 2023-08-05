@@ -15,37 +15,42 @@
 
 package com.hdygxsj.dida.api.authentication;
 
-import cn.hutool.core.util.StrUtil;
-import com.alibaba.fastjson.JSONObject;
-import com.hdygxsj.dida.api.application.LoginAppService;
-import com.hdygxsj.dida.api.domain.entity.TokenDO;
-import com.hdygxsj.dida.tools.Result;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.boot.autoconfigure.security.SecurityProperties;
+import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.AuthenticationServiceException;
 import org.springframework.security.core.Authentication;
-import org.springframework.security.core.userdetails.User;
-import org.springframework.security.web.authentication.AuthenticationSuccessHandler;
+import org.springframework.security.core.AuthenticationException;
+import org.springframework.security.web.FilterInvocation;
+import org.springframework.security.web.access.intercept.FilterSecurityInterceptor;
 import org.springframework.stereotype.Component;
 
 import javax.servlet.ServletException;
-import javax.servlet.http.HttpServletRequest;
-import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
 
 @Component
-public class JwtAuthenticationSuccessHandler implements AuthenticationSuccessHandler {
+public class CustomFilterSecurityInterceptor extends FilterSecurityInterceptor {
 
+    private AuthenticationManager authenticationManager = new NoOpAuthenticationManager();
+    public CustomFilterSecurityInterceptor() {
 
-
+    }
 
     @Override
-    public void onAuthenticationSuccess(HttpServletRequest request, HttpServletResponse response,
-                                        Authentication authentication) throws IOException, ServletException {
-        String redirect = request.getHeader("redirect");
-        if (StrUtil.isBlank(redirect)) {
-            return;
-        }
-        response.sendRedirect(redirect);
+    public void invoke(FilterInvocation filterInvocation) throws IOException, ServletException {
+        filterInvocation.getChain().doFilter(filterInvocation.getRequest(), filterInvocation.getResponse());
     }
+
+    @Override
+    public void afterPropertiesSet() {
+
+    }
+
+    private static class NoOpAuthenticationManager implements AuthenticationManager {
+
+        @Override
+        public Authentication authenticate(Authentication authentication) throws AuthenticationException {
+            throw new AuthenticationServiceException("Cannot authenticate " + authentication);
+        }
+
+    }
+
 }

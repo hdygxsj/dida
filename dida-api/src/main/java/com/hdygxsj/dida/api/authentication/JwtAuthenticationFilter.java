@@ -15,8 +15,10 @@
 
 package com.hdygxsj.dida.api.authentication;
 
-import com.hdygxsj.dida.api.domain.service.TokenDomainService;
-import com.hdygxsj.dida.api.domain.service.UserDomainService;
+import com.alibaba.fastjson.JSONObject;
+import com.hdygxsj.dida.api.application.LoginAppService;
+import com.hdygxsj.dida.api.domain.entity.TokenDO;
+import com.hdygxsj.dida.tools.Result;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpMethod;
@@ -26,6 +28,7 @@ import org.springframework.security.core.AuthenticationException;
 import org.springframework.security.web.authentication.AbstractAuthenticationProcessingFilter;
 import org.springframework.security.web.util.matcher.AntPathRequestMatcher;
 import org.springframework.stereotype.Component;
+import org.springframework.util.Assert;
 
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServletRequest;
@@ -33,23 +36,37 @@ import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
 
 @Slf4j
+@Component
 public class JwtAuthenticationFilter extends AbstractAuthenticationProcessingFilter {
     public JwtAuthenticationFilter() {
         super(new AntPathRequestMatcher("/api/v1/login", HttpMethod.POST.name()));
+
     }
 
 
+    @Autowired
+    private LoginAppService loginAppService;
 
     @Override
     public Authentication attemptAuthentication(HttpServletRequest request, HttpServletResponse response)
             throws AuthenticationException, IOException, ServletException {
         String username = request.getParameter("username");
         String password = request.getParameter("password");
+        //        loginAppService.login(username,password);
+
+
+        Result<TokenDO> loginResult = loginAppService.login( username,
+               password, null);
+        response.getOutputStream().write(JSONObject.toJSONBytes(loginResult));
         UsernamePasswordAuthenticationToken authenticationToken = new UsernamePasswordAuthenticationToken(
                 username, password);
         return getAuthenticationManager().authenticate(authenticationToken);
 
     }
 
+    @Override
+    public void afterPropertiesSet() {
+
+    }
 
 }

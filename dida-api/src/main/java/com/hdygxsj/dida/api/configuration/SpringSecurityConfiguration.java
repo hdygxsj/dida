@@ -15,17 +15,20 @@
 
 package com.hdygxsj.dida.api.configuration;
 
+import com.hdygxsj.dida.api.authentication.CustomFilterSecurityInterceptor;
 import com.hdygxsj.dida.api.authentication.EntryPointUnauthorizedHandler;
 import com.hdygxsj.dida.api.authentication.RequestAccessDeniedHandler;
 import com.hdygxsj.dida.api.authentication.TokenAuthenticationFilter;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.config.annotation.method.configuration.EnableGlobalMethodSecurity;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
 import org.springframework.security.config.http.SessionCreationPolicy;
 import org.springframework.security.web.SecurityFilterChain;
+import org.springframework.security.web.access.intercept.FilterSecurityInterceptor;
 import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
 import org.springframework.web.cors.CorsConfiguration;
 import org.springframework.web.cors.CorsConfigurationSource;
@@ -51,9 +54,11 @@ public class SpringSecurityConfiguration {
     private EntryPointUnauthorizedHandler entryPointUnauthorizedHandler;
 
 
+
+
     @Bean
     public SecurityFilterChain configure(HttpSecurity httpSecurity,
-
+//                                         CustomFilterSecurityInterceptor customFilterSecurityInterceptor,
                                          JwtAuthenticationSecurityConfig jwtAuthenticationSecurityConfig
     ) throws Exception {
         CorsConfiguration config = new CorsConfiguration();
@@ -62,7 +67,6 @@ public class SpringSecurityConfiguration {
         config.addAllowedHeader("*");
         UrlBasedCorsConfigurationSource corsConfigurationSource = new UrlBasedCorsConfigurationSource();
         corsConfigurationSource.registerCorsConfiguration(PATH_PATTERN, config);
-        corsConfigurationSource.registerCorsConfiguration(PATH_PATTERN, config);
         httpSecurity
                 .authorizeRequests()
                 .antMatchers(LOGIN_PATH_PATTERN, REGISTER_PATH_PATTERN,
@@ -70,7 +74,8 @@ public class SpringSecurityConfiguration {
                         "/api-docs/**", "/swagger-ui.html",
                         "/doc.html", "/swagger-ui/**", "*.html", "/ui/**", "/error")
                 .permitAll()
-                .anyRequest().authenticated()
+                .anyRequest()
+                .authenticated()
                 .and()
                 .cors()
                 .configurationSource(corsConfigurationSource)
@@ -79,13 +84,12 @@ public class SpringSecurityConfiguration {
                 .and()
                 .exceptionHandling()
                 .authenticationEntryPoint(entryPointUnauthorizedHandler)
-                .accessDeniedHandler(requestAccessDeniedHandler)
+//                .accessDeniedHandler(requestAccessDeniedHandler)
                 .and().sessionManagement().sessionCreationPolicy(SessionCreationPolicy.STATELESS)
                 .and()
                 .addFilterBefore(tokenAuthenticationFilter, UsernamePasswordAuthenticationFilter.class)
                 .csrf().disable();
         ;
-
         return httpSecurity.build();
     }
 

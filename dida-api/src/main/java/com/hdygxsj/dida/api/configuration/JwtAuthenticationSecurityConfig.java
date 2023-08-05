@@ -19,14 +19,18 @@ import com.hdygxsj.dida.api.authentication.DidaSm4PasswordEncoder;
 import com.hdygxsj.dida.api.authentication.JwtAuthenticationFilter;
 import com.hdygxsj.dida.api.authentication.JwtAuthenticationSuccessHandler;
 import com.hdygxsj.dida.api.authentication.LoginAuthenticationFailureHandler;
-import com.hdygxsj.dida.api.authentication.TokenUserDetailsService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Qualifier;
+import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.dao.DaoAuthenticationProvider;
 import org.springframework.security.config.annotation.SecurityConfigurerAdapter;
+import org.springframework.security.config.annotation.method.configuration.EnableGlobalMethodSecurity;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
+import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.web.DefaultSecurityFilterChain;
+import org.springframework.security.web.access.intercept.FilterSecurityInterceptor;
 import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
 
 @Configuration
@@ -37,12 +41,20 @@ public class JwtAuthenticationSecurityConfig extends SecurityConfigurerAdapter<D
 
     @Autowired
     private LoginAuthenticationFailureHandler loginAuthenticationFailureHandler;
+
+    @Qualifier("tokenUserDetailsService")
     @Autowired
-    private TokenUserDetailsService tokenUserDetailsService;
+    private UserDetailsService tokenUserDetailsService;
+
+
+
+    @Autowired
+    private JwtAuthenticationFilter jwtAuthenticationFilter;
+
 
     @Override
     public void configure(HttpSecurity httpSecurity) throws Exception {
-        JwtAuthenticationFilter jwtAuthenticationFilter = new JwtAuthenticationFilter();
+//        JwtAuthenticationFilter jwtAuthenticationFilter = new JwtAuthenticationFilter();
         jwtAuthenticationFilter.setAuthenticationManager(httpSecurity.getSharedObject(AuthenticationManager.class));
         jwtAuthenticationFilter.setAuthenticationSuccessHandler(jwtAuthenticationSuccessHandler);
         jwtAuthenticationFilter.setAuthenticationFailureHandler(loginAuthenticationFailureHandler);
@@ -52,5 +64,6 @@ public class JwtAuthenticationSecurityConfig extends SecurityConfigurerAdapter<D
         httpSecurity
                 .authenticationProvider(daoAuthenticationProvider);
         httpSecurity.addFilterBefore(jwtAuthenticationFilter, UsernamePasswordAuthenticationFilter.class);
+
     }
 }
