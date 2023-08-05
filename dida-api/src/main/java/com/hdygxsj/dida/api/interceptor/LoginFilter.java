@@ -13,23 +13,19 @@
  * limitations under the License.
  */
 
-package com.hdygxsj.dida.enums;
+package com.hdygxsj.dida.api.interceptor;
 
-import lombok.Getter;
+import org.springframework.web.filter.OncePerRequestFilter;
 
-@Getter
-public enum ApiStatus {
-    SUCCESS(0,"成功"),
-    INTERNAL_SERVER_ERROR_ARGS(10000,  "服务端异常"),
-    LOGIN_FAILED(10001,"账号或密码错误"),
-    INSUFFICIENT_PERMISSION(10002,"权限不足") ;
+import javax.servlet.FilterChain;
+import javax.servlet.ServletException;
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
+import java.io.IOException;
 
-    ApiStatus(int code, String message) {
-        this.code = code;
-        this.message = message;
+public class LoginFilter extends OncePerRequestFilter {
+    @Override
+    protected void doFilterInternal(HttpServletRequest request, HttpServletResponse response, FilterChain filterChain) throws ServletException, IOException {
+
     }
-
-    private int code;
-
-    private String message;
 }

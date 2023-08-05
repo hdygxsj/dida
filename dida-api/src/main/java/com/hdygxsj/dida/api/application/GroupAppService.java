@@ -15,36 +15,39 @@
 
 package com.hdygxsj.dida.api.application;
 
-import com.hdygxsj.dida.api.domain.entity.TokenDO;
-import com.hdygxsj.dida.api.domain.service.TokenDomainService;
+
+import com.hdygxsj.dida.api.domain.entity.GroupDO;
+import com.hdygxsj.dida.api.domain.service.GroupDomainService;
 import com.hdygxsj.dida.tools.Result;
-import io.swagger.v3.oas.annotations.tags.Tag;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
-@RequestMapping("api/v1/token")
 @RestController
-@Tag(name = "token")
-public class TokenAppService {
+@RequestMapping("api/v1/")
+public class GroupAppService {
 
     @Autowired
-    private TokenDomainService tokenDomainService;
+    private GroupDomainService groupDomainService;
 
-    @PutMapping("refresh")
-    public Result<Boolean> refreshToken(@PathVariable("token") String token) {
-        return Result.success(tokenDomainService.refresh(token));
+    @PostMapping("groups")
+    public Result<Boolean> add(@RequestParam(required = false) String name,
+                               @RequestParam(required = false) String code,
+                               @RequestParam(required = false) String descp) {
+        GroupDO groupDO = new GroupDO();
+        groupDO.setCode(code);
+        groupDO.setName(name);
+        groupDO.setDescp(descp);
+        groupDomainService.add(groupDO);
+        return Result.success();
     }
 
-    @PostMapping("create")
-    public Result<TokenDO> genToken(@RequestParam(required = false) String username) {
-        TokenDO token = tokenDomainService.genToken(username);
-        token.setExpTime(null);
-        tokenDomainService.add(token);
-        return Result.success(token);
+    @PostMapping("{groupCode}/users")
+    public Result<Boolean> addUser(@PathVariable String groupCode, @RequestParam String username){
+        groupDomainService.addUser(groupCode,username);
+        return Result.success();
     }
 }

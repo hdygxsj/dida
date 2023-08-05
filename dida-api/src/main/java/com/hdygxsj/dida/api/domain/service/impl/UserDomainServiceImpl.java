@@ -17,13 +17,21 @@ package com.hdygxsj.dida.api.domain.service.impl;
 
 
 import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
+import com.hdygxsj.dida.api.domain.entity.RoleDO;
 import com.hdygxsj.dida.api.domain.entity.UserDO;
+import com.hdygxsj.dida.api.domain.entity.UserRoleRelDO;
 import com.hdygxsj.dida.api.domain.service.UserDomainService;
 import com.hdygxsj.dida.api.mapper.UserMapper;
+import com.hdygxsj.dida.api.mapper.UserRoleRelMapper;
+import com.hdygxsj.dida.api.permission.OpObjType;
+import com.hdygxsj.dida.api.permission.OpRight;
+import com.hdygxsj.dida.api.permission.Permission;
 import com.hdygxsj.dida.exceptions.Assert;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
+import java.util.ArrayList;
 import java.util.List;
 
 @Service
@@ -31,6 +39,9 @@ public class UserDomainServiceImpl implements UserDomainService {
 
     @Autowired
     private UserMapper userMapper;
+
+    @Autowired
+    private UserRoleRelMapper userRoleRelMapper;
 
     @Override
     public List<UserDO> listAll() {
@@ -40,27 +51,63 @@ public class UserDomainServiceImpl implements UserDomainService {
     @Override
     public boolean checkUser(String username, String password) {
         QueryWrapper<UserDO> queryWrapper = new QueryWrapper<>();
-        queryWrapper.eq("username",username);
-        queryWrapper.eq("password",password);
-        queryWrapper.eq("type",1);
+        queryWrapper.eq("username", username);
+        queryWrapper.eq("password", password);
+        queryWrapper.eq("type", 1);
         return userMapper.selectOne(queryWrapper) != null;
     }
 
     @Override
-    public UserDO get(String username){
+    public UserDO get(String username) {
         return userMapper.selectById(username);
     }
 
     @Override
-    public boolean exist(String username){
-        return get(username)!=null;
+    public boolean exist(String username) {
+        return get(username) != null;
     }
 
 
     @Override
     public void create(UserDO userDO) {
-        Assert.isTrue(exist(userDO.getUsername()),"用户已存在");
+        Assert.isTrue(exist(userDO.getUsername()), "用户已存在");
         userMapper.insert(userDO);
+    }
+
+    @Override
+    @Transactional(rollbackFor = Exception.class)
+    @Permission(objType = OpObjType.USER_ROLE, opRight = OpRight.WRITE)
+    public void addRoles(String username, List<String> roles) {
+        QueryWrapper<UserRoleRelDO> queryWrapper = new QueryWrapper<>();
+        queryWrapper.eq("username", username);
+        userRoleRelMapper.delete(queryWrapper);
+        roles.forEach(e -> {
+            UserRoleRelDO userRoleRelDO = new UserRoleRelDO();
+            userRoleRelDO.setUsername(username);
+            userRoleRelDO.setRoleCode(e);
+            userRoleRelMapper.insert(userRoleRelDO);
+        });
+    }
+
+    @Override
+    public List<RoleDO> getRoles(String username) {
+        QueryWrapper<UserRoleRelDO> queryWrapper = new QueryWrapper<>();
+        queryWrapper.eq("username", username);
+        List<UserRoleRelDO> userRoleRelList = userRoleRelMapper.selectList(queryWrapper);
+        UserDO userDO = get(username);
+        List<RoleDO> roleList = new ArrayList<>();
+
+        for (UserRoleRelDO userRoleRelDO : userRoleRelList) {
+            RoleDO roleDO = new RoleDO();
+            roleDO.setCode(userRoleRelDO.getRoleCode());
+        }
+        boolean superUser = userDO.isSuperUser();
+        if(superUser){
+            RoleDO roleDO = new RoleDO();
+            roleDO.setCode("super admin");
+            roleList.add(roleDO);
+        }
+        return roleList;
     }
 }
 

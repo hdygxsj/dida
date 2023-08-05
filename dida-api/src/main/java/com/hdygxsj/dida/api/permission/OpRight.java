@@ -13,23 +13,28 @@
  * limitations under the License.
  */
 
-package com.hdygxsj.dida.enums;
+package com.hdygxsj.dida.api.permission;
 
 import lombok.Getter;
 
 @Getter
-public enum ApiStatus {
-    SUCCESS(0,"成功"),
-    INTERNAL_SERVER_ERROR_ARGS(10000,  "服务端异常"),
-    LOGIN_FAILED(10001,"账号或密码错误"),
-    INSUFFICIENT_PERMISSION(10002,"权限不足") ;
+public enum OpRight {
+    READ(1, 1),
+    WRITE(2, 1 << 1),
+    UPDATE(3, 1 << 2),
+    DELETE(4, 1 << 3),
+    WATCH(5, 1 << 4);
 
-    ApiStatus(int code, String message) {
+    int code;
+
+    int bitInt;
+
+    OpRight(int code, int bitInt) {
         this.code = code;
-        this.message = message;
+        this.bitInt = bitInt;
     }
 
-    private int code;
-
-    private String message;
+    public static void main(String[] args) {
+        System.out.println(1 >> 1);
+    }
 }

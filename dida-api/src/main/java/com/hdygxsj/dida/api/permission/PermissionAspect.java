@@ -13,23 +13,23 @@
  * limitations under the License.
  */
 
-package com.hdygxsj.dida.enums;
+package com.hdygxsj.dida.api.permission;
 
-import lombok.Getter;
 
-@Getter
-public enum ApiStatus {
-    SUCCESS(0,"成功"),
-    INTERNAL_SERVER_ERROR_ARGS(10000,  "服务端异常"),
-    LOGIN_FAILED(10001,"账号或密码错误"),
-    INSUFFICIENT_PERMISSION(10002,"权限不足") ;
+import com.hdygxsj.dida.enums.ApiStatus;
+import com.hdygxsj.dida.exceptions.ServiceException;
+import org.aspectj.lang.ProceedingJoinPoint;
+import org.aspectj.lang.annotation.Around;
+import org.aspectj.lang.annotation.Aspect;
+import org.springframework.stereotype.Component;
 
-    ApiStatus(int code, String message) {
-        this.code = code;
-        this.message = message;
+@Aspect
+@Component
+public class PermissionAspect {
+
+    @Around("@annotation(Permission)")
+    public Object permissionCheck(ProceedingJoinPoint proceedingJoinPoint) throws Throwable {
+        Object target = proceedingJoinPoint.getTarget();
+        throw new ServiceException(ApiStatus.INSUFFICIENT_PERMISSION);
     }
-
-    private int code;
-
-    private String message;
 }

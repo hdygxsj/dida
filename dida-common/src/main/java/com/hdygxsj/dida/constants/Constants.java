@@ -28,4 +28,6 @@ public class Constants {
     public static final String AND_MARK = "&";
 
     public static final String REQUEST_CONTENT_TYPE = "application/x-www-form-urlencoded";
+
+    public static final String SESSION_USER = "session.user";
 }

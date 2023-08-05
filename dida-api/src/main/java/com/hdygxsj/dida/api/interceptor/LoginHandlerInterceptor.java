@@ -19,6 +19,8 @@ import cn.hutool.core.util.StrUtil;
 import com.hdygxsj.dida.api.domain.entity.TokenDO;
 import com.hdygxsj.dida.api.domain.entity.UserDO;
 import com.hdygxsj.dida.api.domain.service.TokenDomainService;
+import com.hdygxsj.dida.api.domain.service.UserDomainService;
+import com.hdygxsj.dida.constants.Constants;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.http.HttpStatus;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -32,6 +34,9 @@ public class LoginHandlerInterceptor implements HandlerInterceptor {
 
     @Autowired
     private TokenDomainService tokenDomainService;
+
+    @Autowired
+    private UserDomainService userDomainService;
 
     @Override
     public boolean preHandle(HttpServletRequest request, HttpServletResponse response, Object handler) throws Exception {
@@ -51,11 +56,14 @@ public class LoginHandlerInterceptor implements HandlerInterceptor {
                 return false;
             }
             boolean refresh = tokenDomainService.refresh(token);
+            String username = tokenDomainService.getUsernameByToken(tokenDO);
             if (!refresh) {
-                log.error("token已过期{},用户{}", token,tokenDomainService.getUsernameByToken(tokenDO));
+                log.error("token已过期{},用户{}", token, username);
                 response.setStatus(HttpStatus.SC_UNAUTHORIZED);
                 return false;
             }
+            UserDO userDO = userDomainService.get(username);
+            request.setAttribute(Constants.SESSION_USER,userDO);
         }
         return true;
     }

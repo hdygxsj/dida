@@ -16,15 +16,16 @@
 package com.hdygxsj.dida.api.domain.entity;
 
 import com.baomidou.mybatisplus.annotation.TableName;
-import java.io.Serializable;
-import java.time.LocalDateTime;
 import io.swagger.v3.oas.annotations.media.Schema;
 import lombok.Getter;
 import lombok.Setter;
 
+import java.io.Serializable;
+import java.time.LocalDateTime;
+
 /**
  * <p>
- * 
+ *
  * </p>
  *
  * @author hdygxsj
@@ -38,7 +39,7 @@ public class RoleDO implements Serializable {
 
     private static final long serialVersionUID = 1L;
 
-      private String code;
+    private String code;
 
     private String name;
 

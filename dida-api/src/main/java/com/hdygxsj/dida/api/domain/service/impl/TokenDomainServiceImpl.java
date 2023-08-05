@@ -123,7 +123,7 @@ public class TokenDomainServiceImpl implements TokenDomainService {
         }
         String realToken = getRealToken(token);
         String checkCode = token.substring(token.length() - 1);
-        return checkCode.equals(realToken);
+        return checkCode.equals(genCheckCode(realToken)+"");
     }
 
     /**

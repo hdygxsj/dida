@@ -15,6 +15,7 @@
 
 package com.hdygxsj.dida.api.domain.service;
 
+import com.hdygxsj.dida.api.domain.entity.RoleDO;
 import com.hdygxsj.dida.api.domain.entity.UserDO;
 
 import java.util.List;
@@ -29,4 +30,8 @@ public interface UserDomainService {
     boolean exist(String username);
 
     void create(UserDO userDO);
+
+    void addRoles(String username,List<String> roles);
+
+    List<RoleDO> getRoles(String username);
 }

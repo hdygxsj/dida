@@ -13,23 +13,26 @@
  * limitations under the License.
  */
 
-package com.hdygxsj.dida.enums;
+package com.hdygxsj.dida.api.permission;
 
 import lombok.Getter;
 
 @Getter
-public enum ApiStatus {
-    SUCCESS(0,"成功"),
-    INTERNAL_SERVER_ERROR_ARGS(10000,  "服务端异常"),
-    LOGIN_FAILED(10001,"账号或密码错误"),
-    INSUFFICIENT_PERMISSION(10002,"权限不足") ;
+public enum OpObjType {
+    SYSTEM("system", "系统"),
+    CLUSTER("cluster", "集群"),
+    ROLE("role", "角色"),
+    GROUP("group", "组"),
+    NAMESPACE("namespace", "命名空间"),
+    SWITCH("switch","开关"),
+    USER_ROLE("user_role","用户权限");
 
-    ApiStatus(int code, String message) {
-        this.code = code;
-        this.message = message;
+    private String type;
+
+    private String descp;
+
+    OpObjType(String type, String descp) {
+        this.type = type;
+        this.descp = descp;
     }
-
-    private int code;
-
-    private String message;
 }

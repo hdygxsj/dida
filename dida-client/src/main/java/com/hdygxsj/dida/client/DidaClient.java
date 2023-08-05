@@ -17,6 +17,7 @@ package com.hdygxsj.dida.client;
 
 import cn.hutool.core.util.StrUtil;
 import com.alibaba.fastjson.JSON;
+import com.alibaba.fastjson.JSONObject;
 import com.hdygxsj.dida.constants.Constants;
 import com.hdygxsj.dida.exceptions.Assert;
 import com.hdygxsj.dida.exceptions.DidaRuntimeException;
@@ -95,32 +96,33 @@ public class DidaClient {
         if (authType == 0) {
             Map<String, Object> requests = new HashMap<>();
             try {
-                requests.put("username",username);
-                requests.put("password",password);
+                requests.put("username", username);
+                requests.put("password", password);
                 Result<Object> tokenResult = httpClient.post(createRequestUrl("api/v1/login"), null, requests);
                 if (tokenResult.isFailed()) {
                     throw new DidaRuntimeException("客户端创建失败，无法与服务端创建连接" + tokenResult.getMessage());
                 }
-                this.token = String.valueOf( tokenResult.getData());
+                JSONObject jsonObject = JSONObject.parseObject(String.valueOf(tokenResult.getData()));
+                this.token = jsonObject.getString("token");
 
             } catch (Exception ex) {
                 throw new DidaRuntimeException("客户端创建失败，无法与服务端创建连接" + ex.getMessage());
             }
         }
-        try{
+        try {
             Map<String, String> headers = getHeaders();
             Result<Object> clusterInfoDTOResult = httpClient.get(createRequestUrl("api/v1/cluster/info/"), headers, null);
-            ClusterInfoDTO clusterInfoDTO = JSON.parseObject(String.valueOf(clusterInfoDTOResult.getData()),ClusterInfoDTO.class);
+            ClusterInfoDTO clusterInfoDTO = JSON.parseObject(String.valueOf(clusterInfoDTOResult.getData()), ClusterInfoDTO.class);
             this.type = clusterInfoDTO.getEngineType();
             this.properties = clusterInfoDTO.getEnginProperties();
             this.switchClient = getEngine();
-        }catch (Exception ex) {
+        } catch (Exception ex) {
             throw new DidaRuntimeException("客户端创建失败，无法与服务端创建连接" + ex.getMessage());
         }
     }
 
-    private String createRequestUrl(String path){
-        return String.format("http://%s/%s/%s",host, Constants.API_CONTEXT,path);
+    private String createRequestUrl(String path) {
+        return String.format("http://%s/%s/%s", host, Constants.API_CONTEXT, path);
     }
 
     public SwitchClient getEngine() {

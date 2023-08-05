@@ -30,10 +30,10 @@ public class DidaClusterAppService {
 
 
     @Autowired
-    SwitchClient switchClient;
+    private SwitchClient switchClient;
 
     @Autowired
-    SwitchClientProperties switchClientProperties;
+    private SwitchClientProperties switchClientProperties;
 
     @GetMapping("info")
     public Result<ClusterInfoDTO> info() {
@@ -43,5 +43,9 @@ public class DidaClusterAppService {
         return Result.success(data);
     }
 
+    @GetMapping("health")
+    public Result<Boolean> health() {
+        return Result.success();
+    }
 
 }
