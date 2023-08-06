@@ -13,8 +13,11 @@
  * limitations under the License.
  */
 
-package com.hdygxsj.dida.api.authentication;
+package com.hdygxsj.dida.api.authentication.service;
 
+import cn.hutool.core.collection.CollectionUtil;
+import com.hdygxsj.dida.api.authentication.base.DidaUser;
+import com.hdygxsj.dida.api.authentication.base.UserAuthenticationContextHolder;
 import com.hdygxsj.dida.api.domain.entity.RoleDO;
 import com.hdygxsj.dida.api.domain.entity.UserDO;
 import com.hdygxsj.dida.api.domain.service.UserDomainService;
@@ -27,7 +30,11 @@ import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.stereotype.Service;
 
+import java.util.ArrayList;
+import java.util.Collection;
+import java.util.HashSet;
 import java.util.List;
+import java.util.Set;
 import java.util.stream.Collectors;
 
 @Service
@@ -40,9 +47,19 @@ public class TokenUserDetailsService implements UserDetailsService {
     @Override
     public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
         UserDO userDO = userDomainService.get(username);
-        List<RoleDO> roles = userDomainService.getRoles(username);
-        List<SimpleGrantedAuthority> grantedAuthorities = roles.stream()
+        UserAuthenticationContextHolder context = UserAuthenticationContextHolder.getContext();
+        Set<RoleDO> nowRoles = context.getRoles(username);
+        if (CollectionUtil.isEmpty(nowRoles)) {
+            List<RoleDO> roles = userDomainService.getRoles(username);
+            context.addRole(username, roles);
+            nowRoles = new HashSet<>(roles);
+        }
+        List<SimpleGrantedAuthority> grantedAuthorities = nowRoles.stream()
                 .map(e -> new SimpleGrantedAuthority(e.getCode())).collect(Collectors.toList());
-        return new User(userDO.getUsername(), Sm4.execute(userDO.getPassword(),Sm4.DECRYPT),grantedAuthorities);
+        DidaUser didaUser = new DidaUser(userDO.getUsername(), Sm4.execute(userDO.getPassword(), Sm4.DECRYPT), grantedAuthorities);
+        didaUser.setUserDO(userDO);
+        context.setOpUser(userDO);
+        didaUser.setRoleDOList(new ArrayList<>(nowRoles));
+        return didaUser;
     }
 }

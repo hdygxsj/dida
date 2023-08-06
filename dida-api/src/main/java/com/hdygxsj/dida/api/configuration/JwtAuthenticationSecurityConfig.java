@@ -15,22 +15,19 @@
 
 package com.hdygxsj.dida.api.configuration;
 
-import com.hdygxsj.dida.api.authentication.DidaSm4PasswordEncoder;
-import com.hdygxsj.dida.api.authentication.JwtAuthenticationFilter;
-import com.hdygxsj.dida.api.authentication.JwtAuthenticationSuccessHandler;
-import com.hdygxsj.dida.api.authentication.LoginAuthenticationFailureHandler;
+import com.hdygxsj.dida.api.authentication.base.DidaSm4PasswordEncoder;
+import com.hdygxsj.dida.api.authentication.filter.JwtAuthenticationFilter;
+import com.hdygxsj.dida.api.authentication.handler.JwtAuthenticationSuccessHandler;
+import com.hdygxsj.dida.api.authentication.handler.LoginAuthenticationFailureHandler;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
-import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.dao.DaoAuthenticationProvider;
 import org.springframework.security.config.annotation.SecurityConfigurerAdapter;
-import org.springframework.security.config.annotation.method.configuration.EnableGlobalMethodSecurity;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.web.DefaultSecurityFilterChain;
-import org.springframework.security.web.access.intercept.FilterSecurityInterceptor;
 import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
 
 @Configuration

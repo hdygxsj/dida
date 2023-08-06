@@ -13,18 +13,24 @@
  * limitations under the License.
  */
 
-package com.hdygxsj.dida.api.authentication;
+package com.hdygxsj.dida.api.authentication.handler;
 
-import org.springframework.security.crypto.password.PasswordEncoder;
+import org.apache.http.HttpStatus;
+import org.springframework.security.core.AuthenticationException;
+import org.springframework.security.web.AuthenticationEntryPoint;
+import org.springframework.stereotype.Component;
 
-public class DidaSm4PasswordEncoder implements PasswordEncoder {
+import javax.servlet.ServletException;
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
+import java.io.IOException;
+
+@Component
+public class EntryPointUnauthorizedHandler implements AuthenticationEntryPoint {
     @Override
-    public String encode(CharSequence rawPassword) {
-        return String.valueOf(rawPassword);
-    }
-
-    @Override
-    public boolean matches(CharSequence rawPassword, String encodedPassword) {
-        return  rawPassword.equals(encodedPassword);
+    public void commence(HttpServletRequest request,
+                         HttpServletResponse response,
+                         AuthenticationException authException) throws IOException, ServletException {
+        response.setStatus(HttpStatus.SC_UNAUTHORIZED);
     }
 }

@@ -13,11 +13,18 @@
  * limitations under the License.
  */
 
-package com.hdygxsj.dida.api.authentication;
+package com.hdygxsj.dida.api.authentication.filter;
 
+import cn.hutool.core.collection.CollectionUtil;
 import cn.hutool.core.util.StrUtil;
+import com.hdygxsj.dida.api.authentication.base.DidaUser;
+import com.hdygxsj.dida.api.authentication.base.UserAuthenticationContextHolder;
+import com.hdygxsj.dida.api.authentication.service.TokenUserDetailsService;
+import com.hdygxsj.dida.api.domain.entity.RoleDO;
 import com.hdygxsj.dida.api.domain.entity.TokenDO;
+import com.hdygxsj.dida.api.domain.entity.UserDO;
 import com.hdygxsj.dida.api.domain.service.TokenDomainService;
+import com.hdygxsj.dida.api.domain.service.UserDomainService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.context.SecurityContextHolder;
@@ -30,6 +37,8 @@ import javax.servlet.ServletException;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
+import java.util.Collection;
+import java.util.List;
 
 
 @Component
@@ -40,20 +49,27 @@ public class TokenAuthenticationFilter extends OncePerRequestFilter {
 
     @Autowired
     private TokenUserDetailsService tokenUserDetailsService;
+
+    @Autowired
+    private UserDomainService userDomainService;
+
     @Override
     protected void doFilterInternal(HttpServletRequest request, HttpServletResponse response, FilterChain filterChain) throws ServletException, IOException {
+        UserAuthenticationContextHolder context = UserAuthenticationContextHolder.getContext();
         String token = request.getHeader("token");
-        if(StrUtil.isNotBlank(token)){
+        if (StrUtil.isNotBlank(token)) {
             TokenDO tokenDO = new TokenDO();
             tokenDO.setToken(token);
-            if(tokenDomainService.checkToken(tokenDO)&&tokenDomainService.refresh(token)){
+            if (tokenDomainService.checkToken(tokenDO) && tokenDomainService.refresh(token)) {
                 String username = tokenDomainService.getUsernameByToken(tokenDO);
-                UserDetails userDetails = tokenUserDetailsService.loadUserByUsername(username);
+                DidaUser userDetails = (DidaUser) tokenUserDetailsService.loadUserByUsername(username);
                 UsernamePasswordAuthenticationToken authenticationToken = new UsernamePasswordAuthenticationToken
                         (userDetails, null, userDetails.getAuthorities());
                 SecurityContextHolder.getContext().setAuthentication(authenticationToken);
+                request.setAttribute("opUser", userDetails.getUserDO());
             }
         }
-        filterChain.doFilter(request,response);
+        filterChain.doFilter(request, response);
+        context.removeOpUser();
     }
 }

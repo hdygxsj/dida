@@ -13,7 +13,7 @@
  * limitations under the License.
  */
 
-package com.hdygxsj.dida.api.authentication;
+package com.hdygxsj.dida.api.authentication.filter;
 
 import com.alibaba.fastjson.JSONObject;
 import com.hdygxsj.dida.api.application.LoginAppService;
@@ -28,7 +28,6 @@ import org.springframework.security.core.AuthenticationException;
 import org.springframework.security.web.authentication.AbstractAuthenticationProcessingFilter;
 import org.springframework.security.web.util.matcher.AntPathRequestMatcher;
 import org.springframework.stereotype.Component;
-import org.springframework.util.Assert;
 
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServletRequest;

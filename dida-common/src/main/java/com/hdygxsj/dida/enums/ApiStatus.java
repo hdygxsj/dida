@@ -22,7 +22,10 @@ public enum ApiStatus {
     SUCCESS(0,"成功"),
     INTERNAL_SERVER_ERROR_ARGS(10000,  "服务端异常"),
     LOGIN_FAILED(10001,"账号或密码错误"),
-    INSUFFICIENT_PERMISSION(10002,"权限不足") ;
+    INSUFFICIENT_PERMISSION(10002,"权限不足"),
+    NO_AUTH(10003,"未授权的用户"),
+    NO_REQUEST_RIGHT(10004,"访问权限不足")
+    ;
 
     ApiStatus(int code, String message) {
         this.code = code;

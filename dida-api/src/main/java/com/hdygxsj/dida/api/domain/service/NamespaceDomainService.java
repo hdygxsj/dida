@@ -13,23 +13,7 @@
  * limitations under the License.
  */
 
-package com.hdygxsj.dida.api.authentication;
+package com.hdygxsj.dida.api.domain.service;
 
-
-import com.hdygxsj.dida.enums.ApiStatus;
-import com.hdygxsj.dida.exceptions.ServiceException;
-import org.aspectj.lang.ProceedingJoinPoint;
-import org.aspectj.lang.annotation.Around;
-import org.aspectj.lang.annotation.Aspect;
-import org.springframework.stereotype.Component;
-
-@Aspect
-@Component
-public class PermissionAspect {
-
-    @Around("@annotation(com.hdygxsj.dida.api.authentication.Permission)")
-    public Object permissionCheck(ProceedingJoinPoint proceedingJoinPoint) throws Throwable {
-        Object target = proceedingJoinPoint.getTarget();
-        throw new ServiceException(ApiStatus.INSUFFICIENT_PERMISSION);
-    }
+public interface NamespaceDomainService {
 }

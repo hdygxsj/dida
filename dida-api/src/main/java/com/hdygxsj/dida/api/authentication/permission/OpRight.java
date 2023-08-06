@@ -13,19 +13,31 @@
  * limitations under the License.
  */
 
-package com.hdygxsj.dida.api.mapper;
+package com.hdygxsj.dida.api.authentication.permission;
 
-import com.baomidou.mybatisplus.core.mapper.BaseMapper;
-import com.hdygxsj.dida.api.domain.entity.UserDO;
+import lombok.Getter;
 
-/**
- * <p>
- * 用户 Mapper 接口
- * </p>
- *
- * @author hdygxsj
- * @since 2023-07-31
- */
-public interface UserMapper extends BaseMapper<UserDO> {
+@Getter
+public enum OpRight {
+    READ(1, 1, "读"),
+    WRITE(2, 1 << 1, "写"),
+    UPDATE(3, 1 << 2, "更新"),
+    DELETE(4, 1 << 3, "删除"),
+    WATCH(5, 1 << 4, "检测");
 
+    int code;
+
+    int bitInt;
+
+    String descp;
+
+    OpRight(int code, int bitInt, String descp) {
+        this.code = code;
+        this.bitInt = bitInt;
+        this.descp = descp;
+    }
+
+    public static void main(String[] args) {
+        System.out.println(1 >> 1);
+    }
 }

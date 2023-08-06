@@ -15,23 +15,17 @@
 
 package com.hdygxsj.dida.api.configuration;
 
-import com.hdygxsj.dida.api.authentication.CustomFilterSecurityInterceptor;
-import com.hdygxsj.dida.api.authentication.EntryPointUnauthorizedHandler;
-import com.hdygxsj.dida.api.authentication.RequestAccessDeniedHandler;
-import com.hdygxsj.dida.api.authentication.TokenAuthenticationFilter;
+import com.hdygxsj.dida.api.authentication.handler.EntryPointUnauthorizedHandler;
+import com.hdygxsj.dida.api.authentication.handler.RequestAccessDeniedHandler;
+import com.hdygxsj.dida.api.authentication.filter.TokenAuthenticationFilter;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
-import org.springframework.security.authentication.AuthenticationManager;
-import org.springframework.security.config.annotation.method.configuration.EnableGlobalMethodSecurity;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
-import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
 import org.springframework.security.config.http.SessionCreationPolicy;
 import org.springframework.security.web.SecurityFilterChain;
-import org.springframework.security.web.access.intercept.FilterSecurityInterceptor;
 import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
 import org.springframework.web.cors.CorsConfiguration;
-import org.springframework.web.cors.CorsConfigurationSource;
 import org.springframework.web.cors.UrlBasedCorsConfigurationSource;
 
 @Configuration

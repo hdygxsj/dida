@@ -18,12 +18,6 @@ package com.hdygxsj.dida.http;
 import com.alibaba.fastjson.JSON;
 import com.hdygxsj.dida.constants.Constants;
 import com.hdygxsj.dida.tools.Result;
-
-
-import java.util.HashMap;
-import java.util.Map;
-import java.util.Objects;
-
 import lombok.SneakyThrows;
 import lombok.extern.slf4j.Slf4j;
 import okhttp3.FormBody;
@@ -33,6 +27,10 @@ import okhttp3.OkHttpClient;
 import okhttp3.Request;
 import okhttp3.RequestBody;
 import okhttp3.Response;
+
+import java.util.HashMap;
+import java.util.Map;
+import java.util.Objects;
 
 @Slf4j
 public class RequestClient {

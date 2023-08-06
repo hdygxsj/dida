@@ -13,21 +13,34 @@
  * limitations under the License.
  */
 
-package com.hdygxsj.dida.api.authentication;
+package com.hdygxsj.dida.api.authentication.base;
 
+import com.hdygxsj.dida.enums.ApiStatus;
+import com.hdygxsj.dida.exceptions.ServiceException;
 
-import java.lang.annotation.Documented;
-import java.lang.annotation.ElementType;
-import java.lang.annotation.Retention;
-import java.lang.annotation.RetentionPolicy;
-import java.lang.annotation.Target;
+public class CheckPermissionException extends ServiceException {
 
-@Target(ElementType.METHOD)
-@Retention(RetentionPolicy.RUNTIME)
-@Documented
-public @interface Permission {
+    public CheckPermissionException() {
+        super();
+    }
 
-    OpObjType objType();
+    public CheckPermissionException(ApiStatus status) {
+        super(status);
+    }
 
-    OpRight[] opRight();
+    public CheckPermissionException(ApiStatus status, Object... formatter) {
+        super(status, formatter);
+    }
+
+    public CheckPermissionException(String message) {
+        super(message);
+    }
+
+    public CheckPermissionException(int code, String message) {
+        super(code, message);
+    }
+
+    public CheckPermissionException(int code, String message, Exception cause) {
+        super(code, message, cause);
+    }
 }

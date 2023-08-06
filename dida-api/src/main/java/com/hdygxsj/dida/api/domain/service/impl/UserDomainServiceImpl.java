@@ -17,15 +17,15 @@ package com.hdygxsj.dida.api.domain.service.impl;
 
 
 import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
+import com.hdygxsj.dida.api.authentication.permission.OpObjType;
+import com.hdygxsj.dida.api.authentication.permission.OpRight;
+import com.hdygxsj.dida.api.authentication.permission.Permission;
 import com.hdygxsj.dida.api.domain.entity.RoleDO;
 import com.hdygxsj.dida.api.domain.entity.UserDO;
 import com.hdygxsj.dida.api.domain.entity.UserRoleRelDO;
 import com.hdygxsj.dida.api.domain.service.UserDomainService;
 import com.hdygxsj.dida.api.mapper.UserMapper;
 import com.hdygxsj.dida.api.mapper.UserRoleRelMapper;
-import com.hdygxsj.dida.api.authentication.OpObjType;
-import com.hdygxsj.dida.api.authentication.OpRight;
-import com.hdygxsj.dida.api.authentication.Permission;
 import com.hdygxsj.dida.exceptions.Assert;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -69,8 +69,9 @@ public class UserDomainServiceImpl implements UserDomainService {
 
 
     @Override
+    @Permission(objType = OpObjType.USER, opRight = {OpRight.WRITE})
     public void create(UserDO userDO) {
-        Assert.isTrue(exist(userDO.getUsername()), "用户已存在");
+        Assert.isTrue(!exist(userDO.getUsername()), "用户已存在");
         userMapper.insert(userDO);
     }
 
@@ -102,7 +103,7 @@ public class UserDomainServiceImpl implements UserDomainService {
             roleDO.setCode(userRoleRelDO.getRoleCode());
         }
         boolean superUser = userDO.isSuperUser();
-        if(superUser){
+        if (superUser) {
             RoleDO roleDO = new RoleDO();
             roleDO.setCode("super admin");
             roleList.add(roleDO);

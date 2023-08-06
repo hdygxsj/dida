@@ -13,26 +13,23 @@
  * limitations under the License.
  */
 
-package com.hdygxsj.dida.api.authentication;
+package com.hdygxsj.dida.api.authentication.permission;
 
-import lombok.Getter;
 
-@Getter
-public enum OpObjType {
-    SYSTEM("system", "系统"),
-    CLUSTER("cluster", "集群"),
-    ROLE("role", "角色"),
-    GROUP("group", "组"),
-    NAMESPACE("namespace", "命名空间"),
-    SWITCH("switch","开关"),
-    USER_ROLE("user_role","用户权限");
+import java.lang.annotation.Documented;
+import java.lang.annotation.ElementType;
+import java.lang.annotation.Retention;
+import java.lang.annotation.RetentionPolicy;
+import java.lang.annotation.Target;
 
-    private String type;
+@Target(ElementType.METHOD)
+@Retention(RetentionPolicy.RUNTIME)
+@Documented
+public @interface Permission {
 
-    private String descp;
+    OpObjType objType();
 
-    OpObjType(String type, String descp) {
-        this.type = type;
-        this.descp = descp;
-    }
+    OpRight[] opRight();
+
+    String paramName()  default "";
 }

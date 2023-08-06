@@ -13,24 +13,28 @@
  * limitations under the License.
  */
 
-package com.hdygxsj.dida.api.authentication;
+package com.hdygxsj.dida.api.authentication.base;
 
-import org.apache.http.HttpStatus;
-import org.springframework.security.access.AccessDeniedException;
-import org.springframework.security.web.access.AccessDeniedHandler;
-import org.springframework.stereotype.Component;
+import com.hdygxsj.dida.api.domain.entity.RoleDO;
+import com.hdygxsj.dida.api.domain.entity.UserDO;
+import lombok.Getter;
+import lombok.Setter;
+import org.springframework.security.core.GrantedAuthority;
+import org.springframework.security.core.userdetails.User;
 
-import javax.servlet.ServletException;
-import javax.servlet.http.HttpServletRequest;
-import javax.servlet.http.HttpServletResponse;
-import java.io.IOException;
+import java.util.Collection;
+import java.util.List;
 
-@Component
-public class RequestAccessDeniedHandler implements AccessDeniedHandler {
-    @Override
-    public void handle(HttpServletRequest request,
-                       HttpServletResponse response,
-                       AccessDeniedException accessDeniedException) throws IOException, ServletException {
-        response.setStatus(HttpStatus.SC_FORBIDDEN);
+@Getter
+@Setter
+public class DidaUser extends User {
+
+    private UserDO userDO;
+
+    private List<RoleDO> roleDOList;
+    public DidaUser(String username, String password, Collection<? extends GrantedAuthority> authorities) {
+        super(username, password, authorities);
     }
+
+
 }
