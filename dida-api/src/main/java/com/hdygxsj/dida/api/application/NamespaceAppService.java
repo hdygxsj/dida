@@ -15,42 +15,41 @@
 
 package com.hdygxsj.dida.api.application;
 
-import com.hdygxsj.dida.api.domain.service.SwitchDomainService;
+import com.hdygxsj.dida.api.domain.entity.NamespaceDO;
+import com.hdygxsj.dida.api.domain.service.NamespaceDomainService;
 import com.hdygxsj.dida.tools.Result;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
-@RequestMapping("api/v1/{group}/{namespace}/switchs")
+import java.util.List;
+
+@RequestMapping("api/v1/{groupCode}")
 @RestController
-public class SwitchAppService {
+public class NamespaceAppService {
 
     @Autowired
-    private SwitchDomainService switchDomainService;
+    private NamespaceDomainService namespaceDomainService;
 
-    @GetMapping("{key}")
-    public Result<String> getValue(@PathVariable("namespace") String namespace,
-                                   @PathVariable("group") String group,
-                                   @PathVariable("key") String key) {
-
-        return Result.success(switchDomainService.getValue(group, namespace, key));
+    @GetMapping("namespaces")
+    public Result<List<NamespaceDO>> listNamespace(@PathVariable String groupCode) {
+        return Result.success(namespaceDomainService.list(groupCode));
     }
 
-    @PutMapping("/{key}/set-value")
-    public void setSwitch(@PathVariable("namespace") String namespace,
-                         @PathVariable("group") String group,
-                         @RequestParam("key") String key,
-                         @RequestParam("value") String value) {
-        switchDomainService.setValue(group, namespace, key, value);
-    }
-
-    @PostMapping
-    public void addSwitch(){
-
+    @PostMapping("namespaces")
+    public void addNamespace(@PathVariable String groupCode,
+                             @RequestParam(required = false) String namespace,
+                             @RequestParam(required = false) String name,
+                             @RequestParam(required = false) String descp) {
+        NamespaceDO namespaceDO = new NamespaceDO();
+        namespaceDO.setGroupCode(groupCode);
+        namespaceDO.setName(name);
+        namespaceDO.setCode(namespace);
+        namespaceDO.setDescp(descp);
+        namespaceDomainService.add(namespaceDO);
     }
 }

@@ -15,19 +15,27 @@
 
 package com.hdygxsj.dida.api.domain.service.impl;
 
+import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
 import com.hdygxsj.dida.api.domain.entity.GroupDO;
+import com.hdygxsj.dida.api.domain.entity.UserDO;
 import com.hdygxsj.dida.api.domain.entity.UserGroupRelDO;
 import com.hdygxsj.dida.api.domain.service.GroupDomainService;
 import com.hdygxsj.dida.api.mapper.GroupMapper;
 import com.hdygxsj.dida.api.mapper.UserGroupRelMapper;
+import com.hdygxsj.dida.exceptions.Assert;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+
+import java.util.List;
+import java.util.stream.Collectors;
 
 @Service
 public class GroupDomainServiceImpl implements GroupDomainService {
 
+
     @Autowired
     private GroupMapper groupMapper;
+
 
     @Autowired
     private UserGroupRelMapper userGroupRelMapper;
@@ -44,4 +52,32 @@ public class GroupDomainServiceImpl implements GroupDomainService {
         userGroupRelDO.setUsername(username);
         userGroupRelMapper.insert(userGroupRelDO);
     }
+
+    @Override
+    public List<GroupDO> listByUser(UserDO userDO) {
+        if (userDO.isSuperUser()) {
+            return groupMapper.selectList(null);
+        }
+        QueryWrapper<UserGroupRelDO> relQuery = new QueryWrapper<>();
+        List<UserGroupRelDO> userGroupRelDOS = userGroupRelMapper.selectList(relQuery);
+        QueryWrapper<GroupDO> groupQuery = new QueryWrapper<>();
+        List<String> groupCode = userGroupRelDOS.stream().map(UserGroupRelDO::getGroupCode).collect(Collectors.toList());
+        groupQuery.in("group_code", groupCode);
+        return groupMapper.selectList(groupQuery);
+    }
+
+    @Override
+    public boolean hasGroup(UserDO userDO, String groupCode) {
+        QueryWrapper<GroupDO> groupQuery = new QueryWrapper<>();
+        groupQuery.eq("code", groupCode);
+        Assert.isTrue(groupMapper.exists(groupQuery), "组不存在");
+        if (userDO.isSuperUser()) {
+            return true;
+        }
+        QueryWrapper<UserGroupRelDO> relQuery = new QueryWrapper<>();
+        relQuery.eq("group_code", groupCode);
+        relQuery.eq("username", userDO.getUsername());
+        return userGroupRelMapper.exists(relQuery);
+    }
+
 }

@@ -20,10 +20,13 @@ import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
 import com.hdygxsj.dida.api.authentication.permission.OpObjType;
 import com.hdygxsj.dida.api.authentication.permission.OpRight;
 import com.hdygxsj.dida.api.authentication.permission.Permission;
+import com.hdygxsj.dida.api.domain.entity.GroupDO;
 import com.hdygxsj.dida.api.domain.entity.RoleDO;
 import com.hdygxsj.dida.api.domain.entity.UserDO;
 import com.hdygxsj.dida.api.domain.entity.UserRoleRelDO;
+import com.hdygxsj.dida.api.domain.service.GroupDomainService;
 import com.hdygxsj.dida.api.domain.service.UserDomainService;
+import com.hdygxsj.dida.api.mapper.GroupMapper;
 import com.hdygxsj.dida.api.mapper.UserMapper;
 import com.hdygxsj.dida.api.mapper.UserRoleRelMapper;
 import com.hdygxsj.dida.exceptions.Assert;
@@ -42,6 +45,8 @@ public class UserDomainServiceImpl implements UserDomainService {
 
     @Autowired
     private UserRoleRelMapper userRoleRelMapper;
+
+
 
     @Override
     public List<UserDO> listAll() {
@@ -110,5 +115,7 @@ public class UserDomainServiceImpl implements UserDomainService {
         }
         return roleList;
     }
+
+
 }
 

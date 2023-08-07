@@ -15,6 +15,7 @@
 
 package com.hdygxsj.dida.api.domain.service;
 
+import com.hdygxsj.dida.api.domain.entity.GroupDO;
 import com.hdygxsj.dida.api.domain.entity.RoleDO;
 import com.hdygxsj.dida.api.domain.entity.UserDO;
 
@@ -34,4 +35,6 @@ public interface UserDomainService {
     void addRoles(String username,List<String> roles);
 
     List<RoleDO> getRoles(String username);
+
+
 }

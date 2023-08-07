@@ -45,6 +45,8 @@ public class NamespaceDO implements Serializable {
 
     private String descp;
 
+    private String groupCode;
+
     private LocalDateTime createTime;
 
     private LocalDateTime updateTime;

@@ -15,7 +15,7 @@
 
 use dida;
 
-create table if not exists dida.dida_group
+create table dida_group
 (
     name        varchar(20)                        not null,
     code        varchar(20)                        not null
@@ -25,17 +25,21 @@ create table if not exists dida.dida_group
     descp       varchar(500)                       null
 );
 
-create table if not exists dida.dida_namespace
+create table dida_namespace
 (
-    code        varchar(10)                        not null
+    code        varchar(20)                        not null
         primary key,
     name        varchar(50)                        null,
     descp       varchar(200)                       null,
     create_time datetime default CURRENT_TIMESTAMP null,
-    update_time datetime default CURRENT_TIMESTAMP null on update CURRENT_TIMESTAMP
+    update_time datetime default CURRENT_TIMESTAMP null on update CURRENT_TIMESTAMP,
+    group_code  varchar(20)                        null
 );
 
-create table if not exists dida.dida_role
+create index dida_namespace_group_index
+    on dida_namespace (group_code);
+
+create table dida_role
 (
     code         varchar(10)                        not null
         primary key,
@@ -44,18 +48,17 @@ create table if not exists dida.dida_role
     create_time  datetime default CURRENT_TIMESTAMP null
 );
 
-create table if not exists dida.dida_role_object_rel
+create table dida_role_object_rel
 (
     obejct_type varchar(10)                        not null,
-    object_name varchar(50)                        not null,
     role_code   varchar(10)                        not null,
     permission  bigint                             null,
     create_time datetime default CURRENT_TIMESTAMP null,
     update_time datetime default CURRENT_TIMESTAMP null on update CURRENT_TIMESTAMP,
-    primary key (role_code, obejct_type, object_name)
+    primary key (role_code, obejct_type)
 );
 
-create table if not exists dida.dida_swith
+create table dida_swith
 (
     namespace_code varchar(10)                        not null,
     swith_key      varchar(20)                        not null,
@@ -65,7 +68,7 @@ create table if not exists dida.dida_swith
     primary key (namespace_code, swith_key)
 );
 
-create table if not exists dida.dida_token
+create table dida_token
 (
     id          int auto_increment
         primary key,
@@ -80,9 +83,9 @@ create table if not exists dida.dida_token
 );
 
 create index dida_token_username_index
-    on dida.dida_token (username);
+    on dida_token (username);
 
-create table if not exists dida.dida_user
+create table dida_user
 (
     username    varchar(20)                        not null
         primary key,
@@ -94,7 +97,7 @@ create table if not exists dida.dida_user
 )
     comment '用户';
 
-create table if not exists dida.dida_user_group_rel
+create table dida_user_group_rel
 (
     username    varchar(20)                        not null,
     group_code  varchar(20)                        not null,
@@ -103,7 +106,7 @@ create table if not exists dida.dida_user_group_rel
     primary key (group_code, username)
 );
 
-create table if not exists dida.dida_user_role_rel
+create table dida_user_role_rel
 (
     role_code   varchar(10)                        not null,
     username    varchar(20)                        not null,
@@ -111,5 +114,6 @@ create table if not exists dida.dida_user_role_rel
     update_time datetime default CURRENT_TIMESTAMP null on update CURRENT_TIMESTAMP,
     primary key (username, role_code)
 );
+
 
 INSERT INTO dida.dida_user (username, password, create_time, type, update_time, super) VALUES ('admin', '0f94644c67a7ee820f769bafd7e527ec', '2023-08-01 00:09:59', 1, '2023-08-01 00:09:59', 1);

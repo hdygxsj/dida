@@ -13,16 +13,24 @@
  * limitations under the License.
  */
 
-package com.hdygxsj.dida.api.domain.service;
+package com.hdygxsj.dida.api.domain.service.impl;
 
-import com.hdygxsj.dida.api.domain.entity.NamespaceDO;
-import com.hdygxsj.dida.api.domain.entity.UserDO;
+import com.hdygxsj.dida.api.authentication.permission.OpObjType;
+import com.hdygxsj.dida.api.domain.entity.RoleObjectRelDO;
+import com.hdygxsj.dida.api.domain.service.RoleDomainService;
+import org.springframework.stereotype.Service;
 
 import java.util.List;
 
-public interface NamespaceDomainService {
+@Service
+public class RoleDomainServiceImpl implements RoleDomainService {
+    @Override
+    public void addPermission(String roleCode, OpObjType objType, Long permission) {
 
-    void add(NamespaceDO namespaceDO);
+    }
 
-    List<NamespaceDO> list(String groupCode);
+    @Override
+    public List<RoleObjectRelDO> listPermission(String roleCode) {
+        return null;
+    }
 }

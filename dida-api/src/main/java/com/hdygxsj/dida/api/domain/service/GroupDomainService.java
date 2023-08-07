@@ -16,9 +16,17 @@
 package com.hdygxsj.dida.api.domain.service;
 
 import com.hdygxsj.dida.api.domain.entity.GroupDO;
+import com.hdygxsj.dida.api.domain.entity.UserDO;
+import com.hdygxsj.dida.api.domain.entity.UserGroupRelDO;
+
+import java.util.List;
 
 public interface GroupDomainService {
     void add(GroupDO groupDO);
 
     void addUser(String groupCode, String username);
+
+    List<GroupDO> listByUser(UserDO userDO);
+
+    boolean hasGroup(UserDO userDO, String groupCode);
 }
