@@ -5,27 +5,51 @@
  * The ASF licenses this file to You under the Apache License, Version 2.0
  * (the "License"); you may not use this file except in compliance with
  * the License.  You may obtain a copy of the License at
+ *
  *    http://www.apache.org/licenses/LICENSE-2.0
+ *
  * Unless required by applicable law or agreed to in writing, software
  * distributed under the License is distributed on an "AS IS" BASIS,
  * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
+import { defineComponent, ref, provide, nextTick } from 'vue'
 
-package com.hdygxsj.dida.api.mapper;
+import {
+    NConfigProvider, NMessageProvider
+} from 'naive-ui'
+import styles from './index.module.scss'
 
-import com.baomidou.mybatisplus.core.mapper.BaseMapper;
-import com.hdygxsj.dida.api.domain.entity.SwithDO;
+import bgImg from './assets/image/bg.png';
+const Login = defineComponent({
+    name: 'Login',
+    setup() {
+        const isRouterAlive = ref(true)
+        const reload = () => {
+            isRouterAlive.value = false
+            nextTick(() => {
+                isRouterAlive.value = true
+            })
+        }
+        provide('reload', reload)
+        return {
+            reload,
+            isRouterAlive,
 
-/**
- * <p>
- *  Mapper 接口
- * </p>
- *
- * @author hdygxsj
- * @since 2023-07-31
- */
-public interface SwithMapper extends BaseMapper<SwithDO> {
+        }
+    },
+    render() {
+        return (
 
-}
+            <div class={styles.container}>
+                <img src={bgImg}></img>
+            </div>
+
+
+        )
+    }
+
+})
+
+export default Login

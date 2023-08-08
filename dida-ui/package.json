@@ -9,9 +9,23 @@
     "preview": "vite preview"
   },
   "dependencies": {
-    "vue": "^3.3.4"
+    "@vitejs/plugin-vue-jsx": "^3.0.1",
+    "axios": "^1.4.0",
+    "lodash": "^4.17.21",
+    "nprogress": "^0.2.0",
+    "pinia": "^2.1.6",
+    "pinia-plugin-persistedstate": "^3.2.0",
+    "qs": "^6.11.2",
+    "sass": "^1.64.2",
+    "scss": "^0.2.4",
+    "vite-plugin-compression": "^0.5.1",
+    "vue": "^3.3.4",
+    "vue-route": "^1.5.1",
+    "vue-router": "^4.2.4"
   },
   "devDependencies": {
+    "@types/node": "^20.4.8",
+    "@types/nprogress": "^0.2.0",
     "@vitejs/plugin-vue": "^4.2.3",
     "naive-ui": "^2.34.4",
     "typescript": "^5.0.2",
