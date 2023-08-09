@@ -9,6 +9,7 @@
     "preview": "vite preview"
   },
   "dependencies": {
+    "@vicons/antd": "^0.12.0",
     "@vitejs/plugin-vue-jsx": "^3.0.1",
     "axios": "^1.4.0",
     "lodash": "^4.17.21",
@@ -18,6 +19,7 @@
     "qs": "^6.11.2",
     "sass": "^1.64.2",
     "scss": "^0.2.4",
+    "vfonts": "^0.0.3",
     "vite-plugin-compression": "^0.5.1",
     "vue": "^3.3.4",
     "vue-route": "^1.5.1",

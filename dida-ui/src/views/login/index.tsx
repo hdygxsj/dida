@@ -17,9 +17,10 @@
 import { defineComponent, ref, provide, nextTick } from 'vue'
 
 import {
-    NConfigProvider, NMessageProvider
+    NButton,
+    NConfigProvider, NMessageProvider, NSpace
 } from 'naive-ui'
-import   './index.css'
+import './index.css'
 
 import bgImg from './assets/image/bg.png';
 const Login = defineComponent({
@@ -41,9 +42,23 @@ const Login = defineComponent({
     },
     render() {
         return (
-
             <div class="bg">
-                <img src={bgImg} style="width:100%;height:100%;overflow-y:hidden"></img>
+                <img src={bgImg} style="width:100%;height:100%;overflow-y:hidden" draggable="false"></img>
+                <div class="loginForm">
+                    <div class="title-welcome">Welcome to Dida</div>
+                    <div class="title-name"> 分布式开关平台 </div>
+                    <div><input class="login-input" placeholder='请输入你的登陆账号' autocomplete="off"></input></div>
+                    <div><input class="login-input" placeholder='请输入你的登陆密码' type="password" autocomplete="off"></input></div>
+                    <div><button class="login-bt">登&nbsp;录</button></div>
+                    {/* <div>@copyright</div> */}
+
+                </div>
+                <div class="head">
+                    <NSpace size="large">
+                        {/* <div class="head-text">sda</div> */}
+                        <NButton class="login-regist">注册</NButton>
+                    </NSpace>
+                </div>
             </div>
 
 

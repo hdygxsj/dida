@@ -5,7 +5,9 @@
  * The ASF licenses this file to You under the Apache License, Version 2.0
  * (the "License"); you may not use this file except in compliance with
  * the License.  You may obtain a copy of the License at
+ *
  *    http://www.apache.org/licenses/LICENSE-2.0
+ *
  * Unless required by applicable law or agreed to in writing, software
  * distributed under the License is distributed on an "AS IS" BASIS,
  * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
@@ -13,20 +15,30 @@
  * limitations under the License.
  */
 
+import { defineComponent } from 'vue'
+import { NButton } from 'naive-ui'
+import { useThemeStore } from '@/store/theme/theme'
+import styles from './index.module.scss'
 
+const Theme = defineComponent({
+  name: 'Theme',
+  setup() {
 
+    const themeStore = useThemeStore()
 
-html,
-body {
-  margin: 0;
+    return { themeStore }
+  },
+  render() {
+    return (
+      <NButton
+        class={styles.theme}
+        quaternary
+        onClick={() => (this.themeStore.darkTheme = !this.themeStore.darkTheme)}
+      >
+        {this.themeStore.darkTheme ? '浅色' : '深色'}
+      </NButton>
+    )
+  }
+})
 
-  min-width: 320px;
-  min-height: 100vh;
-  width: 100%;
-  height: 100%;
-}
-
-h1 {
-  font-size: 3.2em;
-  line-height: 1.1;
-}
+export default Theme

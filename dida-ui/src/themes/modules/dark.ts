@@ -5,7 +5,9 @@
  * The ASF licenses this file to You under the Apache License, Version 2.0
  * (the "License"); you may not use this file except in compliance with
  * the License.  You may obtain a copy of the License at
+ *
  *    http://www.apache.org/licenses/LICENSE-2.0
+ *
  * Unless required by applicable law or agreed to in writing, software
  * distributed under the License is distributed on an "AS IS" BASIS,
  * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
@@ -13,20 +15,23 @@
  * limitations under the License.
  */
 
+const dark = {
+  common: {
+    bodyColor: '#141414',
+    baseColor: '#f8f8fc',
 
+    /**************** Brand color */
+    primaryColor: '#177ddc',
+    primaryColorHover: '#1765ad',
+    primaryColorPressed: '#3c9ae8',
+    primaryColorSuppl: '#177ddc',
 
-
-html,
-body {
-  margin: 0;
-
-  min-width: 320px;
-  min-height: 100vh;
-  width: 100%;
-  height: 100%;
+    /**************** Function of color */
+    infoColor: '#177ddc',
+    successColor: '#49aa19',
+    warningColor: '#d89614',
+    errorColor: '#a61d24'
+  }
 }
 
-h1 {
-  font-size: 3.2em;
-  line-height: 1.1;
-}
+export default dark

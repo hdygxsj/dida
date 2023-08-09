@@ -1,7 +1,8 @@
 import utils from '@/utils'
 import { Component } from 'vue'
 import type { RouteRecordRaw } from 'vue-router'
-
+import switchPage from './modules/switch'
+import securityPage from './modules/security'
 const modules = import.meta.glob('/src/views/**/**.tsx')
 const components: { [key: string]: Component } = utils.mapping(modules)
 /**
@@ -20,9 +21,10 @@ const loginPage: RouteRecordRaw[] = [
         meta: {
             auth: []
         }
-    }
+    },
+
 ]
-const basePage: RouteRecordRaw[] = []
+const basePage: RouteRecordRaw[] = [switchPage, securityPage]
 const routes: RouteRecordRaw[] = [...basePage, ...loginPage]
 
 // 重新组织后导出

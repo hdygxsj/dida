@@ -14,11 +14,16 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-import { defineComponent, ref, provide, nextTick } from 'vue'
+import { defineComponent, ref, provide, nextTick, computed } from 'vue'
 
 import {
+    darkTheme,
+    GlobalThemeOverrides,
     NConfigProvider, NMessageProvider
 } from 'naive-ui'
+import { useThemeStore } from '@/store/theme/theme'
+import themeList from '@/themes'
+
 const App = defineComponent({
     name: 'App',
     components: {
@@ -27,22 +32,30 @@ const App = defineComponent({
     },
     setup() {
         const isRouterAlive = ref(true)
+        const themeStore = useThemeStore()
         const reload = () => {
             isRouterAlive.value = false
             nextTick(() => {
                 isRouterAlive.value = true
             })
         }
+        const currentTheme = computed(() =>
+            themeStore.darkTheme ? darkTheme : undefined
+        )
+
         provide('reload', reload)
         return {
             reload,
             isRouterAlive,
+            currentTheme
 
         }
     },
     render() {
+        const themeOverrides: GlobalThemeOverrides =
+            themeList[this.currentTheme ? 'dark' : 'light']
         return (
-            <NConfigProvider style={{ width: '100%', height: '100%' }}>
+            <NConfigProvider theme={this.currentTheme} theme-overrides={themeOverrides} style={{ width: '100%', height: '100%' }}>
                 <NMessageProvider>
                     {this.isRouterAlive ? <router-view /> : ''}
                 </NMessageProvider>
