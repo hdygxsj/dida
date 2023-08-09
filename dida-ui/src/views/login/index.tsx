@@ -19,7 +19,7 @@ import { defineComponent, ref, provide, nextTick } from 'vue'
 import {
     NConfigProvider, NMessageProvider
 } from 'naive-ui'
-import styles from './index.module.scss'
+import   './index.css'
 
 import bgImg from './assets/image/bg.png';
 const Login = defineComponent({
@@ -42,8 +42,8 @@ const Login = defineComponent({
     render() {
         return (
 
-            <div class={styles.container}>
-                <img src={bgImg}></img>
+            <div class="bg">
+                <img src={bgImg} style="width:100%;height:100%;overflow-y:hidden"></img>
             </div>
 
 
