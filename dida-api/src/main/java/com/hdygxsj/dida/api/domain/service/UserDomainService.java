@@ -32,7 +32,9 @@ public interface UserDomainService {
 
     void create(UserDO userDO);
 
-    void addRoles(String username,List<String> roles);
+    void createBySystem(UserDO userDO);
+
+    void addRoles(String username, List<String> roles);
 
     List<RoleDO> getRoles(String username);
 

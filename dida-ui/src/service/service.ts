@@ -1,4 +1,4 @@
-import axios, { AxiosRequestConfig, AxiosResponse, AxiosError } from 'axios'
+import axios, { AxiosRequestConfig, AxiosResponse, AxiosError, InternalAxiosRequestConfig } from 'axios'
 import { useUserStore } from '@/store/user/user'
 import qs from 'qs'
 import _ from 'lodash'
@@ -7,7 +7,7 @@ import router from '@/router'
 const userStore = useUserStore()
 
 const handleError = (res: AxiosResponse<any, any>) => {
-    window.$message.error(res.data.msg)
+    window.$message.error(res.data.message)
 }
 
 
@@ -29,6 +29,7 @@ const baseRequestConfig: AxiosRequestConfig = {
     }
 }
 
+
 const service = axios.create(baseRequestConfig)
 
 const err = (err: AxiosError): Promise<AxiosError> => {
@@ -36,11 +37,23 @@ const err = (err: AxiosError): Promise<AxiosError> => {
         userStore.setToken('')
         userStore.setRoles([])
         userStore.setUserInfo({})
+        window.$message.error('未登录或会话过期，请重新登陆')
         router.push({ path: '/login' })
     }
 
     return Promise.reject(err)
 }
+
+service.interceptors.request.use((config: InternalAxiosRequestConfig<any>) => {
+    debugger
+
+    config.headers = config.headers || {}
+
+    config.headers && (config.headers['TOKEN'] = userStore.getToken)
+
+    return config
+}, err)
+
 
 service.interceptors.response.use((res: AxiosResponse) => {
     // No code will be processed

@@ -13,27 +13,26 @@
  * limitations under the License.
  */
 
-package com.hdygxsj.dida.enums;
+package com.hdygxsj.dida.api.configuration;
 
-import lombok.Getter;
+import com.hdygxsj.dida.http.RequestClient;
+import okhttp3.OkHttpClient;
+import org.springframework.context.annotation.Bean;
+import org.springframework.context.annotation.Configuration;
 
-@Getter
-public enum ApiStatus {
-    SUCCESS(0,"成功"),
-    INTERNAL_SERVER_ERROR_ARGS(10000,  "服务端异常"),
-    LOGIN_FAILED(10001,"账号或密码错误"),
-    INSUFFICIENT_PERMISSION(10002,"权限不足"),
-    NO_AUTH(10003,"未授权的用户"),
-    NO_REQUEST_RIGHT(10004,"访问权限不足"),
-    AUTH2_ERROR(10005,"oauth2授权失败")
-    ;
+import java.net.InetSocketAddress;
+import java.net.Proxy;
+import java.util.concurrent.TimeUnit;
 
-    ApiStatus(int code, String message) {
-        this.code = code;
-        this.message = message;
+@Configuration
+public class OkHttpClientConfiguration {
+
+    @Bean
+    public RequestClient httpClient(){
+        Proxy proxy = new Proxy(Proxy.Type.HTTP, new InetSocketAddress("127.0.0.1", 7890));
+        return new RequestClient(  new OkHttpClient().newBuilder()
+                .connectTimeout(60, TimeUnit.MINUTES).readTimeout(60,TimeUnit.MINUTES)
+                .proxy(proxy)
+                .build());
     }
-
-    private int code;
-
-    private String message;
 }

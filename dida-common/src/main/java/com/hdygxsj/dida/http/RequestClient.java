@@ -70,6 +70,33 @@ public class RequestClient {
         return responseData;
     }
 
+    @SneakyThrows
+    public <T> T get(String url, Map<String, String> headers, Map<String, Object> params,Class<T> clazz) {
+        Headers headersBuilder = new Headers.Builder().build();
+        if (headers != null) {
+            headersBuilder = Headers.of(headers);
+        }
+        log.info("GET request to {}, Headers: {}", url, headersBuilder);
+        Request request = new Request.Builder()
+                .url(url)
+                .headers(headersBuilder)
+                .get()
+                .build();
+
+        Response response = this.httpClient.newCall(request).execute();
+
+        T responseData = null;
+        int responseCode = response.code();
+        if (response.body() != null) {
+            if(clazz == String.class){
+                return (T) response.body().string();
+            }
+            responseData = JSON.parseObject(response.body().string(),clazz);
+        }
+        response.close();
+        return  responseData;
+    }
+
     public static String getParams(Map<String, Object> params) {
         StringBuilder sb = new StringBuilder();
         if (params.size() > 0) {
@@ -107,6 +134,33 @@ public class RequestClient {
         Result responseData = null;
         if (response.body() != null) {
             responseData = JSON.parseObject(response.body().string(), Result.class);
+        }
+        response.close();
+        return responseData;
+    }
+
+    @SneakyThrows
+    public  <T> T post(String url, Map<String, String> headers, Map<String, Object> params,Class<T> clazz) {
+        if (headers == null) {
+            headers = new HashMap<>();
+        }
+        headers.put("Content-Type", Constants.REQUEST_CONTENT_TYPE);
+        Headers headersBuilder = Headers.of(headers);
+        RequestBody requestBody = FormBody.create(MediaType.parse(Constants.REQUEST_CONTENT_TYPE), getParams(params));
+        log.info("POST request to {}, Headers: {}, Params: {}", url, headersBuilder, params);
+        Request request = new Request.Builder()
+                .headers(headersBuilder)
+                .url(url)
+                .post(requestBody)
+                .build();
+        Response response = this.httpClient.newCall(request).execute();
+        int responseCode = response.code();
+        T responseData = null;
+        if (response.body() != null) {
+            if(clazz == String.class){
+                return (T) response.body().string();
+            }
+            responseData = JSON.parseObject(response.body().string(), clazz);
         }
         response.close();
         return responseData;

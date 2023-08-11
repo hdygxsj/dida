@@ -160,7 +160,8 @@ const Switch = defineComponent({
                             <NButton style="width: 100%">管理命名空间</NButton>
                             <div style={{ height: '80%' }}>
                                 <NMenu v-model:options={this.options} style="width: 15vw" default-value="1" /></div>
-                        </Card></NGridItem>
+                        </Card>
+                    </NGridItem>
                     <NGridItem span={20}>
                         <Card ><div style="width:75vw;min-height:85vh">a</div></Card>
                     </NGridItem>

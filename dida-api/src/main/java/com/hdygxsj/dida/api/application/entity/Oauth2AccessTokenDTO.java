@@ -13,27 +13,20 @@
  * limitations under the License.
  */
 
-package com.hdygxsj.dida.enums;
+package com.hdygxsj.dida.api.application.entity;
 
 import lombok.Getter;
+import lombok.Setter;
+import lombok.ToString;
 
 @Getter
-public enum ApiStatus {
-    SUCCESS(0,"成功"),
-    INTERNAL_SERVER_ERROR_ARGS(10000,  "服务端异常"),
-    LOGIN_FAILED(10001,"账号或密码错误"),
-    INSUFFICIENT_PERMISSION(10002,"权限不足"),
-    NO_AUTH(10003,"未授权的用户"),
-    NO_REQUEST_RIGHT(10004,"访问权限不足"),
-    AUTH2_ERROR(10005,"oauth2授权失败")
-    ;
+@Setter
+@ToString
+public class Oauth2AccessTokenDTO {
 
-    ApiStatus(int code, String message) {
-        this.code = code;
-        this.message = message;
-    }
+    private String accessToken;
 
-    private int code;
+    private String scope;
 
-    private String message;
+    private String tokenType;
 }

@@ -14,18 +14,27 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-import { defineComponent, ref, provide, nextTick } from 'vue'
+import { defineComponent, ref, provide, nextTick, toRefs, h } from 'vue'
 
 import {
     NButton,
-    NConfigProvider, NMessageProvider, NSpace
+    NConfigProvider, NIcon, NInput, NMessageProvider, NSpace, useMessage
 } from 'naive-ui'
 import './index.css'
 
+import { useUserStore } from '@/store/user/user';
+
+const userStore = useUserStore()
 import bgImg from './assets/image/bg.png';
+import { useForm } from './use-form';
+import { GithubOutlined } from '@vicons/antd';
 const Login = defineComponent({
     name: 'Login',
+    components: {
+        GithubOutlined
+    },
     setup() {
+        window.$message = useMessage()
         const isRouterAlive = ref(true)
         const reload = () => {
             isRouterAlive.value = false
@@ -33,10 +42,16 @@ const Login = defineComponent({
                 isRouterAlive.value = true
             })
         }
+        const { variables, handleLogin, handleGithubLoginClick, handleLoginByToken } = useForm()
         provide('reload', reload)
+
+        handleLoginByToken()
         return {
+            ...toRefs(variables),
+            handleLogin,
             reload,
             isRouterAlive,
+            handleGithubLoginClick
 
         }
     },
@@ -47,18 +62,20 @@ const Login = defineComponent({
                 <div class="loginForm">
                     <div class="title-welcome">Welcome to Dida</div>
                     <div class="title-name"> 分布式开关平台 </div>
-                    <div><input class="login-input" placeholder='请输入你的登陆账号' autocomplete="off"></input></div>
-                    <div><input class="login-input" placeholder='请输入你的登陆密码' type="password" autocomplete="off"></input></div>
-                    <div><button class="login-bt">登&nbsp;录</button></div>
+                    <div><NInput class="login-input" placeholder='请输入你的登陆账号' v-model:value={this.loginForm.username}></NInput></div>
+                    <div><NInput class="login-input" placeholder='请输入你的登陆密码' type="password" v-model:value={this.loginForm.password} ></NInput></div>
+                    <div><button class="login-bt" onClick={this.handleLogin}>登&nbsp;录</button></div>
+                    <div ><NSpace justify="center" class="login-icon">  <div onClick={this.handleGithubLoginClick}> <NIcon size="32" component={GithubOutlined} /></div> </NSpace></div>
                     {/* <div>@copyright</div> */}
 
                 </div>
-                <div class="head">
-                    <NSpace size="large">
-                        {/* <div class="head-text">sda</div> */}
-                        <NButton class="login-regist">注册</NButton>
-                    </NSpace>
-                </div>
+
+                <NSpace size="large" class="head">
+                    {/* <div class="head-text">sda</div> */}
+
+                    <NButton class="login-regist" >注册</NButton>
+                </NSpace>
+
             </div>
 
 

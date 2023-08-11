@@ -43,8 +43,6 @@ public class JwtAuthenticationSecurityConfig extends SecurityConfigurerAdapter<D
     @Autowired
     private UserDetailsService tokenUserDetailsService;
 
-
-
     @Autowired
     private JwtAuthenticationFilter jwtAuthenticationFilter;
 

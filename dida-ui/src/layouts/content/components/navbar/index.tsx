@@ -1,3 +1,5 @@
+
+import GithubOutlined from "@vicons/antd/es/GithubOutlined";
 import { NMenu } from "naive-ui";
 import { defineComponent, PropType, ref, watch } from "vue";
 import { useRoute, useRouter } from "vue-router";
@@ -40,6 +42,7 @@ const Navbar = defineComponent({
                 </div>
                 <div class={styles.settings}>
                     {/* <div>退出</div> */}
+
                     <Theme />
                 </div>
             </div>
