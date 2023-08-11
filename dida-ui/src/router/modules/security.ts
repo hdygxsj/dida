@@ -8,7 +8,7 @@ export default {
     path: '/security',
     name: 'security',
     redirect: { name: 'security-users' },
-    meta: { title: '开关中心' },
+    meta: { title: '安全中心', showSide: true, },
     component: () => import("@/layouts/content"),
     children: [
         {
@@ -18,7 +18,29 @@ export default {
             meta: {
                 title: '用户列表',
                 activeMenu: 'security',
-                showSide: true,
+
+                auth: []
+            }
+        },
+        {
+            path: '/security/groups',
+            name: 'security-groups',
+            component: components['security-groups'],
+            meta: {
+                title: '用户组',
+                activeMenu: 'security',
+
+                auth: []
+            }
+        },
+        {
+            path: '/security/user-info',
+            name: 'security-info',
+            component: components['security-user-info'],
+            meta: {
+                title: '用户信息',
+                activeMenu: 'security',
+
                 auth: []
             }
         }

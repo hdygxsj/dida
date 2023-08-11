@@ -5,20 +5,19 @@ const modules = import.meta.glob("/src/views/**/**.tsx")
 const components: { [key: string]: Component } = utils.mapping(modules)
 debugger
 export default {
-    path: '/switch',
-    name: 'switch',
-    redirect: { name: 'switch-list' },
+    path: '/',
+    name: '',
+    redirect: { name: 'home' },
     meta: { title: '开关中心' },
     component: () => import("@/layouts/content"),
     children: [
         {
-            path: '/switch/list',
-            name: 'switch-list',
-            component: components['switch-list'],
+            path: '/home',
+            name: 'home',
+            component: components['home'],
             meta: {
-                title: '开关列表',
-                activeMenu: 'switch',
-
+                title: '首页',
+                activeMenu: 'home',
                 auth: []
             }
         }

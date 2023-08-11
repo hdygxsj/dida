@@ -28,6 +28,7 @@
   "devDependencies": {
     "@types/node": "^20.4.8",
     "@types/nprogress": "^0.2.0",
+    "@types/qs": "^6.9.7",
     "@vitejs/plugin-vue": "^4.2.3",
     "naive-ui": "^2.34.4",
     "typescript": "^5.0.2",
