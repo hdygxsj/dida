@@ -29,8 +29,7 @@ export const useForm = () => {
             router.push({ path: path || '/home' })
         })
     }
-    //8e9e1b8fcf23ec1ca7b5
-    //75f447847542ae9687837bff66235095339f51cc 
+
     const handleGithubLoginClick = () => {
         window.location.href = `https://github.com/login/oauth/authorize?client_id=8e9e1b8fcf23ec1ca7b5&redirect_uri=http://localhost:8080/dida/api/v1/login/oauth`
     }
