@@ -91,7 +91,7 @@ public class LoginAppService {
 
     @GetMapping("oauth")
     public void oauthLogin(@RequestParam String code, HttpServletResponse httpServletResponse) throws IOException {
-        log.info("login by oauth 2 {}" ,code);
+        log.info("login by oauth2 {}" ,code);
         Map<String,String> accTokenRequestHeaders = new HashMap<>();
         accTokenRequestHeaders.put("Accept","application/json");
         String getAccessTokenUrl = "https://github.com/login/oauth/access_token";
@@ -100,8 +100,6 @@ public class LoginAppService {
         requestBody.put("client_secret","75f447847542ae9687837bff66235095339f51cc");
         requestBody.put("code", code);
         String accessTokenResult = requestClient.post(getAccessTokenUrl, accTokenRequestHeaders, requestBody,String.class);
-
-
         log.info("login by oauth2 accessToken {}" ,accessTokenResult);
         JSONObject jsonObject = JSON.parseObject(accessTokenResult);
         String accessToken = jsonObject.getString("access_token");
