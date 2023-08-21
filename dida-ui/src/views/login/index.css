@@ -113,7 +113,10 @@ select:-webkit-autofill:focus {
     letter-spacing: 5px;
 }
 
-
+.login-oauth2{
+    margin-top: 40px;
+    color: #fff;
+}
 
 .login-regist {
 

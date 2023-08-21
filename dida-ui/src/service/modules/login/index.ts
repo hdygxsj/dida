@@ -1,4 +1,5 @@
 import { axios } from "@/service/service"
+import { method } from "lodash"
 
 
 export function login(params: any): any {
@@ -8,3 +9,11 @@ export function login(params: any): any {
         params
     })
 }
+
+export function getOauth2Providers():any{
+    return axios({
+        url:'api/v1/oauth2-providers',
+        method:'get'
+    })
+}
+

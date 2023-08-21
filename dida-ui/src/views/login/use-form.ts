@@ -1,9 +1,10 @@
-import { login } from "@/service/modules/login"
+import { getOauth2Providers, login } from "@/service/modules/login"
+import  { OAuth2Provider } from "@/service/modules/login/types"
 import { useRouteStore } from "@/store/route/route"
 
 import { useUserStore } from "@/store/user/user"
 import { AxiosResponse } from "axios"
-import { reactive } from "vue"
+import { reactive, ref } from "vue"
 import { Router, useRouter, useRoute } from "vue-router"
 
 export const useForm = () => {
@@ -30,9 +31,18 @@ export const useForm = () => {
         })
     }
 
-    const handleGithubLoginClick = () => {
-        window.location.href = `https://github.com/login/oauth/authorize?client_id=8e9e1b8fcf23ec1ca7b5&redirect_uri=http://localhost:8080/dida/api/v1/login/oauth`
+    const handleGetOAuth2Provider = () => {
+        getOauth2Providers().then((res: Array<OAuth2Provider> | []) => {
+            oauth2Providers.value = res
+        })
     }
+
+    const oauth2Providers = ref<Array<OAuth2Provider> | []>([])
+
+    const gotoOAuth2Page = async (oauth2Provider: OAuth2Provider) => {
+        window.location.href = `${oauth2Provider.authorizationUri}?client_id=${oauth2Provider.clientId}` +
+          `&response_type=code&redirect_uri=${oauth2Provider.redirectUri}?provider=${oauth2Provider.provider}`
+      }
 
     const handleLoginByToken = () => {
         if (route.query.status === 'success') {
@@ -44,10 +54,14 @@ export const useForm = () => {
 
         }
     }
+
+
     return {
         variables,
         handleLogin,
-        handleGithubLoginClick,
-        handleLoginByToken
+        gotoOAuth2Page,
+        handleLoginByToken,
+        handleGetOAuth2Provider,
+        oauth2Providers
     }
 }

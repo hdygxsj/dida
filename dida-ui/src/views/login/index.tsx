@@ -18,7 +18,8 @@ import { defineComponent, ref, provide, nextTick, toRefs, h } from 'vue'
 
 import {
     NButton,
-    NConfigProvider, NIcon, NInput, NMessageProvider, NSpace, useMessage
+    NConfigProvider, NIcon, NInput, NMessageProvider, NSpace, useMessage,
+    NImage
 } from 'naive-ui'
 import './index.css'
 
@@ -28,6 +29,7 @@ const userStore = useUserStore()
 import bgImg from './assets/image/bg.png';
 import { useForm } from './use-form';
 import { GithubOutlined } from '@vicons/antd';
+import  { OAuth2Provider } from '@/service/modules/login/types';
 const Login = defineComponent({
     name: 'Login',
     components: {
@@ -42,16 +44,22 @@ const Login = defineComponent({
                 isRouterAlive.value = true
             })
         }
-        const { variables, handleLogin, handleGithubLoginClick, handleLoginByToken } = useForm()
+        const {  variables,
+            handleLogin,
+            gotoOAuth2Page,
+            handleLoginByToken,
+            handleGetOAuth2Provider,
+            oauth2Providers} = useForm()
         provide('reload', reload)
-
+        handleGetOAuth2Provider()
         handleLoginByToken()
         return {
             ...toRefs(variables),
             handleLogin,
             reload,
             isRouterAlive,
-            handleGithubLoginClick
+            gotoOAuth2Page,
+            oauth2Providers
 
         }
     },
@@ -65,15 +73,19 @@ const Login = defineComponent({
                     <div><NInput class="login-input" placeholder='请输入你的登陆账号' v-model:value={this.loginForm.username}></NInput></div>
                     <div><NInput class="login-input" placeholder='请输入你的登陆密码' type="password" v-model:value={this.loginForm.password} ></NInput></div>
                     <div><button class="login-bt" onClick={this.handleLogin}>登&nbsp;录</button></div>
-                    <div ><NSpace justify="center" class="login-icon">  <div onClick={this.handleGithubLoginClick}> <NIcon size="32" component={GithubOutlined} /></div> </NSpace></div>
-                    {/* <div>@copyright</div> */}
+                    <NSpace class="login-oauth2" justify="center">
+              {this.oauth2Providers?.map((e: OAuth2Provider) => {
+                return (e.iconUri ? <div onClick={() => this.gotoOAuth2Page(e)}><NImage preview-disabled width="30" src={e.iconUri}></NImage> </div> 
+                : <NButton quaternary color="#fff" onClick={() => this.gotoOAuth2Page(e)}>{e.provider}</NButton>)
+              })}
+            </NSpace>    
 
                 </div>
 
                 <NSpace size="large" class="head">
                     {/* <div class="head-text">sda</div> */}
 
-                    <NButton class="login-regist" >注册</NButton>
+                    <NButton class="login-regist"   >注册</NButton>
                 </NSpace>
 
             </div>

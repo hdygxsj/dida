@@ -17,12 +17,8 @@ package com.hdygxsj.dida.api.application;
 
 
 import cn.hutool.core.util.StrUtil;
-import com.alibaba.fastjson.JSON;
 import com.alibaba.fastjson.JSONObject;
-import com.fasterxml.jackson.core.JsonProcessingException;
-import com.fasterxml.jackson.databind.ObjectMapper;
-import com.fasterxml.jackson.databind.PropertyNamingStrategy;
-import com.hdygxsj.dida.api.application.entity.Oauth2AccessTokenDTO;
+import com.hdygxsj.dida.api.configuration.OAuth2Configuration;
 import com.hdygxsj.dida.api.domain.entity.TokenDO;
 import com.hdygxsj.dida.api.domain.entity.UserDO;
 import com.hdygxsj.dida.api.domain.service.TokenDomainService;
@@ -35,7 +31,6 @@ import com.hdygxsj.dida.security.Sm4;
 import com.hdygxsj.dida.tools.Result;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import lombok.extern.slf4j.Slf4j;
-import okhttp3.internal.http.HttpHeaders;
 import org.apache.http.HttpStatus;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -45,12 +40,17 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
+import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
+import java.util.ArrayList;
+import java.util.Collection;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
+import java.util.stream.Collectors;
 
-@RequestMapping("api/v1/login")
+@RequestMapping("api/v1")
 @RestController
 @Tag(name = "login")
 @Slf4j
@@ -62,10 +62,13 @@ public class LoginAppService {
     @Autowired
     private TokenDomainService tokenDomainService;
 
+    @Autowired(required = false)
+    private OAuth2Configuration oauth2Configuration;
+
     @Autowired
     private RequestClient requestClient;
 
-    @PostMapping
+    @PostMapping("login")
     public Result<TokenDO> login(@RequestParam(required = false) String username,
                                 @RequestParam(required = false) String password,
                                 @RequestAttribute(value = "ip",required = false) String ip) {
@@ -84,55 +87,82 @@ public class LoginAppService {
         return Result.success(genTokenDO);
     }
 
-    @GetMapping("oauth-info")
-    public Result oauthInfo(){
-        return null;
+    @GetMapping("oauth2-providers")
+    public Result<List<OAuth2Configuration.OAuth2ClientProperties>> getOAuth2Providers(){
+        if (oauth2Configuration == null) {
+            return Result.success(new ArrayList<>());
+        }
+
+        Collection<OAuth2Configuration.OAuth2ClientProperties> values = oauth2Configuration.getProvider().values();
+        List<OAuth2Configuration.OAuth2ClientProperties> providers = values.stream().map(e -> {
+            OAuth2Configuration.OAuth2ClientProperties oauth2ClientProperties =
+                    new OAuth2Configuration.OAuth2ClientProperties();
+            oauth2ClientProperties.setAuthorizationUri(e.getAuthorizationUri());
+            oauth2ClientProperties.setRedirectUri(e.getRedirectUri());
+            oauth2ClientProperties.setClientId(e.getClientId());
+            oauth2ClientProperties.setProvider(e.getProvider());
+            oauth2ClientProperties.setIconUri(e.getIconUri());
+            return oauth2ClientProperties;
+        }).collect(Collectors.toList());
+        return Result.success(providers);
     }
 
-    @GetMapping("oauth")
-    public void oauthLogin(@RequestParam String code, HttpServletResponse httpServletResponse) throws IOException {
-        log.info("login by oauth2 {}" ,code);
-        Map<String,String> accTokenRequestHeaders = new HashMap<>();
-        accTokenRequestHeaders.put("Accept","application/json");
-        String getAccessTokenUrl = "https://github.com/login/oauth/access_token";
-        Map<String, Object> requestBody = new HashMap<>(16);
-        requestBody.put("client_id", "8e9e1b8fcf23ec1ca7b5");
-        requestBody.put("client_secret","75f447847542ae9687837bff66235095339f51cc");
-        requestBody.put("code", code);
-        String accessTokenResult = requestClient.post(getAccessTokenUrl, accTokenRequestHeaders, requestBody,String.class);
-        log.info("login by oauth2 accessToken {}" ,accessTokenResult);
-        JSONObject jsonObject = JSON.parseObject(accessTokenResult);
-        String accessToken = jsonObject.getString("access_token");
-        String getUserInfoUrl = "https://api.github.com/user";
-        Map<String,String> userInfoRequestHeaders = new HashMap<>();
-//
-        userInfoRequestHeaders.put("Accept","application/json");
-        userInfoRequestHeaders.put("Authorization",  "token "+accessToken);
-        String userInfoResult = requestClient.get(getUserInfoUrl, userInfoRequestHeaders, new HashMap<>(),String.class);
-        log.info("login by oauth2 userInfoResult {}" ,userInfoResult);
-        JSONObject userInfo = JSON.parseObject(userInfoResult);
-        String username = userInfo.getString("login");
-        if(StrUtil.isBlank(username)){
-            throw new ServiceException(ApiStatus.AUTH2_ERROR);
+    @GetMapping("redirect/login/oauth2")
+    public void oauthLogin(@RequestParam String code, @RequestParam String provider,
+                           HttpServletRequest request, HttpServletResponse response) throws IOException {
+        Map<String, OAuth2Configuration.OAuth2ClientProperties> providers = oauth2Configuration.getProvider();
+        OAuth2Configuration.OAuth2ClientProperties oauth2ClientProperties = providers.get(provider);
+        Assert.isTrue(oauth2ClientProperties!=null,"未配置provider");
+        try {
+            log.info("login by oauth2 {}" ,code);
+            Map<String, String> tokenRequestHeader = new HashMap<>();
+            tokenRequestHeader.put("Accept", "application/json");
+            Map<String, Object> requestBody = new HashMap<>(16);
+            requestBody.put("client_secret", oauth2ClientProperties.getClientSecret());
+            HashMap<String, Object> requestParamsMap = new HashMap<>();
+            requestParamsMap.put("client_id", oauth2ClientProperties.getClientId());
+            requestParamsMap.put("code", code);
+            requestParamsMap.put("grant_type", "authorization_code");
+            requestParamsMap.put("redirect_uri",
+                    String.format("%s?provider=%s", oauth2ClientProperties.getRedirectUri(), provider));
+            String tokenJsonStr = requestClient.post(oauth2ClientProperties.getTokenUri(), tokenRequestHeader,
+                    requestParamsMap, requestBody);
+            String accessToken = JSONObject.parseObject(tokenJsonStr).getString("access_token");
+            Map<String, String> userInfoRequestHeaders = new HashMap<>();
+            userInfoRequestHeaders.put("Accept", "application/json");
+            Map<String, Object> userInfoQueryMap = new HashMap<>();
+            userInfoQueryMap.put("access_token", accessToken);
+            userInfoRequestHeaders.put("Authorization", "Bearer " + accessToken);
+            String userInfoJsonStr =
+                    requestClient.get(oauth2ClientProperties.getUserInfoUri(),
+                            userInfoRequestHeaders, userInfoQueryMap).toString();
+            String username = JSONObject.parseObject(userInfoJsonStr).getString("login");
+            if(StrUtil.isBlank(username)){
+                throw new ServiceException(ApiStatus.AUTH2_ERROR);
+            }
+            UserDO userDO = new UserDO();
+            userDO.setUsername(username);
+            boolean exist = userDomainService.exist(username);
+            if(!exist){
+                userDomainService.createBySystem(userDO);
+            }
+            TokenDO tokenDO = tokenDomainService.get(username, null);
+            if(tokenDO!=null && tokenDomainService.refresh(tokenDO.getToken())){
+                String redirectUrl = String.format("http://127.0.0.1:5173/login?status=success&token=%s",tokenDO.getToken());
+                response.sendRedirect(redirectUrl);
+                response.setStatus(HttpStatus.SC_MOVED_PERMANENTLY);
+                return;
+            }
+            TokenDO genTokenDO = tokenDomainService.genToken(username);
+            tokenDomainService.add(genTokenDO);
+            String redirectUrl = String.format("http://127.0.0.1:5173/login?status=success&token=%s",genTokenDO.getToken());
+            response.sendRedirect(redirectUrl);
+        }catch (Exception ex){
+            response.setStatus(HttpStatus.SC_MOVED_TEMPORARILY);
+            response.sendRedirect(String.format("%s?authType=%s&error=%s", oauth2ClientProperties.getCallbackUrl(),
+                    "oauth2", "oauth2 auth error"));
         }
-        UserDO userDO = new UserDO();
-        userDO.setUsername(username);
-        boolean exist = userDomainService.exist(username);
-        if(!exist){
-            userDomainService.createBySystem(userDO);
-        }
-        TokenDO tokenDO = tokenDomainService.get(username, null);
-        if(tokenDO!=null && tokenDomainService.refresh(tokenDO.getToken())){
-            String redirectUrl = String.format("http://127.0.0.1:5173/login?status=success&token=%s",tokenDO.getToken());
-            httpServletResponse.sendRedirect(redirectUrl);
-            httpServletResponse.setStatus(HttpStatus.SC_MOVED_PERMANENTLY);
-            return;
-        }
-        TokenDO genTokenDO = tokenDomainService.genToken(username);
-        tokenDomainService.add(genTokenDO);
-        String redirectUrl = String.format("http://127.0.0.1:5173/login?status=success&token=%s",genTokenDO.getToken());
-        httpServletResponse.sendRedirect(redirectUrl);
-        httpServletResponse.setStatus(HttpStatus.SC_MOVED_PERMANENTLY);
+
 //        Result<Object> result = request
     }
 

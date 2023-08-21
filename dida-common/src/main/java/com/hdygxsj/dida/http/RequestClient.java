@@ -18,10 +18,12 @@ package com.hdygxsj.dida.http;
 import com.alibaba.fastjson.JSON;
 import com.hdygxsj.dida.constants.Constants;
 import com.hdygxsj.dida.tools.Result;
+import lombok.NonNull;
 import lombok.SneakyThrows;
 import lombok.extern.slf4j.Slf4j;
 import okhttp3.FormBody;
 import okhttp3.Headers;
+import okhttp3.HttpUrl;
 import okhttp3.MediaType;
 import okhttp3.OkHttpClient;
 import okhttp3.Request;
@@ -84,7 +86,6 @@ public class RequestClient {
                 .build();
 
         Response response = this.httpClient.newCall(request).execute();
-
         T responseData = null;
         int responseCode = response.code();
         if (response.body() != null) {
@@ -164,6 +165,68 @@ public class RequestClient {
         }
         response.close();
         return responseData;
+    }
+
+    private static String addUrlParams(Map<String, Object> requestParams, @NonNull String url) {
+        if (requestParams == null) {
+            return url;
+        }
+
+        HttpUrl httpUrl = HttpUrl.parse(url);
+        if (httpUrl == null) {
+            throw new IllegalArgumentException(String.format("url: %s is invalid", url));
+        }
+        HttpUrl.Builder urlBuilder = httpUrl.newBuilder();
+        for (Map.Entry<String, Object> entry : requestParams.entrySet()) {
+            urlBuilder.addQueryParameter(entry.getKey(), entry.getValue().toString());
+        }
+        return urlBuilder.toString();
+    }
+    @SneakyThrows
+    public  <T> T post(String url, Map<String, String> headers, Map<String, Object> params,Map<String, Object> requestBodyMap,Class<T> clazz) {
+        String finalUrl = addUrlParams(params, url);
+        if (headers == null) {
+            headers = new HashMap<>();
+        }
+        headers.put("Content-Type", Constants.REQUEST_CONTENT_TYPE);
+        Headers headersBuilder = Headers.of(headers);
+        RequestBody requestBody = FormBody.create(MediaType.parse(Constants.REQUEST_CONTENT_TYPE), getParams(requestBodyMap));
+        log.info("POST request to {}, Headers: {}, Params: {}", finalUrl, headersBuilder, params);
+        Request request = new Request.Builder()
+                .headers(headersBuilder)
+                .url(finalUrl)
+                .post(requestBody)
+                .build();
+        Response response = this.httpClient.newCall(request).execute();
+        T responseData = null;
+        if (response.body() != null) {
+            if(clazz == String.class){
+                return (T) response.body().string();
+            }
+            responseData = JSON.parseObject(response.body().string(), clazz);
+        }
+        response.close();
+        return responseData;
+    }
+
+    @SneakyThrows
+    public  String post(String url, Map<String, String> headers, Map<String, Object> params,
+                       Map<String, Object> requestBodyMap) {
+        String finalUrl = addUrlParams(params, url);
+        if (headers == null) {
+            headers = new HashMap<>();
+        }
+        headers.put("Content-Type", Constants.REQUEST_CONTENT_TYPE);
+        Headers headersBuilder = Headers.of(headers);
+        RequestBody requestBody = FormBody.create(MediaType.parse(Constants.REQUEST_CONTENT_TYPE), getParams(requestBodyMap));
+        log.info("POST request to {}, Headers: {}, Params: {}", finalUrl, headersBuilder, params);
+        Request request = new Request.Builder()
+                .headers(headersBuilder)
+                .url(finalUrl)
+                .post(requestBody)
+                .build();
+        Response response = this.httpClient.newCall(request).execute();
+        return response.body().string();
     }
 
     @SneakyThrows
