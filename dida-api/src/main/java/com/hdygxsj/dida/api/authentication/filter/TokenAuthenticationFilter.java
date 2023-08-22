@@ -15,12 +15,10 @@
 
 package com.hdygxsj.dida.api.authentication.filter;
 
-import cn.hutool.core.collection.CollectionUtil;
 import cn.hutool.core.util.StrUtil;
 import com.hdygxsj.dida.api.authentication.base.DidaUser;
 import com.hdygxsj.dida.api.authentication.base.UserAuthenticationContextHolder;
 import com.hdygxsj.dida.api.authentication.service.TokenUserDetailsService;
-import com.hdygxsj.dida.api.domain.entity.RoleDO;
 import com.hdygxsj.dida.api.domain.entity.TokenDO;
 import com.hdygxsj.dida.api.domain.entity.UserDO;
 import com.hdygxsj.dida.api.domain.service.TokenDomainService;
@@ -28,7 +26,6 @@ import com.hdygxsj.dida.api.domain.service.UserDomainService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.context.SecurityContextHolder;
-import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.stereotype.Component;
 import org.springframework.web.filter.OncePerRequestFilter;
 
@@ -37,8 +34,6 @@ import javax.servlet.ServletException;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
-import java.util.Collection;
-import java.util.List;
 
 
 @Component
@@ -66,7 +61,9 @@ public class TokenAuthenticationFilter extends OncePerRequestFilter {
                 UsernamePasswordAuthenticationToken authenticationToken = new UsernamePasswordAuthenticationToken
                         (userDetails, null, userDetails.getAuthorities());
                 SecurityContextHolder.getContext().setAuthentication(authenticationToken);
-                request.setAttribute("opUser", userDetails.getUserDO());
+                UserDO userDO = userDetails.getUserDO();
+                userDO.setPassword(null);
+                request.setAttribute("opUser", userDO);
             }
         }
         filterChain.doFilter(request, response);

@@ -14,12 +14,14 @@ const Content = defineComponent({
         const {
             state,
             changeMenuOption,
-            changeHeaderMenuOptions
+            changeHeaderMenuOptions,
+            changeUserDropdown,
         } = useDataList()
         onMounted(() => {
             getSideMenu(state)
             changeMenuOption(state)
             changeHeaderMenuOptions(state)
+            changeUserDropdown(state)
         })
         const routeStore = useRouteStore()
         const sideKeyRef = ref()
@@ -60,7 +62,7 @@ const Content = defineComponent({
         return (
             <NLayout position='absolute' style={{ height: '100%' }}>
                 <NLayoutHeader style={{ height: '65px' }}>
-                    <Navbar class='tab-horizontal' headerMenuOptions={this.headerMenuOptions}></Navbar>
+                    <Navbar class='tab-horizontal' headerMenuOptions={this.headerMenuOptions} userDropdownOptions={this.userDropdownOptions}></Navbar>
 
                 </NLayoutHeader>
                 <NLayout hasSider={true} position='absolute' style='top:65px'>

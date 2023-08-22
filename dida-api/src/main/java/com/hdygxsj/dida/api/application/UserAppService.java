@@ -15,6 +15,7 @@
 
 package com.hdygxsj.dida.api.application;
 
+import com.hdygxsj.dida.api.application.entity.UserInfoDTO;
 import com.hdygxsj.dida.api.domain.entity.UserDO;
 import com.hdygxsj.dida.api.domain.service.UserDomainService;
 import com.hdygxsj.dida.exceptions.Assert;
@@ -81,5 +82,12 @@ public class UserAppService {
         log.info("add role op user {}",opUser.getUsername());
         userDomainService.addRoles(username,roleCodes);
         return Result.success();
+    }
+
+    @GetMapping("info")
+    public Result<UserInfoDTO> info(@RequestAttribute UserDO opUser){
+        UserInfoDTO userInfoDTO = new UserInfoDTO();
+        userInfoDTO.setBaseInfo(opUser);
+        return Result.success(userInfoDTO);
     }
 }

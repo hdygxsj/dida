@@ -1,5 +1,6 @@
 import { getOauth2Providers, login } from "@/service/modules/login"
-import  { OAuth2Provider } from "@/service/modules/login/types"
+import { OAuth2Provider } from "@/service/modules/login/types"
+import { getUserInfo } from "@/service/modules/user"
 import { useRouteStore } from "@/store/route/route"
 
 import { useUserStore } from "@/store/user/user"
@@ -23,10 +24,10 @@ export const useForm = () => {
     )
     const handleLogin = () => {
         debugger
-        login({ ...variables.loginForm }).then((res: AxiosResponse<string>) => {
-            userStore.setToken(res.data)
+        login({ ...variables.loginForm }).then((res: any) => {
+            userStore.setToken(res.token)
             const path = routeStore.lastRoute
-
+            handleGetUserInfo()
             router.push({ path: path || '/home' })
         })
     }
@@ -41,15 +42,22 @@ export const useForm = () => {
 
     const gotoOAuth2Page = async (oauth2Provider: OAuth2Provider) => {
         window.location.href = `${oauth2Provider.authorizationUri}?client_id=${oauth2Provider.clientId}` +
-          `&response_type=code&redirect_uri=${oauth2Provider.redirectUri}?provider=${oauth2Provider.provider}`
-      }
+            `&response_type=code&redirect_uri=${oauth2Provider.redirectUri}?provider=${oauth2Provider.provider}`
+    }
+
+    const handleGetUserInfo = () =>{
+        getUserInfo().then((res: any) => {
+            debugger
+            userStore.setUserInfo(res.baseInfo)
+        })
+    }
 
     const handleLoginByToken = () => {
         if (route.query.status === 'success') {
             let token = String(route.query.token)
             const path = routeStore.lastRoute
-
             userStore.setToken(token)
+            handleGetUserInfo()
             router.push({ path: path || '/home' })
 
         }

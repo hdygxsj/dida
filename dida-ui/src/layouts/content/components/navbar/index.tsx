@@ -5,6 +5,7 @@ import { defineComponent, PropType, ref, watch } from "vue";
 import { useRoute, useRouter } from "vue-router";
 import Theme from "../theme";
 import styles from './index.module.scss'
+import User from "../user";
 const Navbar = defineComponent({
     name: 'Navbar',
     props: {
@@ -12,6 +13,10 @@ const Navbar = defineComponent({
             type: Array as PropType<any>,
             default: []
         },
+        userDropdownOptions: {
+            type: Array as PropType<any>,
+            default: []
+          }
     },
     setup(props, ctx) {
         const route = useRoute()
@@ -44,6 +49,7 @@ const Navbar = defineComponent({
                     {/* <div>退出</div> */}
 
                     <Theme />
+                    <User userDropdownOptions={this.userDropdownOptions} />
                 </div>
             </div>
         )

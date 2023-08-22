@@ -1,13 +1,14 @@
 import { NIcon } from "naive-ui"
 import { reactive, h } from "vue"
-import { HomeOutlined, BulbOutlined, LockOutlined, TeamOutlined, UserOutlined, SettingOutlined } from "@vicons/antd"
+import { HomeOutlined, BulbOutlined, LockOutlined, TeamOutlined, UserOutlined, SettingOutlined, KeyOutlined, LogoutOutlined } from "@vicons/antd"
 
 export function useDataList() {
     const state = reactive({
         menuOptions: [],
         isShowSide: true,
         sideMenuOptions: [],
-        headerMenuOptions: []
+        headerMenuOptions: [],
+        userDropdownOptions:[]
     })
 
     const renderIcon = (icon: any) => {
@@ -50,6 +51,26 @@ export function useDataList() {
             }
         ]
     }
+    const changeUserDropdown = (state: any) => {
+        state.userDropdownOptions = [
+        //   {
+        //     label: t('user_dropdown.profile'),
+        //     key: 'profile',
+        //     icon: renderIcon(UserOutlined)
+        //   },
+          {
+            label:"修改密码",
+            key: 'password',
+            icon: renderIcon(KeyOutlined),
+            // disabled: userStore.getSecurityConfigType !== 'PASSWORD'
+          },
+          {
+            label: "退出登录",
+            key: 'logout',
+            icon: renderIcon(LogoutOutlined)
+          }
+        ]
+      }
 
     const changeHeaderMenuOptions = (state: any) => {
         state.headerMenuOptions = state.menuOptions.map(
@@ -66,7 +87,7 @@ export function useDataList() {
     return {
         state,
         changeMenuOption,
-
+        changeUserDropdown,
         changeHeaderMenuOptions
 
     }
