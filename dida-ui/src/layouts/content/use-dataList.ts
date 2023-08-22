@@ -53,11 +53,11 @@ export function useDataList() {
     }
     const changeUserDropdown = (state: any) => {
         state.userDropdownOptions = [
-        //   {
-        //     label: t('user_dropdown.profile'),
-        //     key: 'profile',
-        //     icon: renderIcon(UserOutlined)
-        //   },
+          {
+            label: "个人信息",
+            key: 'profile',
+            icon: renderIcon(UserOutlined)
+          },
           {
             label:"修改密码",
             key: 'password',

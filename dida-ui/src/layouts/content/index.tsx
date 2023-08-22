@@ -63,7 +63,6 @@ const Content = defineComponent({
             <NLayout position='absolute' style={{ height: '100%' }}>
                 <NLayoutHeader style={{ height: '65px' }}>
                     <Navbar class='tab-horizontal' headerMenuOptions={this.headerMenuOptions} userDropdownOptions={this.userDropdownOptions}></Navbar>
-
                 </NLayoutHeader>
                 <NLayout hasSider={true} position='absolute' style='top:65px'>
                     {this.isShowSide && (

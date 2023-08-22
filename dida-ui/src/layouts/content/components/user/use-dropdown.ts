@@ -30,7 +30,7 @@ export function useDropDown() {
     } else if (key === 'password') {
       router.push({ path: '/password' })
     } else if (key === 'profile') {
-      router.push({ path: '/profile' })
+      router.push({ path: '/security/user-info' })
     }
   }
 
