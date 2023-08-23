@@ -19,7 +19,7 @@ import { defineComponent, ref, provide, nextTick, computed } from 'vue'
 import {
     darkTheme,
     GlobalThemeOverrides,
-    NConfigProvider, NMessageProvider
+    NConfigProvider, NMessageProvider,zhCN
 } from 'naive-ui'
 import { useThemeStore } from '@/store/theme/theme'
 import themeList from '@/themes'
@@ -55,7 +55,7 @@ const App = defineComponent({
         const themeOverrides: GlobalThemeOverrides =
             themeList[this.currentTheme ? 'dark' : 'light']
         return (
-            <NConfigProvider theme={this.currentTheme} theme-overrides={themeOverrides} style={{ width: '100%', height: '100%' }}>
+            <NConfigProvider locale={zhCN} theme={this.currentTheme} theme-overrides={themeOverrides} style={{ width: '100%', height: '100%' }} >
                 <NMessageProvider>
                     {this.isRouterAlive ? <router-view /> : ''}
                 </NMessageProvider>

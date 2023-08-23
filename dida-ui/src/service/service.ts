@@ -45,7 +45,7 @@ const err = (err: AxiosError): Promise<AxiosError> => {
 }
 
 service.interceptors.request.use((config: InternalAxiosRequestConfig<any>) => {
-    debugger
+    
 
     config.headers = config.headers || {}
 

@@ -1,5 +1,4 @@
 import { axios } from "@/service/service"
-import { method } from "lodash"
 
 
 export function login(params: any): any {

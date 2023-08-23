@@ -26,7 +26,7 @@ const Content = defineComponent({
         const routeStore = useRouteStore()
         const sideKeyRef = ref()
         const getSideMenu = (state: any) => {
-            debugger
+            
             const key = route.meta.activeMenu
             state.isShowSide = route.meta.showSide as boolean
             state.sideMenuOptions =

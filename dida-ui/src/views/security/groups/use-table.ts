@@ -4,9 +4,9 @@ import { reactive } from 'vue'
 export function useTable() {
   const variables = reactive({
     data: [],
-    searchForm:{
-        name:"",
-        code:""
+    searchForm: {
+      name: '',
+      code: ''
     },
     columns: [],
     pagination: {
@@ -16,7 +16,7 @@ export function useTable() {
       pageSizes: [10, 20, 50, 100, 9999]
     }
   })
-  const createColumns = (variables:any) => {
+  const createColumns = (variables: any) => {
     variables.columns = [
       {
         title: '用户组简称',
@@ -41,27 +41,30 @@ export function useTable() {
       },
       {
         title: '操作',
-        width: 300,
-
+        width: 300
       }
     ]
   }
   const getTableData = () => {
-    debugger
     const params = {
-        pageNum:variables.pagination.pageNum,
-        pageSize:variables.pagination.pageSize,
-        name:variables.searchForm.name,
-        code:variables.searchForm.code,
+      pageNum: variables.pagination.pageNum,
+      pageSize: variables.pagination.pageSize,
+      name: variables.searchForm.name,
+      code: variables.searchForm.code
     }
-    listGroups(params).then((res:any)=>{
-        variables.data = res.records
-        variables.pagination.count = res.total
+    listGroups(params).then((res: any) => {
+      variables.data = res.records
+      variables.pagination.count = res.total
     })
+  }
+  const resetPageNum = ()=>{
+    variables.pagination.pageNum = 1
+    getTableData()
   }
   return {
     variables,
     getTableData,
-    createColumns
+    createColumns,
+    resetPageNum
   }
 }

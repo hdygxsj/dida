@@ -23,7 +23,7 @@ export const useForm = () => {
         }
     )
     const handleLogin = () => {
-        debugger
+        
         login({ ...variables.loginForm }).then((res: any) => {
             userStore.setToken(res.token)
             const path = routeStore.lastRoute
@@ -47,7 +47,7 @@ export const useForm = () => {
 
     const handleGetUserInfo = () =>{
         getUserInfo().then((res: any) => {
-            debugger
+            
             userStore.setUserInfo(res.baseInfo)
         })
     }

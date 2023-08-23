@@ -1,25 +1,36 @@
 import Card from '@/components/card'
 import { NButton, NDataTable, NInput, NPagination, NSpace } from 'naive-ui'
-import { defineComponent, toRefs } from 'vue'
+import { defineComponent, ref, toRefs } from 'vue'
 import { useTable } from './use-table'
+import Edit from './components/edit'
 
 const Groups = defineComponent({
   setup(props, ctx) {
-    const { variables, getTableData, createColumns } = useTable()
+    const { variables, getTableData, createColumns,resetPageNum } = useTable()
     createColumns(variables)
     getTableData()
+    const show = ref(false)
+    const editModalRef = ref()
+    const handleAdd = ()=>{
+      show.value = true
+    }
+   
     return {
       ...toRefs(variables),
-      getTableData
+      getTableData,
+      show,
+      handleAdd,
+      editModalRef,resetPageNum
     }
   },
   render() {
     return (
       <NSpace vertical>
+        <Edit ref="editModalRef" v-model:show={this.show} onConfirm={this.resetPageNum}></Edit>
         <Card>
           <NSpace justify='space-between'>
             <NSpace>
-              <NButton type="primary">新增</NButton>
+              <NButton type="primary" onClick={()=>this.editModalRef.onAddOpen()}>新增</NButton>
             </NSpace>
             <NSpace>
               <NInput
@@ -47,13 +58,13 @@ const Groups = defineComponent({
               <NPagination
                 v-model:page={this.pagination.pageNum}
                 v-model:page-size={this.pagination.pageSize}
-                page-count={this.pagination.count}
+                item-count={this.pagination.count}
                 show-size-picker
                 page-sizes={this.pagination.pageSizes}
                 show-quick-jumper
                 // prefix={(e)=>}
                 onUpdatePage={this.getTableData}
-                onUpdatePageSize={this.getTableData}
+                onUpdatePageSize={this.resetPageNum}
                 v-slots={{
                   goto: '跳到'
                 }}

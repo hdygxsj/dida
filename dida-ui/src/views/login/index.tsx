@@ -79,15 +79,11 @@ const Login = defineComponent({
                 : <NButton quaternary color="#fff" onClick={() => this.gotoOAuth2Page(e)}>{e.provider}</NButton>)
               })}
             </NSpace>    
-
                 </div>
-
                 <NSpace size="large" class="head">
                     {/* <div class="head-text">sda</div> */}
-
                     <NButton class="login-regist"   >注册</NButton>
                 </NSpace>
-
             </div>
 
 
