@@ -34,6 +34,7 @@ export default defineConfig({
       ext: '.gz',
       deleteOriginFile: false
     })
+    
   ],
   resolve: {
     alias: {

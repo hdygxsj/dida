@@ -8,7 +8,7 @@ export default {
     path: '/security',
     name: 'security',
     redirect: { name: 'security-users' },
-    meta: { title: '安全中心', showSide: true, },
+    meta: { title: '安全中心', showSide: true, activeMenu: 'security', },
     component: () => import("@/layouts/content"),
     children: [
         {

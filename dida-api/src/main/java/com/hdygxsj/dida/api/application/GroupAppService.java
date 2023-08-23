@@ -16,10 +16,12 @@
 package com.hdygxsj.dida.api.application;
 
 
+import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.hdygxsj.dida.api.domain.entity.GroupDO;
 import com.hdygxsj.dida.api.domain.service.GroupDomainService;
 import com.hdygxsj.dida.tools.Result;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -50,4 +52,14 @@ public class GroupAppService {
         groupDomainService.addUser(groupCode,username);
         return Result.success();
     }
+
+
+    @GetMapping("groups/page")
+    public Result<Page<GroupDO>> page(@RequestParam Integer pageNum,
+                                      @RequestParam Integer pageSize,
+                                      @RequestParam(required = false) String name,
+                                      @RequestParam(required = false) String code){
+        return Result.success(groupDomainService.page(pageNum,pageSize,name,code));
+    }
+
 }

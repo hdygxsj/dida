@@ -15,7 +15,9 @@
 
 package com.hdygxsj.dida.api.domain.service.impl;
 
+import cn.hutool.core.util.StrUtil;
 import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
+import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.hdygxsj.dida.api.domain.entity.GroupDO;
 import com.hdygxsj.dida.api.domain.entity.UserDO;
 import com.hdygxsj.dida.api.domain.entity.UserGroupRelDO;
@@ -51,6 +53,15 @@ public class GroupDomainServiceImpl implements GroupDomainService {
         userGroupRelDO.setGroupCode(groupCode);
         userGroupRelDO.setUsername(username);
         userGroupRelMapper.insert(userGroupRelDO);
+    }
+
+    @Override
+    public Page<GroupDO> page(int pageNum, int pageSize,String name,String code){
+        Page<GroupDO> page = new Page<>(pageNum,pageSize);
+        QueryWrapper<GroupDO> queryWrapper = new QueryWrapper<>();
+        queryWrapper.like(StrUtil.isNotBlank(name),"name",name);
+        queryWrapper.like(StrUtil.isNotBlank(code),"code",code);
+        return groupMapper.selectPage(page,queryWrapper);
     }
 
     @Override

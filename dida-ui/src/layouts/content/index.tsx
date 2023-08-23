@@ -18,20 +18,20 @@ const Content = defineComponent({
             changeUserDropdown,
         } = useDataList()
         onMounted(() => {
-            getSideMenu(state)
             changeMenuOption(state)
+            getSideMenu(state)
             changeHeaderMenuOptions(state)
             changeUserDropdown(state)
         })
         const routeStore = useRouteStore()
         const sideKeyRef = ref()
         const getSideMenu = (state: any) => {
+            debugger
             const key = route.meta.activeMenu
             state.isShowSide = route.meta.showSide as boolean
             state.sideMenuOptions =
                 state.menuOptions.filter((menu: { key: string }) => menu.key === key)[0]
                     ?.children || state.menuOptions
-            state.isShowSide = route.meta.showSide
         }
         watch(
             () => route.path,
