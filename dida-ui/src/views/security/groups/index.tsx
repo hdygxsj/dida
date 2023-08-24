@@ -6,31 +6,48 @@ import Edit from './components/edit'
 
 const Groups = defineComponent({
   setup(props, ctx) {
-    const { variables, getTableData, createColumns,resetPageNum } = useTable()
+    const {
+      variables,
+      getTableData,
+      createColumns,
+      resetPageNum,
+      handletDeleteGroup
+    } = useTable()
     createColumns(variables)
     getTableData()
     const show = ref(false)
     const editModalRef = ref()
-    const handleAdd = ()=>{
+    const handleAdd = () => {
       show.value = true
     }
-   
+
     return {
       ...toRefs(variables),
       getTableData,
       show,
       handleAdd,
-      editModalRef,resetPageNum
+      editModalRef,
+      resetPageNum,
+      handletDeleteGroup
     }
   },
   render() {
     return (
       <NSpace vertical>
-        <Edit ref="editModalRef" v-model:show={this.show} onConfirm={this.resetPageNum}></Edit>
+        <Edit
+          ref='editModalRef'
+          v-model:show={this.show}
+          onConfirm={this.resetPageNum}
+        ></Edit>
         <Card>
           <NSpace justify='space-between'>
             <NSpace>
-              <NButton type="primary" onClick={()=>this.editModalRef.onAddOpen()}>新增</NButton>
+              <NButton
+                type='primary'
+                onClick={() => this.editModalRef.onAddOpen()}
+              >
+                新增
+              </NButton>
             </NSpace>
             <NSpace>
               <NInput

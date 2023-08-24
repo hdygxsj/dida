@@ -18,11 +18,14 @@ package com.hdygxsj.dida.api.domain.service;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.hdygxsj.dida.api.domain.entity.GroupDO;
 import com.hdygxsj.dida.api.domain.entity.UserDO;
+import com.hdygxsj.dida.api.domain.entity.UserGroupRelDO;
 
 import java.util.List;
 
 public interface GroupDomainService {
     void add(GroupDO groupDO);
+
+    GroupDO get(String code);
 
     void addUser(String groupCode, String username);
 
@@ -31,4 +34,8 @@ public interface GroupDomainService {
     List<GroupDO> listByUser(UserDO userDO);
 
     boolean hasGroup(UserDO userDO, String groupCode);
+
+    void deleteByCode(String code);
+
+    Page<UserGroupRelDO> pageGroupMember(String code, int pageNum, int pageSize);
 }

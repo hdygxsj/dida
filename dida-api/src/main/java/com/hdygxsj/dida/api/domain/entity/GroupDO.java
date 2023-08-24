@@ -15,6 +15,7 @@
 
 package com.hdygxsj.dida.api.domain.entity;
 
+import com.baomidou.mybatisplus.annotation.TableId;
 import com.baomidou.mybatisplus.annotation.TableName;
 import io.swagger.v3.oas.annotations.media.Schema;
 import lombok.Getter;
@@ -25,7 +26,7 @@ import java.time.LocalDateTime;
 
 /**
  * <p>
- * 
+ *
  * </p>
  *
  * @author hdygxsj
@@ -41,7 +42,8 @@ public class GroupDO implements Serializable {
 
     private String name;
 
-      private String code;
+    @TableId
+    private String code;
 
     private LocalDateTime createTime;
 

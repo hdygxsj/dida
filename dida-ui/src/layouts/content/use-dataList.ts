@@ -1,6 +1,6 @@
 import { NIcon } from "naive-ui"
 import { reactive, h } from "vue"
-import { HomeOutlined, BulbOutlined, LockOutlined, TeamOutlined, UserOutlined, SettingOutlined, KeyOutlined, LogoutOutlined } from "@vicons/antd"
+import { HomeOutlined, BulbOutlined, LockOutlined, TeamOutlined, UserOutlined, SettingOutlined, KeyOutlined, LogoutOutlined, TrademarkCircleOutlined } from "@vicons/antd"
 
 export function useDataList() {
     const state = reactive({
@@ -40,6 +40,11 @@ export function useDataList() {
                         label: '用户',
                         key: `/security/users`,
                         icon: renderIcon(UserOutlined)
+                    },
+                    {
+                        label: '角色',
+                        key: `/security/roles`,
+                        icon: renderIcon(TrademarkCircleOutlined)
                     },
                     {
                         label: '个人信息',

@@ -34,6 +34,28 @@ export default {
             }
         },
         {
+            path: '/security/groups/:code',
+            name: 'security-group-info',
+            component: components['security-group-info'],
+            meta: {
+                title: '用户组信息',
+                activeMenu: 'security',
+
+                auth: []
+            }
+        },
+        {
+            path: '/security/roles',
+            name: 'security-roles',
+            component: components['security-role'],
+            meta: {
+                title: '角色',
+                activeMenu: 'security',
+
+                auth: []
+            }
+        },
+        {
             path: '/security/user-info',
             name: 'security-info',
             component: components['security-user-info'],

@@ -15,7 +15,7 @@ export default defineComponent({
   props,
   emits: ['update:show', 'cancel', 'confirm'],
   setup(props, ctx) {
-    const data = reactive({
+    const vars = reactive({
       show: false,
       mode: 'add',
       form: {
@@ -26,12 +26,12 @@ export default defineComponent({
       formRef: ref()
     })
     const { onAddOpen, onClose, onEditOpen, getTitle, onConfirm } = useModal(
-      data,
+      vars,
       ctx
     )
     const { rules } = useForm()
     return {
-      ...toRefs(data),
+      ...toRefs(vars),
       onAddOpen,
       onClose,
       onEditOpen,
@@ -49,13 +49,13 @@ export default defineComponent({
         onConfirm={this.onConfirm}
       >
         <NForm model={this.form} ref='formRef' rules={this.rules}>
-          <NFormItem path='code' label='用户组简称'>
+          <NFormItem path='code' label='简称'>
             <NInput v-model:value={this.form.code} placeholder={''}></NInput>
           </NFormItem>
-          <NFormItem path='name' label='用户组全称'>
+          <NFormItem path='name' label='全称'>
             <NInput v-model:value={this.form.name} placeholder={''}></NInput>
           </NFormItem>
-          <NFormItem path='descp' label='说明'>
+          <NFormItem path='descp' label='描述'>
             <NInput v-model:value={this.form.descp} placeholder={''}></NInput>
           </NFormItem>
         </NForm>

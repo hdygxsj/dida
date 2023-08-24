@@ -18,6 +18,9 @@ package com.hdygxsj.dida.api.domain.service.impl;
 import cn.hutool.core.util.StrUtil;
 import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
+import com.hdygxsj.dida.api.authentication.permission.OpObjType;
+import com.hdygxsj.dida.api.authentication.permission.OpRight;
+import com.hdygxsj.dida.api.authentication.permission.Permission;
 import com.hdygxsj.dida.api.domain.entity.GroupDO;
 import com.hdygxsj.dida.api.domain.entity.UserDO;
 import com.hdygxsj.dida.api.domain.entity.UserGroupRelDO;
@@ -27,6 +30,7 @@ import com.hdygxsj.dida.api.mapper.UserGroupRelMapper;
 import com.hdygxsj.dida.exceptions.Assert;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
 import java.util.stream.Collectors;
@@ -48,6 +52,11 @@ public class GroupDomainServiceImpl implements GroupDomainService {
     }
 
     @Override
+    public GroupDO get(String code) {
+        return groupMapper.selectById(code);
+    }
+
+    @Override
     public void addUser(String groupCode, String username) {
         UserGroupRelDO userGroupRelDO = new UserGroupRelDO();
         userGroupRelDO.setGroupCode(groupCode);
@@ -56,12 +65,13 @@ public class GroupDomainServiceImpl implements GroupDomainService {
     }
 
     @Override
-    public Page<GroupDO> page(int pageNum, int pageSize,String name,String code){
-        Page<GroupDO> page = new Page<>(pageNum,pageSize);
+    public Page<GroupDO> page(int pageNum, int pageSize, String name, String code) {
+        Page<GroupDO> page = new Page<>(pageNum, pageSize);
         QueryWrapper<GroupDO> queryWrapper = new QueryWrapper<>();
-        queryWrapper.like(StrUtil.isNotBlank(name),"name",name);
-        queryWrapper.like(StrUtil.isNotBlank(code),"code",code);
-        return groupMapper.selectPage(page,queryWrapper);
+        queryWrapper.like(StrUtil.isNotBlank(name), "name", name);
+        queryWrapper.like(StrUtil.isNotBlank(code), "code", code);
+        queryWrapper.orderByDesc("descp");
+        return groupMapper.selectPage(page, queryWrapper);
     }
 
     @Override
@@ -89,6 +99,24 @@ public class GroupDomainServiceImpl implements GroupDomainService {
         relQuery.eq("group_code", groupCode);
         relQuery.eq("username", userDO.getUsername());
         return userGroupRelMapper.exists(relQuery);
+    }
+
+    @Override
+    @Transactional(rollbackFor = Exception.class)
+    @Permission(objType = OpObjType.GROUP, opRight = OpRight.DELETE)
+    public void deleteByCode(String code) {
+        groupMapper.deleteById(code);
+        QueryWrapper<UserGroupRelDO> queryWrapper = new QueryWrapper<>();
+        queryWrapper.eq("group_code", code);
+        userGroupRelMapper.delete(queryWrapper);
+    }
+
+    @Override
+    public Page<UserGroupRelDO> pageGroupMember(String code, int pageNum, int pageSize) {
+        Page<UserGroupRelDO> page = new Page<>(pageNum, pageSize);
+        QueryWrapper<UserGroupRelDO> queryWrapper = new QueryWrapper<>();
+        queryWrapper.eq("group_code", code);
+        return userGroupRelMapper.selectPage(page, queryWrapper);
     }
 
 }

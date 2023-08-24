@@ -1,7 +1,15 @@
-import { listGroups } from '@/service/modules/group'
-import { reactive } from 'vue'
+import { COLUMN_WIDTH_CONFIG } from '@/common/column-width-config'
+import ButtonLink from '@/components/button-link'
+import TooltipButton from '@/components/tooltip-button'
+import { deleteGroup, listGroups } from '@/service/modules/group'
+import { DeleteOutlined } from '@vicons/antd'
+import { NButton, NSpace, NTooltip } from 'naive-ui'
+import { h, reactive } from 'vue'
+import { useRouter } from 'vue-router'
+import type { Router } from 'vue-router'
 
 export function useTable() {
+  const router: Router = useRouter()
   const variables = reactive({
     data: [],
     searchForm: {
@@ -23,14 +31,36 @@ export function useTable() {
         key: 'code',
         resizable: true,
         minWidth: 200,
-        maxWidth: 600
+        maxWidth: 600,
+        render: (row: any) => {
+          return h(
+            ButtonLink,
+            {
+              onClick: () => router.push({path:`/security/groups/${row.code}`})
+            },
+            {
+              default: () => row.code
+            }
+          )
+        }
       },
       {
         title: '名称',
         key: 'name',
         resizable: true,
         minWidth: 200,
-        maxWidth: 600
+        maxWidth: 600,
+        render: (row: any) => {
+          return h(
+            ButtonLink,
+            {
+              onClick: () => router.push({path:`/security/groups/${row.code}`})
+            },
+            {
+              default: () => row.name
+            }
+          )
+        }
       },
       {
         title: '描述',
@@ -40,8 +70,33 @@ export function useTable() {
         maxWidth: 600
       },
       {
+        title: '维护时间',
+        key: 'updateTime',
+        resizable: true,
+        minWidth: 200,
+        maxWidth: 600
+      },
+      {
         title: '操作',
-        width: 300
+        ...COLUMN_WIDTH_CONFIG.operation(1),
+        render: (row: any) => {
+          return h(NSpace, null, {
+            default: () => [
+              h(
+                TooltipButton,
+                {
+                  type: 'error',
+                  size: 'small',
+                  text: '删除',
+                  onClick: () => handletDeleteGroup(row.code)
+                },
+                {
+                  icon: () => h(DeleteOutlined)
+                }
+              )
+            ]
+          })
+        }
       }
     ]
   }
@@ -57,14 +112,22 @@ export function useTable() {
       variables.pagination.count = res.total
     })
   }
-  const resetPageNum = ()=>{
+  const resetPageNum = () => {
     variables.pagination.pageNum = 1
     getTableData()
+  }
+  const handletDeleteGroup = (code: any) => {
+    debugger
+    deleteGroup(code).then(() => {
+      window.$message.success('删除成功')
+      getTableData()
+    })
   }
   return {
     variables,
     getTableData,
     createColumns,
-    resetPageNum
+    resetPageNum,
+    handletDeleteGroup
   }
 }

@@ -18,9 +18,11 @@ package com.hdygxsj.dida.api.application;
 
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.hdygxsj.dida.api.domain.entity.GroupDO;
+import com.hdygxsj.dida.api.domain.entity.UserGroupRelDO;
 import com.hdygxsj.dida.api.domain.service.GroupDomainService;
 import com.hdygxsj.dida.tools.Result;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -47,9 +49,9 @@ public class GroupAppService {
         return Result.success();
     }
 
-    @PostMapping("{groupCode}/users")
-    public Result<Boolean> addUser(@PathVariable String groupCode, @RequestParam String username){
-        groupDomainService.addUser(groupCode,username);
+    @PostMapping("groups/{groupCode}/users")
+    public Result<Boolean> addUser(@PathVariable String groupCode, @RequestParam String username) {
+        groupDomainService.addUser(groupCode, username);
         return Result.success();
     }
 
@@ -58,8 +60,25 @@ public class GroupAppService {
     public Result<Page<GroupDO>> page(@RequestParam Integer pageNum,
                                       @RequestParam Integer pageSize,
                                       @RequestParam(required = false) String name,
-                                      @RequestParam(required = false) String code){
-        return Result.success(groupDomainService.page(pageNum,pageSize,name,code));
+                                      @RequestParam(required = false) String code) {
+        return Result.success(groupDomainService.page(pageNum, pageSize, name, code));
+    }
+
+    @DeleteMapping("groups/{code}")
+    public void deleteGroup(@PathVariable String code) {
+        groupDomainService.deleteByCode(code);
+    }
+
+    @GetMapping("groups/{code}/member")
+    public Result<Page<UserGroupRelDO>> member(@PathVariable String code,
+                                               @RequestParam Integer pageNum,
+                                               @RequestParam Integer pageSize) {
+        return Result.success(groupDomainService.pageGroupMember(code, pageNum, pageSize));
+    }
+
+    @GetMapping("groups/{code}/info")
+    public Result<GroupDO> info(@PathVariable String code) {
+        return Result.success(groupDomainService.get(code));
     }
 
 }
