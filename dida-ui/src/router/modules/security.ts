@@ -47,7 +47,7 @@ export default {
         {
             path: '/security/roles',
             name: 'security-roles',
-            component: components['security-role'],
+            component: components['security-roles'],
             meta: {
                 title: '角色',
                 activeMenu: 'security',

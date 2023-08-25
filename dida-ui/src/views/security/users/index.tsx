@@ -1,15 +1,70 @@
-
-import { defineComponent } from "vue";
-
+import { defineComponent, toRefs } from 'vue'
+import { useTable } from './use-table'
+import { NButton, NDataTable, NInput, NPagination, NSpace } from 'naive-ui'
+import Card from '@/components/card'
 
 const Users = defineComponent({
-    setup(props, ctx) {
-
-    },
-    render() {
-        return (
-            <div>用户管理</div>
-        )
+  setup(props, ctx) {
+    const { variables, createColumns, resetPageNum, getTableData } = useTable()
+    createColumns(variables)
+    getTableData()
+    return {
+      ...toRefs(variables),
+      createColumns,
+      resetPageNum,
+      getTableData
     }
+  },
+  render() {
+    return (
+      <NSpace vertical>
+        <Card>
+          <NSpace justify='space-between'>
+            <NSpace>
+              <NButton
+                type='primary'
+              >
+                新增
+              </NButton>
+            </NSpace>
+            <NSpace>
+              <NInput
+                v-model:value={this.searchForm.username}
+                placeholder='输入用户号'
+              ></NInput>
+
+              <NButton onClick={this.getTableData}>搜索</NButton>
+            </NSpace>
+          </NSpace>
+        </Card>
+        <Card>
+          <NSpace vertical>
+            <NDataTable
+              columns={this.columns}
+              data={this.data}
+              row-class-name='items'
+            />
+            <NSpace justify='center' align='center'>
+              <span> {`共 ${this.pagination.count} 条`}</span>
+              <NPagination
+                v-model:page={this.pagination.pageNum}
+                v-model:page-size={this.pagination.pageSize}
+                item-count={this.pagination.count}
+                show-size-picker
+                page-sizes={this.pagination.pageSizes}
+                show-quick-jumper
+                // prefix={(e)=>}
+                onUpdatePage={this.getTableData}
+                onUpdatePageSize={this.resetPageNum}
+                v-slots={{
+                  goto: '跳到'
+                }}
+              />
+            </NSpace>
+          </NSpace>
+        </Card>
+      </NSpace>
+    )
+  }
 })
 export default Users

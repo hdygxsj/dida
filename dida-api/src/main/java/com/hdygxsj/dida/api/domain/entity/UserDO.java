@@ -34,6 +34,5 @@ public class UserDO {
     private boolean superUser;
     private LocalDateTime createTime;
     private LocalDateTime updateTime;
-
     private byte type;
 }

@@ -15,14 +15,19 @@
 
 package com.hdygxsj.dida.api.domain.service;
 
-import com.hdygxsj.dida.api.domain.entity.GroupDO;
+import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
+import com.hdygxsj.dida.api.authentication.permission.OpObjType;
+import com.hdygxsj.dida.api.authentication.permission.OpRight;
+import com.hdygxsj.dida.api.authentication.permission.Permission;
 import com.hdygxsj.dida.api.domain.entity.RoleDO;
 import com.hdygxsj.dida.api.domain.entity.UserDO;
+import com.hdygxsj.dida.api.domain.entity.UserRoleRelDO;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
 
 public interface UserDomainService {
-    List<UserDO> listAll();
+    List<UserDO> listAll(String username);
 
     boolean checkUser(String username,String password);
 
@@ -32,11 +37,19 @@ public interface UserDomainService {
 
     void create(UserDO userDO);
 
+    UserDO create(UserDO userDO, List<UserRoleRelDO> userRoleRelList);
+
+    @Permission(objType = OpObjType.ROLE, opRight = {OpRight.WRITE})
+    @Transactional(rollbackFor = Exception.class)
+    void updateRoles(UserDO userDO, List<UserRoleRelDO> userRoleRelList);
+
     void createBySystem(UserDO userDO);
 
     void addRoles(String username, List<String> roles);
 
     List<RoleDO> getRoles(String username);
 
+    Page<UserDO> page(String username, int pageNum, int pageSize);
 
+    void deleteUser(String username);
 }

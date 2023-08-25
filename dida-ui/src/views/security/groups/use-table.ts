@@ -27,7 +27,7 @@ export function useTable() {
   const createColumns = (variables: any) => {
     variables.columns = [
       {
-        title: '用户组简称',
+        title: '简称',
         key: 'code',
         resizable: true,
         minWidth: 200,
@@ -45,22 +45,11 @@ export function useTable() {
         }
       },
       {
-        title: '名称',
+        title: '全称',
         key: 'name',
         resizable: true,
         minWidth: 200,
         maxWidth: 600,
-        render: (row: any) => {
-          return h(
-            ButtonLink,
-            {
-              onClick: () => router.push({path:`/security/groups/${row.code}`})
-            },
-            {
-              default: () => row.name
-            }
-          )
-        }
       },
       {
         title: '描述',

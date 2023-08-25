@@ -16,7 +16,9 @@
 package com.hdygxsj.dida.api.domain.service.impl;
 
 
+import cn.hutool.core.util.StrUtil;
 import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
+import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.hdygxsj.dida.api.authentication.permission.OpObjType;
 import com.hdygxsj.dida.api.authentication.permission.OpRight;
 import com.hdygxsj.dida.api.authentication.permission.Permission;
@@ -44,10 +46,11 @@ public class UserDomainServiceImpl implements UserDomainService {
     private UserRoleRelMapper userRoleRelMapper;
 
 
-
     @Override
-    public List<UserDO> listAll() {
-        return userMapper.selectList(null);
+    public List<UserDO> listAll(String username) {
+        QueryWrapper<UserDO> queryWrapper = new QueryWrapper<>();
+        queryWrapper.like(StrUtil.isNotBlank(username), "username", username);
+        return userMapper.selectList(queryWrapper);
     }
 
     @Override
@@ -78,7 +81,30 @@ public class UserDomainServiceImpl implements UserDomainService {
     }
 
     @Override
-    public void createBySystem(UserDO userDO){
+    @Permission(objType = OpObjType.ROLE, opRight = {OpRight.WRITE})
+    @Permission(objType = OpObjType.USER, opRight = {OpRight.WRITE})
+    @Transactional(rollbackFor = Exception.class)
+    public UserDO create(UserDO userDO, List<UserRoleRelDO> userRoleRelList) {
+        Assert.isTrue(!exist(userDO.getUsername()), "用户已存在");
+        userMapper.insert(userDO);
+        updateRoles(userDO, userRoleRelList);
+        return userDO;
+    }
+
+    @Override
+    @Permission(objType = OpObjType.ROLE, opRight = {OpRight.WRITE})
+    @Transactional(rollbackFor = Exception.class)
+    public void updateRoles(UserDO userDO, List<UserRoleRelDO> userRoleRelList) {
+        QueryWrapper<UserRoleRelDO> queryWrapper = new QueryWrapper<>();
+        queryWrapper.eq("username", userDO.getUsername());
+        userRoleRelMapper.delete(queryWrapper);
+        for (UserRoleRelDO userRoleRelDO : userRoleRelList) {
+            userRoleRelMapper.insert(userRoleRelDO);
+        }
+    }
+
+    @Override
+    public void createBySystem(UserDO userDO) {
         Assert.isTrue(!exist(userDO.getUsername()), "用户已存在");
         userMapper.insert(userDO);
     }
@@ -119,6 +145,25 @@ public class UserDomainServiceImpl implements UserDomainService {
         return roleList;
     }
 
+    @Override
+    public Page<UserDO> page(String username, int pageNum, int pageSize) {
+        Page<UserDO> page = new Page<>(pageNum, pageSize);
+        QueryWrapper<UserDO> queryWrapper = new QueryWrapper<>();
+        queryWrapper.like(StrUtil.isNotBlank(username), "username", username);
+        Page<UserDO> userDOPage = userMapper.selectPage(page, queryWrapper);
+        userDOPage.getRecords().forEach(e -> {
+            e.setPassword(null);
+        });
+        return userDOPage;
 
+    }
+
+    @Override
+    @Permission(objType = OpObjType.USER, opRight = OpRight.DELETE)
+    public void deleteUser(String username) {
+        UserDO userDO = get(username);
+        Assert.isTrue(!userDO.isSuperUser(),"超级用户不允许被删除");
+        userMapper.deleteById(username);
+    }
 }
 

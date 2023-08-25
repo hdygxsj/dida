@@ -13,25 +13,18 @@
  * limitations under the License.
  */
 
-package com.hdygxsj.dida.api.application;
+package com.hdygxsj.dida.api.authentication.permission;
 
-import com.hdygxsj.dida.api.domain.entity.RoleDO;
-import com.hdygxsj.dida.tools.Result;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestParam;
-import org.springframework.web.bind.annotation.RestController;
+import java.lang.annotation.Documented;
+import java.lang.annotation.ElementType;
+import java.lang.annotation.Retention;
+import java.lang.annotation.RetentionPolicy;
+import java.lang.annotation.Target;
 
-@RestController
-@RequestMapping("api/v1/roles")
-public class RoleAppService {
-
-
-    @GetMapping
-    public Result<RoleDO> get(@RequestParam(required = false) String roleCode,
-                              @RequestParam(required = false) String roleName){
-        return Result.success();
-    }
-
+@Target(ElementType.METHOD)
+@Retention(RetentionPolicy.RUNTIME)
+@Documented
+public @interface Permissions {
+    Permission[] value();
 
 }
