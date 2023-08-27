@@ -57,14 +57,14 @@ public class UserAppService {
         return Result.success(userDomainService.listAll(username));
     }
 
-    @PostMapping
-    public Result<Boolean> addUser(String username, String password) {
-        UserDO userDO = new UserDO();
-        userDO.setUsername(username);
-        userDO.setPassword(Sm4.execute(password, Sm4.ENCRYPT));
-        userDomainService.create(userDO);
-        return Result.success();
-    }
+//    @PostMapping
+//    public Result<Boolean> addUser(String username, String password) {
+//        UserDO userDO = new UserDO();
+//        userDO.setUsername(username);
+//        userDO.setPassword(Sm4.execute(password, Sm4.ENCRYPT));
+//        userDomainService.create(userDO);
+//        return Result.success();
+//    }
 
     @GetMapping("page")
     public Result<Page<UserDO>> page(@RequestParam int pageNum,
@@ -100,17 +100,18 @@ public class UserAppService {
     }
 
     @PostMapping
-    public Result<UserDO> addUser(@RequestParam String username,
-                                  @RequestParam(required = false) List<String> roleCodes,
+    public Result<UserDO> createUser(@RequestParam String username,
+                                  @RequestParam(required = false) List<String> roles,
                                   @RequestAttribute UserDO opUser) {
         log.info("add user by  op user {}", opUser.getUsername());
         UserDO userDO = new UserDO();
         userDO.setUsername(username);
         userDO.setSuperUser(false);
-        userDO.setPassword(RandomUtil.randomString(10));
+        String password = RandomUtil.randomString(10);
+        userDO.setPassword(Sm4.execute(password, Sm4.ENCRYPT));
         List<UserRoleRelDO> roleRelList;
-        if (roleCodes != null) {
-            roleRelList = roleCodes.stream().map(e -> {
+        if (roles != null) {
+            roleRelList = roles.stream().map(e -> {
                 UserRoleRelDO userRoleRelDO = new UserRoleRelDO();
                 userRoleRelDO.setRoleCode(e);
                 userRoleRelDO.setUsername(username);

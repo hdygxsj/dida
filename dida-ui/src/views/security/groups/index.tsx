@@ -15,17 +15,12 @@ const Groups = defineComponent({
     } = useTable()
     createColumns(variables)
     getTableData()
-    const show = ref(false)
     const editModalRef = ref()
-    const handleAdd = () => {
-      show.value = true
-    }
+
 
     return {
       ...toRefs(variables),
       getTableData,
-      show,
-      handleAdd,
       editModalRef,
       resetPageNum,
       handletDeleteGroup
@@ -36,7 +31,6 @@ const Groups = defineComponent({
       <NSpace vertical>
         <Edit
           ref='editModalRef'
-          v-model:show={this.show}
           onConfirm={this.resetPageNum}
         ></Edit>
         <Card>

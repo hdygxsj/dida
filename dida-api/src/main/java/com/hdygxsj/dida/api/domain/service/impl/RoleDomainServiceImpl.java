@@ -16,14 +16,21 @@
 package com.hdygxsj.dida.api.domain.service.impl;
 
 import com.hdygxsj.dida.api.authentication.permission.OpObjType;
+import com.hdygxsj.dida.api.domain.entity.RoleDO;
 import com.hdygxsj.dida.api.domain.entity.RoleObjectRelDO;
 import com.hdygxsj.dida.api.domain.service.RoleDomainService;
+import com.hdygxsj.dida.api.mapper.RoleMapper;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
 
 @Service
 public class RoleDomainServiceImpl implements RoleDomainService {
+
+    @Autowired
+    private RoleMapper roleMapper;
+
     @Override
     public void addPermission(String roleCode, OpObjType objType, Long permission) {
 
@@ -31,6 +38,11 @@ public class RoleDomainServiceImpl implements RoleDomainService {
 
     @Override
     public List<RoleObjectRelDO> listPermission(String roleCode) {
+        return null;
+    }
+
+    @Override
+    public List<RoleDO> list(String roleCode) {
         return null;
     }
 }

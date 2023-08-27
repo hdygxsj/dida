@@ -7,7 +7,7 @@ export function getUserInfo(): any {
   })
 }
 
-export function pageUsers(params:any): any {
+export function pageUsers(params: any): any {
   return axios({
     url: 'api/v1/users/page',
     method: 'get',
@@ -15,9 +15,17 @@ export function pageUsers(params:any): any {
   })
 }
 
-export function deleteUser(username:string) :any{
-    return axios({
-        url: `api/v1/users/${username}`,
-        method: 'delete',
-      })
+export function deleteUser(username: string): any {
+  return axios({
+    url: `api/v1/users/${username}`,
+    method: 'delete'
+  })
+}
+
+export function addUser(params: any) {
+  return axios({
+    url: `api/v1/users`,
+    method: 'post',
+    params
+  })
 }

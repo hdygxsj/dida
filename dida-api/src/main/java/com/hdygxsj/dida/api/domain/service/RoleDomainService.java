@@ -16,6 +16,7 @@
 package com.hdygxsj.dida.api.domain.service;
 
 import com.hdygxsj.dida.api.authentication.permission.OpObjType;
+import com.hdygxsj.dida.api.domain.entity.RoleDO;
 import com.hdygxsj.dida.api.domain.entity.RoleObjectRelDO;
 
 import java.util.List;
@@ -26,5 +27,6 @@ public interface RoleDomainService {
 
     List<RoleObjectRelDO> listPermission(String roleCode);
 
+    List<RoleDO> list(String roleCode);
 
 }

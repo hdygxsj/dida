@@ -5,7 +5,7 @@ import TooltipButton from '@/components/tooltip-button'
 import { NSpace } from 'naive-ui'
 import { h, reactive } from 'vue'
 
-export const useTable = () => {
+export const useTable = (vars: any, ctx: any) => {
   const variables = reactive({
     data: [],
     columns: [],
@@ -21,7 +21,10 @@ export const useTable = () => {
   })
   const handlerDeleteUser = (username: string) => {
     debugger
-    deleteUser(username)
+    deleteUser(username).then(()=>{
+      window.$message.success('删除成功')
+      getTableData()
+    })
   }
   const createColumns = (variables: any) => {
     variables.columns = [
@@ -65,7 +68,7 @@ export const useTable = () => {
                   type: 'info',
                   size: 'small',
                   text: '设置角色',
-                //   onClick: () => handlerDeleteUser(row.username)
+                  onClick: () => vars.editModalRef.onEditOpen(row.username)
                 },
                 {
                   icon: () => h(TrademarkCircleOutlined)
