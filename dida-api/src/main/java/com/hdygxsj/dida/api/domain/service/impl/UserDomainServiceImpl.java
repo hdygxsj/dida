@@ -58,7 +58,7 @@ public class UserDomainServiceImpl implements UserDomainService {
         QueryWrapper<UserDO> queryWrapper = new QueryWrapper<>();
         queryWrapper.eq("username", username);
         queryWrapper.eq("password", password);
-        queryWrapper.eq("type", 1);
+//        queryWrapper.eq("type", 1);
         return userMapper.selectOne(queryWrapper) != null;
     }
 

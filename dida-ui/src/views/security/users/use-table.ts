@@ -57,6 +57,20 @@ export const useTable = (vars: any, ctx: any) => {
           }
         }
       },
+            {
+        title: '是否启用',
+        key: 'type',
+        resizable: true,
+        minWidth: 200,
+        maxWidth: 600,
+        render: (row: any) => {
+          if (row.type === 1) {
+            return '是'
+          } else {
+            return '否'
+          }
+        }
+      },
       //   {
       //     title: '是否启用',
       //     key: 'type',

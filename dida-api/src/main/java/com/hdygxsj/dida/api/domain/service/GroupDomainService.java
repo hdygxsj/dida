@@ -37,5 +37,7 @@ public interface GroupDomainService {
 
     void deleteByCode(String code);
 
-    Page<UserGroupRelDO> pageGroupMember(String code, int pageNum, int pageSize);
+    Page<UserGroupRelDO> pageGroupMember(String code,String username, int pageNum, int pageSize);
+
+    void deleteMember(String code,String username);
 }

@@ -49,9 +49,9 @@ public class GroupAppService {
         return Result.success();
     }
 
-    @PostMapping("groups/{groupCode}/users")
-    public Result<Boolean> addUser(@PathVariable String groupCode, @RequestParam String username) {
-        groupDomainService.addUser(groupCode, username);
+    @PostMapping("groups/{code}/members")
+    public Result<Boolean> addUser(@PathVariable String code, @RequestParam String username) {
+        groupDomainService.addUser(code, username);
         return Result.success();
     }
 
@@ -69,11 +69,18 @@ public class GroupAppService {
         groupDomainService.deleteByCode(code);
     }
 
-    @GetMapping("groups/{code}/member")
-    public Result<Page<UserGroupRelDO>> member(@PathVariable String code,
-                                               @RequestParam Integer pageNum,
-                                               @RequestParam Integer pageSize) {
-        return Result.success(groupDomainService.pageGroupMember(code, pageNum, pageSize));
+    @GetMapping("groups/{code}/members")
+    public Result<Page<UserGroupRelDO>> getMembers(@PathVariable String code,
+                                                   @RequestParam String username,
+                                                   @RequestParam Integer pageNum,
+                                                   @RequestParam Integer pageSize) {
+        return Result.success(groupDomainService.pageGroupMember(code, username, pageNum, pageSize));
+    }
+
+    @DeleteMapping("groups/{code}/members/{username}")
+    public void deleteMember(@PathVariable String code,
+                             @PathVariable String username) {
+        groupDomainService.deleteMember(code, username);
     }
 
     @GetMapping("groups/{code}/info")

@@ -112,11 +112,19 @@ public class GroupDomainServiceImpl implements GroupDomainService {
     }
 
     @Override
-    public Page<UserGroupRelDO> pageGroupMember(String code, int pageNum, int pageSize) {
+    public Page<UserGroupRelDO> pageGroupMember(String code, String username, int pageNum, int pageSize) {
         Page<UserGroupRelDO> page = new Page<>(pageNum, pageSize);
         QueryWrapper<UserGroupRelDO> queryWrapper = new QueryWrapper<>();
         queryWrapper.eq("group_code", code);
+        queryWrapper.like(StrUtil.isNotBlank(username), "username", username);
         return userGroupRelMapper.selectPage(page, queryWrapper);
     }
 
+    @Override
+    public void deleteMember(String code, String username) {
+        QueryWrapper<UserGroupRelDO> queryWrapper = new QueryWrapper<>();
+        queryWrapper.eq("group_code", code);
+        queryWrapper.eq("username", username);
+        userGroupRelMapper.delete(queryWrapper);
+    }
 }

@@ -72,7 +72,6 @@ public class UserAppService {
                                      @RequestParam(required = false) String username
     ) {
         return Result.success(userDomainService.page(username, pageNum, pageSize));
-
     }
 
     @PutMapping("{username}/reset-password")
@@ -101,13 +100,14 @@ public class UserAppService {
 
     @PostMapping
     public Result<UserDO> createUser(@RequestParam String username,
-                                  @RequestParam(required = false) List<String> roles,
-                                  @RequestAttribute UserDO opUser) {
+                                     @RequestParam(required = false) List<String> roles,
+                                     @RequestAttribute UserDO opUser) {
         log.info("add user by  op user {}", opUser.getUsername());
         UserDO userDO = new UserDO();
         userDO.setUsername(username);
         userDO.setSuperUser(false);
         String password = RandomUtil.randomString(10);
+        userDO.setType((byte) 1);
         userDO.setPassword(Sm4.execute(password, Sm4.ENCRYPT));
         List<UserRoleRelDO> roleRelList;
         if (roles != null) {
