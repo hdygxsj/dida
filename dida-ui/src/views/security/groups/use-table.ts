@@ -106,7 +106,7 @@ export function useTable() {
     getTableData()
   }
   const handletDeleteGroup = (code: any) => {
-    debugger
+    
     deleteGroup(code).then(() => {
       window.$message.success('删除成功')
       getTableData()

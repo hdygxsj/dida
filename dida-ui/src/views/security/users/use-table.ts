@@ -2,7 +2,7 @@ import { COLUMN_WIDTH_CONFIG } from '@/common/column-width-config'
 import { deleteUser, pageUsers } from '@/service/modules/user'
 import { DeleteOutlined, TrademarkCircleOutlined } from '@vicons/antd'
 import TooltipButton from '@/components/tooltip-button'
-import { NSpace } from 'naive-ui'
+import { NSpace, useDialog } from 'naive-ui'
 import { h, reactive } from 'vue'
 
 export const useTable = (vars: any, ctx: any) => {
@@ -20,10 +20,18 @@ export const useTable = (vars: any, ctx: any) => {
     }
   })
   const handlerDeleteUser = (username: string) => {
-    debugger
-    deleteUser(username).then(()=>{
+    
+    deleteUser(username).then(() => {
       window.$message.success('删除成功')
       getTableData()
+    })
+  }
+  const handleUserAdd = (password: any) => {
+    
+    resetPageNum()
+    window.$dialog.create({
+      title: '创建成功',
+      content: `用户的初始密码是${password},你将是最后一次见到这个密码，请立即修改密码`
     })
   }
   const createColumns = (variables: any) => {
@@ -114,6 +122,7 @@ export const useTable = (vars: any, ctx: any) => {
     variables,
     createColumns,
     resetPageNum,
-    getTableData
+    getTableData,
+    handleUserAdd
   }
 }

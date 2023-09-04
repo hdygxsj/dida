@@ -2,15 +2,16 @@ import Modal from '@/components/modal'
 import { NForm, NFormItem, NInput, NModal, NSelect } from 'naive-ui'
 import { PropType, defineComponent, reactive, ref, toRefs } from 'vue'
 import { useModal } from './use-modal'
-import { useDialog } from 'naive-ui'
 const props = {
   show: {
     type: Boolean as PropType<boolean>,
     default: false
   }
 }
+
 export default defineComponent({
   emits: ['confirm', 'update:show', 'cancel'],
+  props,
   setup(props, ctx) {
     const vars = reactive({
       show: false,
@@ -19,11 +20,12 @@ export default defineComponent({
         username: '',
         roles: []
       },
-      formRef: ref()
+      formRef: ref(),
+      initPassword:(password:any)=>{
+  
+      }
     })
-    useDialog().create({
-      content:'dasd'
-    })
+
     const { onClose, onConfirm, onAddOpen, onEditOpen } = useModal(vars, ctx)
     return {
       ...toRefs(vars),

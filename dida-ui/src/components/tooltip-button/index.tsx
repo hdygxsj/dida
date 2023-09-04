@@ -19,7 +19,6 @@ export default defineComponent({
   },
   setup(props, ctx) {
     const handleClick = () => {
-        debugger
       ctx.emit('click')
     }
     return {

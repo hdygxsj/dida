@@ -56,7 +56,17 @@ create table if not exists dida_role_object_rel
     primary key (role_code, obejct_type)
 );
 
-create table if not exists dida_swith;
+create table dida.dida_switch
+(
+    namespace_code varchar(10)                        not null,
+    swith_key      varchar(20)                        not null,
+    type           text                               not null,
+    create_time    datetime default CURRENT_TIMESTAMP null,
+    update_time    datetime default CURRENT_TIMESTAMP null on update CURRENT_TIMESTAMP,
+    primary key (namespace_code, swith_key)
+);
+
+
 
 create table if not exists dida_token
 (

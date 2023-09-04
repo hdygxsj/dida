@@ -40,7 +40,9 @@ const err = (err: AxiosError): Promise<AxiosError> => {
         window.$message.error('未登录或会话过期，请重新登陆')
         router.push({ path: '/login' })
     }
-
+    if(err.response?.status === 500){
+        window.$message.error('服务端异常，请联系管理员排查')
+    }
     return Promise.reject(err)
 }
 

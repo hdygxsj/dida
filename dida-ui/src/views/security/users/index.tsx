@@ -1,30 +1,46 @@
 import { defineComponent, reactive, ref, toRefs } from 'vue'
 import { useTable } from './use-table'
-import { NButton, NDataTable, NInput, NPagination, NSpace } from 'naive-ui'
+import {
+  NButton,
+  NDataTable,
+  NDialogProvider,
+  NInput,
+  NPagination,
+  NSpace,
+  useDialog
+} from 'naive-ui'
 import Card from '@/components/card'
 import Edit from './components/edit'
 
 const Users = defineComponent({
   setup(props, ctx) {
+    window.$dialog = useDialog()
     const vars = reactive({
-      editModalRef : ref()
+      editModalRef: ref()
     })
-    const { variables, createColumns, resetPageNum, getTableData } = useTable(vars,ctx)
+    const {
+      variables,
+      createColumns,
+      resetPageNum,
+      getTableData,
+      handleUserAdd
+    } = useTable(vars, ctx)
     createColumns(variables)
     getTableData()
-    
+
     return {
       ...toRefs(variables),
       createColumns,
       resetPageNum,
       getTableData,
-      ...toRefs(vars)
+      ...toRefs(vars),
+      handleUserAdd
     }
   },
   render() {
     return (
       <NSpace vertical>
-        <Edit  ref="editModalRef" onConfirm={this.resetPageNum}></Edit>
+        <Edit ref='editModalRef' onConfirm={this.handleUserAdd}></Edit>
         <Card>
           <NSpace justify='space-between'>
             <NSpace>

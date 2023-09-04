@@ -4,10 +4,7 @@ import router from './router'
 import App from './App'
 import { createPinia } from 'pinia'
 import piniaPluginPersistedstate from 'pinia-plugin-persistedstate'
-import { useMessage } from 'naive-ui/es/message'
-import { useDialog } from 'naive-ui'
 
-window.$message = useMessage()
 createApp(App)
 const pinia = createPinia()
 

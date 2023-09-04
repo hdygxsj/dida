@@ -6,7 +6,7 @@ export const useModal = (
   ctx: SetupContext<('update:show' | 'cancel' | 'confirm')[]>
 ) => {
   const onAddOpen = () => {
-    debugger
+    
     data.show = true
     data.mode = 'add'
   }

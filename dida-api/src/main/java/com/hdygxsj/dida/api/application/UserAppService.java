@@ -121,6 +121,7 @@ public class UserAppService {
             roleRelList = new ArrayList<>();
         }
         userDomainService.create(userDO, roleRelList);
+        userDO.setPassword(password);
         return Result.success(userDO);
     }
 

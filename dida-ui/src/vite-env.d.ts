@@ -5,7 +5,8 @@ declare module '*.jpg'
 declare module '*.jpeg'
 declare global {
     interface Window {
-        $message: any
+        $message: any,
+        $dialog:any
     }
 }
 declare module '*.vue' {

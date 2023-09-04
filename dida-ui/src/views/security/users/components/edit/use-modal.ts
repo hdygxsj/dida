@@ -3,36 +3,31 @@ import { useDialog } from 'naive-ui'
 import { SetupContext } from 'vue'
 
 export const useModal = (
-  data: any,
+  state: any,
   ctx: SetupContext<('update:show' | 'cancel' | 'confirm')[]>
 ) => {
- 
+
   const onAddOpen = () => {
-    data.show = true
-    data.mode = 'add'
+    state.show = true
+    state.mode = 'add'
   }
   const onEditOpen = (username: string) => {
-    data.show = true
-    data.mode = 'edit'
-    data.form.username = username
+    state.show = true
+    state.mode = 'edit'
+    state.form.username = username
   }
   const onConfirm = () => {
-    debugger
+    
     const params = {
-      ...data.form
+      ...state.form
     }
     addUser(params).then((res: any) => {
-      const dialog =  useDialog()
-      dialog.create({
-        title:'创建成功',
-        content:`用户的初始密码是${res.password},你将是最后一次见到这个密码，请立即修改密码`
-      })
-      ctx.emit('confirm')
+      ctx.emit('confirm', res.password)
       onClose()
     })
   }
   const onClose = () => {
-    data.show = false
+    state.show = false
     ctx.emit('update:show', false)
   }
   return { onClose, onConfirm, onAddOpen, onEditOpen }

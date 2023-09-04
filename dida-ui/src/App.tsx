@@ -17,53 +17,64 @@
 import { defineComponent, ref, provide, nextTick, computed } from 'vue'
 
 import {
-    darkTheme,
-    GlobalThemeOverrides,
-    NConfigProvider, NMessageProvider,zhCN
+  darkTheme,
+  GlobalThemeOverrides,
+  NConfigProvider,
+  NDialogProvider,
+  NMessageProvider,
+  useDialog,
+  zhCN
 } from 'naive-ui'
 import { useThemeStore } from '@/store/theme/theme'
 import themeList from '@/themes'
 
 const App = defineComponent({
-    name: 'App',
-    components: {
-        NConfigProvider,
-        NMessageProvider
-    },
-    setup() {
-        const isRouterAlive = ref(true)
-        const themeStore = useThemeStore()
-        const reload = () => {
-            isRouterAlive.value = false
-            nextTick(() => {
-                isRouterAlive.value = true
-            })
-        }
-        const currentTheme = computed(() =>
-            themeStore.darkTheme ? darkTheme : undefined
-        )
-
-        provide('reload', reload)
-        return {
-            reload,
-            isRouterAlive,
-            currentTheme
-
-        }
-    },
-    render() {
-        const themeOverrides: GlobalThemeOverrides =
-            themeList[this.currentTheme ? 'dark' : 'light']
-        return (
-            <NConfigProvider locale={zhCN} theme={this.currentTheme} theme-overrides={themeOverrides} style={{ width: '100%', height: '100%' }} >
-                <NMessageProvider>
-                    {this.isRouterAlive ? <router-view /> : ''}
-                </NMessageProvider>
-            </NConfigProvider>
-            // <div>?</div>
-        )
+  name: 'App',
+  components: {
+    NConfigProvider,
+    NMessageProvider,
+    NDialogProvider
+  },
+  setup() {
+    // window.$dialog = useDialog()
+    const isRouterAlive = ref(true)
+    const themeStore = useThemeStore()
+    const reload = () => {
+      isRouterAlive.value = false
+      nextTick(() => {
+        isRouterAlive.value = true
+      })
     }
+    const currentTheme = computed(() =>
+      themeStore.darkTheme ? darkTheme : undefined
+    )
 
+    provide('reload', reload)
+    return {
+      reload,
+      isRouterAlive,
+      currentTheme
+    }
+  },
+  render() {
+    const themeOverrides: GlobalThemeOverrides =
+      themeList[this.currentTheme ? 'dark' : 'light']
+    return (
+      <NConfigProvider
+        locale={zhCN}
+        theme={this.currentTheme}
+        theme-overrides={themeOverrides}
+        style={{ width: '100%', height: '100%' }}
+      >
+        <NMessageProvider>
+          <NDialogProvider>
+            {this.isRouterAlive ? <router-view /> : ''}
+          </NDialogProvider>
+        </NMessageProvider>
+      </NConfigProvider>
+      // <div>?</div>
+    )
+  }
 })
 
 export default App
