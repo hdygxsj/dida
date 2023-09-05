@@ -5,16 +5,15 @@ export const useModal = (
   data: any,
   ctx: SetupContext<('update:show' | 'cancel' | 'confirm')[]>
 ) => {
-  const onAddOpen = () => {
-    
+  const handleAddOpen = () => {
     data.show = true
     data.mode = 'add'
   }
-  const onEditOpen = () => {
+  const handleEditOpen = () => {
     data.show = true
     data.mode = 'edit'
   }
-  const onConfirm = async () => {
+  const handleConfirm = async () => {
     let error = await data.formRef.validate((errors: any) => {
       if (errors) {
         return true
@@ -29,7 +28,7 @@ export const useModal = (
         addGroup({ ...data.form }).then(() => {
           window.$message.success('添加成功')
           ctx.emit('confirm')
-          onClose()
+          handleClose()
         })
       }
     }
@@ -41,15 +40,15 @@ export const useModal = (
       return '编辑'
     }
   }
-  const onClose = () => {
+  const handleClose = () => {
     data.show = false
     ctx.emit('update:show', false)
   }
   return {
-    onAddOpen,
-    onClose,
-    onEditOpen,
+    handleAddOpen,
+    handleClose,
+    handleEditOpen,
     getTitle,
-    onConfirm
+    handleConfirm
   }
 }

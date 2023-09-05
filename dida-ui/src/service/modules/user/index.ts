@@ -7,6 +7,14 @@ export function getUserInfo(): any {
   })
 }
 
+export function listUser(params: any): any {
+  return axios({
+    url: 'api/v1/users',
+    method: 'get',
+    params
+  })
+}
+
 export function pageUsers(params: any): any {
   return axios({
     url: 'api/v1/users/page',

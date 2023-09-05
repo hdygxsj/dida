@@ -16,8 +16,11 @@
 package com.hdygxsj.dida.api.application;
 
 import com.hdygxsj.dida.api.domain.entity.RoleDO;
+import com.hdygxsj.dida.api.domain.service.RoleDomainService;
 import com.hdygxsj.dida.tools.Result;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
@@ -26,12 +29,18 @@ import org.springframework.web.bind.annotation.RestController;
 @RequestMapping("api/v1/roles")
 public class RoleAppService {
 
+    @Autowired
+    private RoleDomainService roleDomainService;
 
     @GetMapping
     public Result<RoleDO> get(@RequestParam(required = false) String roleCode,
-                              @RequestParam(required = false) String roleName){
+                              @RequestParam(required = false) String roleName) {
         return Result.success();
     }
 
+    @PostMapping
+    public void addRole(String role, String name) {
+
+    }
 
 }

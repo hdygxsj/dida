@@ -46,7 +46,7 @@ const Users = defineComponent({
             <NSpace>
               <NButton
                 type='primary'
-                onClick={() => this.editModalRef.onAddOpen()}
+                onClick={() => this.editModalRef.handleAddOpen()}
               >
                 新增
               </NButton>

@@ -6,29 +6,27 @@ export const useModal = (
   state: any,
   ctx: SetupContext<('update:show' | 'cancel' | 'confirm')[]>
 ) => {
-
-  const onAddOpen = () => {
+  const handleAddOpen = () => {
     state.show = true
     state.mode = 'add'
   }
-  const onEditOpen = (username: string) => {
+  const handleEditOpen = (username: string) => {
     state.show = true
     state.mode = 'edit'
     state.form.username = username
   }
-  const onConfirm = () => {
-    
+  const handleConfirm = () => {
     const params = {
       ...state.form
     }
     addUser(params).then((res: any) => {
       ctx.emit('confirm', res.password)
-      onClose()
+      handleClose()
     })
   }
-  const onClose = () => {
+  const handleClose = () => {
     state.show = false
     ctx.emit('update:show', false)
   }
-  return { onClose, onConfirm, onAddOpen, onEditOpen }
+  return { handleClose, handleConfirm, handleAddOpen, handleEditOpen }
 }

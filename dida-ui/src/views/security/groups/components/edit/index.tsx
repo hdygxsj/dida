@@ -25,19 +25,22 @@ export default defineComponent({
       },
       formRef: ref()
     })
-    const { onAddOpen, onClose, onEditOpen, getTitle, onConfirm } = useModal(
-      vars,
-      ctx
-    )
+    const {
+      handleAddOpen,
+      handleClose,
+      handleEditOpen,
+      getTitle,
+      handleConfirm
+    } = useModal(vars, ctx)
     const { rules } = useForm()
     return {
       ...toRefs(vars),
-      onAddOpen,
-      onClose,
-      onEditOpen,
+      handleAddOpen,
+      handleClose,
+      handleEditOpen,
       getTitle,
       rules,
-      onConfirm
+      handleConfirm
     }
   },
   render() {
@@ -45,8 +48,8 @@ export default defineComponent({
       <Modal
         v-model:show={this.show}
         title={this.getTitle()}
-        onCancel={this.onClose}
-        onConfirm={this.onConfirm}
+        onCancel={this.handleClose}
+        onConfirm={this.handleConfirm}
       >
         <NForm model={this.form} ref='formRef' rules={this.rules}>
           <NFormItem path='code' label='简称'>

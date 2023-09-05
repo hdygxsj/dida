@@ -21,18 +21,17 @@ export default defineComponent({
         roles: []
       },
       formRef: ref(),
-      initPassword:(password:any)=>{
-  
-      }
+      initPassword: (password: any) => {}
     })
 
-    const { onClose, onConfirm, onAddOpen, onEditOpen } = useModal(vars, ctx)
+    const { handleClose, handleConfirm, handleAddOpen, handleEditOpen } =
+      useModal(vars, ctx)
     return {
       ...toRefs(vars),
-      onClose,
-      onConfirm,
-      onAddOpen,
-      onEditOpen
+      handleClose,
+      handleConfirm,
+      handleAddOpen,
+      handleEditOpen
     }
   },
   render() {
@@ -40,7 +39,7 @@ export default defineComponent({
       <Modal
         v-model:show={this.show}
         title='新增用户'
-        onCancel={this.onClose}
+        onCancel={this.handleClose}
         onConfirm={this.onConfirm}
       >
         <NForm model={this.form} ref='formRef'>

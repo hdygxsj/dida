@@ -1,10 +1,11 @@
 import Card from '@/components/card'
 import { getGroup } from '@/service/modules/group'
 import { NButton, NDataTable, NPageHeader, NPagination, NSpace } from 'naive-ui'
-import { defineComponent, reactive, toRefs } from 'vue'
+import { PropType, defineComponent, reactive, ref, toRefs } from 'vue'
 import { useRouter } from 'vue-router'
 import type { Router } from 'vue-router'
 import { useTable } from './use-table'
+import AddModal from './components/add'
 
 export default defineComponent({
   setup(props, ctx) {
@@ -14,6 +15,7 @@ export default defineComponent({
       name: '',
       descp: ''
     })
+    const addMemberModalRef = ref()
     const { tableVariables, getTableData, resetPageNum, createColumns } =
       useTable(vars, props, ctx)
     const init = () => {
@@ -34,12 +36,17 @@ export default defineComponent({
       ...toRefs(tableVariables),
       onBack,
       getTableData,
-      resetPageNum
+      resetPageNum,
+      addMemberModalRef
     }
   },
   render() {
     return (
       <NSpace vertical>
+        <AddModal
+          ref='addMemberModalRef'
+          onConfirm={this.getTableData}
+        ></AddModal>
         <NSpace vertical>
           <NPageHeader
             title={this.code}
@@ -53,13 +60,17 @@ export default defineComponent({
         <Card>
           <NSpace justify='space-between'>
             <NSpace>
-              <NButton type='primary'>新增</NButton>
+              <NButton
+                type='primary'
+                onClick={() => this.addMemberModalRef.handleOpen(this.code)}
+              >
+                新增
+              </NButton>
             </NSpace>
             <NSpace></NSpace>
           </NSpace>
         </Card>
         <Card>
-          {' '}
           <NSpace vertical>
             <NDataTable
               columns={this.columns}

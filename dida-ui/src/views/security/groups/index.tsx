@@ -17,7 +17,6 @@ const Groups = defineComponent({
     getTableData()
     const editModalRef = ref()
 
-
     return {
       ...toRefs(variables),
       getTableData,
@@ -29,16 +28,13 @@ const Groups = defineComponent({
   render() {
     return (
       <NSpace vertical>
-        <Edit
-          ref='editModalRef'
-          onConfirm={this.resetPageNum}
-        ></Edit>
+        <Edit ref='editModalRef' onConfirm={this.resetPageNum}></Edit>
         <Card>
           <NSpace justify='space-between'>
             <NSpace>
               <NButton
                 type='primary'
-                onClick={() => this.editModalRef.onAddOpen()}
+                onClick={() => this.editModalRef.handleAddOpen()}
               >
                 新增
               </NButton>
