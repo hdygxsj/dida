@@ -13,19 +13,41 @@
  * limitations under the License.
  */
 
-package com.hdygxsj.dida.api.mapper;
+package com.hdygxsj.dida.api.service.entity;
 
-import com.baomidou.mybatisplus.core.mapper.BaseMapper;
-import com.hdygxsj.dida.api.service.entity.RoleObjectRelDO;
+import com.baomidou.mybatisplus.annotation.TableName;
+import io.swagger.v3.oas.annotations.media.Schema;
+import lombok.Getter;
+import lombok.Setter;
+
+import java.io.Serializable;
+import java.time.LocalDateTime;
 
 /**
  * <p>
- *  Mapper 接口
+ * 
  * </p>
  *
  * @author hdygxsj
  * @since 2023-07-31
  */
-public interface RoleObjectRelMapper extends BaseMapper<RoleObjectRelDO> {
+@Getter
+@Setter
+@TableName("dida_role_object_rel")
+@Schema(name = "RoleObjectRelDO", description = "")
+public class RoleObjectRelDO implements Serializable {
 
+    private static final long serialVersionUID = 1L;
+
+      private String obejctType;
+
+      private String objectName;
+
+      private String roleCode;
+
+    private Long permission;
+
+    private LocalDateTime createTime;
+
+    private LocalDateTime updateTime;
 }

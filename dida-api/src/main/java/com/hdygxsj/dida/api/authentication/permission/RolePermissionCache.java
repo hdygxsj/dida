@@ -16,8 +16,8 @@
 package com.hdygxsj.dida.api.authentication.permission;
 
 import com.hdygxsj.dida.api.authentication.base.UserAuthenticationContextHolder;
-import com.hdygxsj.dida.api.domain.entity.RoleDO;
-import com.hdygxsj.dida.api.domain.entity.RoleObjectRelDO;
+import com.hdygxsj.dida.api.service.entity.RoleDO;
+import com.hdygxsj.dida.api.service.entity.RoleObjectRelDO;
 import org.springframework.stereotype.Component;
 
 import java.util.Map;
@@ -42,7 +42,7 @@ public class RolePermissionCache {
         }
         Long hasPermission = roleCache.values().stream().filter(e -> {
             return roleStrs.contains(e.getRoleCode());
-        }).map(RoleObjectRelDO::getPermission).reduce((i1, i2) -> i1 | i2).get();
+        }).map(RoleObjectRelDO::getPermission).reduce((i1, i2) -> i1 | i2).orElse(0L);
         for (OpRight opRight : permission) {
             int bitInt = opRight.bitInt;
             if ((bitInt & hasPermission) == 0) {

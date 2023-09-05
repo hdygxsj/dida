@@ -13,19 +13,15 @@
  * limitations under the License.
  */
 
-package com.hdygxsj.dida.api.mapper;
+package com.hdygxsj.dida.api.service;
 
-import com.baomidou.mybatisplus.core.mapper.BaseMapper;
-import com.hdygxsj.dida.api.service.entity.RoleObjectRelDO;
+import com.hdygxsj.dida.api.service.entity.NamespaceDO;
 
-/**
- * <p>
- *  Mapper 接口
- * </p>
- *
- * @author hdygxsj
- * @since 2023-07-31
- */
-public interface RoleObjectRelMapper extends BaseMapper<RoleObjectRelDO> {
+import java.util.List;
 
+public interface NamespaceService {
+
+    void add(NamespaceDO namespaceDO);
+
+    List<NamespaceDO> list(String groupCode);
 }

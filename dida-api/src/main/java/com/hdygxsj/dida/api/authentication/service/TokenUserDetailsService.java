@@ -18,20 +18,18 @@ package com.hdygxsj.dida.api.authentication.service;
 import cn.hutool.core.collection.CollectionUtil;
 import com.hdygxsj.dida.api.authentication.base.DidaUser;
 import com.hdygxsj.dida.api.authentication.base.UserAuthenticationContextHolder;
-import com.hdygxsj.dida.api.domain.entity.RoleDO;
-import com.hdygxsj.dida.api.domain.entity.UserDO;
-import com.hdygxsj.dida.api.domain.service.UserDomainService;
+import com.hdygxsj.dida.api.service.entity.RoleDO;
+import com.hdygxsj.dida.api.service.entity.UserDO;
+import com.hdygxsj.dida.api.service.UserService;
 import com.hdygxsj.dida.security.Sm4;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
-import org.springframework.security.core.userdetails.User;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.stereotype.Service;
 
 import java.util.ArrayList;
-import java.util.Collection;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
@@ -42,15 +40,15 @@ public class TokenUserDetailsService implements UserDetailsService {
 
 
     @Autowired
-    private UserDomainService userDomainService;
+    private UserService userService;
 
     @Override
     public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
-        UserDO userDO = userDomainService.get(username);
+        UserDO userDO = userService.get(username);
         UserAuthenticationContextHolder context = UserAuthenticationContextHolder.getContext();
         Set<RoleDO> nowRoles = context.getRoles(username);
         if (CollectionUtil.isEmpty(nowRoles)) {
-            List<RoleDO> roles = userDomainService.getRoles(username);
+            List<RoleDO> roles = userService.getRoles(username);
             context.addRole(username, roles);
             nowRoles = new HashSet<>(roles);
         }

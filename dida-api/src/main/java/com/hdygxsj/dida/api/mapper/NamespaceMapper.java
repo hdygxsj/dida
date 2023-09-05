@@ -16,7 +16,7 @@
 package com.hdygxsj.dida.api.mapper;
 
 import com.baomidou.mybatisplus.core.mapper.BaseMapper;
-import com.hdygxsj.dida.api.domain.entity.NamespaceDO;
+import com.hdygxsj.dida.api.service.entity.NamespaceDO;
 
 /**
  * <p>

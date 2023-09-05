@@ -13,19 +13,23 @@
  * limitations under the License.
  */
 
-package com.hdygxsj.dida.api.mapper;
+package com.hdygxsj.dida.api.service;
 
-import com.baomidou.mybatisplus.core.mapper.BaseMapper;
-import com.hdygxsj.dida.api.service.entity.RoleObjectRelDO;
+import com.hdygxsj.dida.api.service.entity.TokenDO;
 
-/**
- * <p>
- *  Mapper 接口
- * </p>
- *
- * @author hdygxsj
- * @since 2023-07-31
- */
-public interface RoleObjectRelMapper extends BaseMapper<RoleObjectRelDO> {
+public interface TokenService {
 
+    TokenDO genToken(String username);
+
+    void add(TokenDO tokenDO);
+
+    boolean refresh(String token);
+
+    TokenDO get(String username, String realIp);
+
+    String getUsernameByToken(TokenDO tokenDO);
+
+    boolean checkToken(TokenDO tokenDO);
+
+    char genCheckCode(String token);
 }

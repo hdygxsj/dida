@@ -19,14 +19,15 @@ import lombok.Getter;
 
 @Getter
 public enum OpObjType {
-    SYSTEM("system", "系统","cluster"),
-    CLUSTER("cluster", "集群","cluster"),
-    ROLE("role", "角色","cluster"),
-    GROUP("group", "组","cluster"),
-    NAMESPACE("namespace", "命名空间","group"),
-    SWITCH("switch","开关","namespace"),
-    USER_ROLE("user_role","用户权限","cluster"),
-    USER("user","用户","cluster");
+    SYSTEM("system", "系统", "cluster"),
+    CLUSTER("cluster", "集群", "cluster"),
+    ROLE("role", "角色", "cluster"),
+    GROUP("group", "组", "cluster"),
+    GROUP_MEMBER("group_member", "组成员", "group"),
+    NAMESPACE("namespace", "命名空间", "group"),
+    SWITCH("switch", "开关", "namespace"),
+    USER_ROLE("user_role", "用户权限", "cluster"),
+    USER("user", "用户", "cluster");
 
     private String type;
 
@@ -34,7 +35,7 @@ public enum OpObjType {
 
     private String belong;
 
-    OpObjType(String type, String descp,String belong) {
+    OpObjType(String type, String descp, String belong) {
         this.type = type;
         this.descp = descp;
         this.belong = belong;

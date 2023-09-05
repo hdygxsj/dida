@@ -15,8 +15,8 @@
 
 package com.hdygxsj.dida.api.authentication.base;
 
-import com.hdygxsj.dida.api.domain.entity.RoleDO;
-import com.hdygxsj.dida.api.domain.entity.UserDO;
+import com.hdygxsj.dida.api.service.entity.RoleDO;
+import com.hdygxsj.dida.api.service.entity.UserDO;
 import lombok.Getter;
 import lombok.Setter;
 import org.springframework.security.core.GrantedAuthority;

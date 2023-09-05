@@ -13,19 +13,12 @@
  * limitations under the License.
  */
 
-package com.hdygxsj.dida.api.mapper;
+package com.hdygxsj.dida.api.service;
 
-import com.baomidou.mybatisplus.core.mapper.BaseMapper;
-import com.hdygxsj.dida.api.service.entity.RoleObjectRelDO;
+public interface SwitchService {
 
-/**
- * <p>
- *  Mapper 接口
- * </p>
- *
- * @author hdygxsj
- * @since 2023-07-31
- */
-public interface RoleObjectRelMapper extends BaseMapper<RoleObjectRelDO> {
 
+    void setValue(String group, String namespace, String key, String value);
+
+    String getValue(String group, String namespace, String key);
 }

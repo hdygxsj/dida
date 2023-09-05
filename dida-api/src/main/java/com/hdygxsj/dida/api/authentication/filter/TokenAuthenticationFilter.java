@@ -19,10 +19,10 @@ import cn.hutool.core.util.StrUtil;
 import com.hdygxsj.dida.api.authentication.base.DidaUser;
 import com.hdygxsj.dida.api.authentication.base.UserAuthenticationContextHolder;
 import com.hdygxsj.dida.api.authentication.service.TokenUserDetailsService;
-import com.hdygxsj.dida.api.domain.entity.TokenDO;
-import com.hdygxsj.dida.api.domain.entity.UserDO;
-import com.hdygxsj.dida.api.domain.service.TokenDomainService;
-import com.hdygxsj.dida.api.domain.service.UserDomainService;
+import com.hdygxsj.dida.api.service.entity.TokenDO;
+import com.hdygxsj.dida.api.service.entity.UserDO;
+import com.hdygxsj.dida.api.service.TokenService;
+import com.hdygxsj.dida.api.service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.context.SecurityContextHolder;
@@ -40,13 +40,13 @@ import java.io.IOException;
 public class TokenAuthenticationFilter extends OncePerRequestFilter {
 
     @Autowired
-    private TokenDomainService tokenDomainService;
+    private TokenService tokenService;
 
     @Autowired
     private TokenUserDetailsService tokenUserDetailsService;
 
     @Autowired
-    private UserDomainService userDomainService;
+    private UserService userService;
 
     @Override
     protected void doFilterInternal(HttpServletRequest request, HttpServletResponse response, FilterChain filterChain) throws ServletException, IOException {
@@ -55,8 +55,8 @@ public class TokenAuthenticationFilter extends OncePerRequestFilter {
         if (StrUtil.isNotBlank(token)) {
             TokenDO tokenDO = new TokenDO();
             tokenDO.setToken(token);
-            if (tokenDomainService.checkToken(tokenDO) && tokenDomainService.refresh(token)) {
-                String username = tokenDomainService.getUsernameByToken(tokenDO);
+            if (tokenService.checkToken(tokenDO) && tokenService.refresh(token)) {
+                String username = tokenService.getUsernameByToken(tokenDO);
                 DidaUser userDetails = (DidaUser) tokenUserDetailsService.loadUserByUsername(username);
                 UsernamePasswordAuthenticationToken authenticationToken = new UsernamePasswordAuthenticationToken
                         (userDetails, null, userDetails.getAuthorities());

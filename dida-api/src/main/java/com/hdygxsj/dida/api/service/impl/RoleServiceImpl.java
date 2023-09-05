@@ -13,19 +13,36 @@
  * limitations under the License.
  */
 
-package com.hdygxsj.dida.api.mapper;
+package com.hdygxsj.dida.api.service.impl;
 
-import com.baomidou.mybatisplus.core.mapper.BaseMapper;
+import com.hdygxsj.dida.api.authentication.permission.OpObjType;
+import com.hdygxsj.dida.api.service.entity.RoleDO;
 import com.hdygxsj.dida.api.service.entity.RoleObjectRelDO;
+import com.hdygxsj.dida.api.service.RoleService;
+import com.hdygxsj.dida.api.mapper.RoleMapper;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Service;
 
-/**
- * <p>
- *  Mapper 接口
- * </p>
- *
- * @author hdygxsj
- * @since 2023-07-31
- */
-public interface RoleObjectRelMapper extends BaseMapper<RoleObjectRelDO> {
+import java.util.List;
 
+@Service
+public class RoleServiceImpl implements RoleService {
+
+    @Autowired
+    private RoleMapper roleMapper;
+
+    @Override
+    public void addPermission(String roleCode, OpObjType objType, Long permission) {
+
+    }
+
+    @Override
+    public List<RoleObjectRelDO> listPermission(String roleCode) {
+        return null;
+    }
+
+    @Override
+    public List<RoleDO> list(String roleCode) {
+        return null;
+    }
 }

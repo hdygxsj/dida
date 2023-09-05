@@ -16,7 +16,7 @@
 package com.hdygxsj.dida.api.mapper;
 
 import com.baomidou.mybatisplus.core.mapper.BaseMapper;
-import com.hdygxsj.dida.api.domain.entity.RoleDO;
+import com.hdygxsj.dida.api.service.entity.RoleDO;
 
 /**
  * <p>

@@ -13,19 +13,31 @@
  * limitations under the License.
  */
 
-package com.hdygxsj.dida.api.mapper;
+package com.hdygxsj.dida.api.service;
 
-import com.baomidou.mybatisplus.core.mapper.BaseMapper;
+import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.hdygxsj.dida.api.service.entity.GroupDO;
+import com.hdygxsj.dida.api.service.entity.UserDO;
+import com.hdygxsj.dida.api.service.entity.UserGroupRelDO;
 
-/**
- * <p>
- *  Mapper 接口
- * </p>
- *
- * @author hdygxsj
- * @since 2023-07-31
- */
-public interface GroupMapper extends BaseMapper<GroupDO> {
+import java.util.List;
 
+public interface GroupService {
+    void add(GroupDO groupDO);
+
+    GroupDO get(String code);
+
+    void addUser(String groupCode, String username);
+
+    Page<GroupDO> page(int pageNum, int pageSize,String name,String code);
+
+    List<GroupDO> listByUser(UserDO userDO);
+
+    boolean hasGroup(UserDO userDO, String groupCode);
+
+    void deleteByCode(String code);
+
+    Page<UserGroupRelDO> pageGroupMember(String code,String username, int pageNum, int pageSize);
+
+    void deleteMember(String code,String username);
 }

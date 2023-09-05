@@ -15,11 +15,10 @@
 
 package com.hdygxsj.dida.api.authentication.base;
 
-import com.hdygxsj.dida.api.domain.entity.RoleDO;
-import com.hdygxsj.dida.api.domain.entity.UserDO;
+import com.hdygxsj.dida.api.service.entity.RoleDO;
+import com.hdygxsj.dida.api.service.entity.UserDO;
 import com.hdygxsj.dida.enums.ApiStatus;
 
-import java.util.Collection;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Map;

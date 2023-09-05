@@ -15,8 +15,8 @@
 
 package com.hdygxsj.dida.api.authentication.service;
 
-import com.hdygxsj.dida.api.domain.entity.UserDO;
-import com.hdygxsj.dida.api.domain.service.UserDomainService;
+import com.hdygxsj.dida.api.service.entity.UserDO;
+import com.hdygxsj.dida.api.service.UserService;
 import com.hdygxsj.dida.security.Sm4;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.GrantedAuthority;
@@ -33,11 +33,11 @@ import java.util.List;
 public class DidaUserDetailService implements UserDetailsService {
 
     @Autowired
-    private UserDomainService userDomainService;
+    private UserService userService;
 
     @Override
     public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
-        UserDO userDO = userDomainService.get(username);
+        UserDO userDO = userService.get(username);
         List<GrantedAuthority> roles = new ArrayList<>();
         return new User(userDO.getUsername(), Sm4.execute(userDO.getPassword(),Sm4.DECRYPT),roles);
     }

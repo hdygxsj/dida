@@ -16,8 +16,8 @@
 package com.hdygxsj.dida.api.authentication.filter;
 
 import com.alibaba.fastjson.JSONObject;
-import com.hdygxsj.dida.api.application.LoginAppService;
-import com.hdygxsj.dida.api.domain.entity.TokenDO;
+import com.hdygxsj.dida.api.controller.LoginController;
+import com.hdygxsj.dida.api.service.entity.TokenDO;
 import com.hdygxsj.dida.tools.Result;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -44,7 +44,7 @@ public class JwtAuthenticationFilter extends AbstractAuthenticationProcessingFil
 
 
     @Autowired
-    private LoginAppService loginAppService;
+    private LoginController loginController;
 
     @Override
     public Authentication attemptAuthentication(HttpServletRequest request, HttpServletResponse response)
@@ -54,7 +54,7 @@ public class JwtAuthenticationFilter extends AbstractAuthenticationProcessingFil
         //        loginAppService.login(username,password);
 
 
-        Result<TokenDO> loginResult = loginAppService.login( username,
+        Result<TokenDO> loginResult = loginController.login( username,
                password, null);
         response.getOutputStream().write(JSONObject.toJSONBytes(loginResult));
         UsernamePasswordAuthenticationToken authenticationToken = new UsernamePasswordAuthenticationToken(

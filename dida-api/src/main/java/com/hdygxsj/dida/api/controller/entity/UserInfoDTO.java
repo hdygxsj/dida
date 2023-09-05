@@ -13,19 +13,16 @@
  * limitations under the License.
  */
 
-package com.hdygxsj.dida.api.mapper;
+package com.hdygxsj.dida.api.controller.entity;
 
-import com.baomidou.mybatisplus.core.mapper.BaseMapper;
-import com.hdygxsj.dida.api.service.entity.RoleObjectRelDO;
+import com.hdygxsj.dida.api.service.entity.UserDO;
+import lombok.Getter;
+import lombok.Setter;
+import lombok.ToString;
 
-/**
- * <p>
- *  Mapper 接口
- * </p>
- *
- * @author hdygxsj
- * @since 2023-07-31
- */
-public interface RoleObjectRelMapper extends BaseMapper<RoleObjectRelDO> {
-
+@Getter
+@Setter
+@ToString
+public class UserInfoDTO {
+    private UserDO baseInfo;
 }
