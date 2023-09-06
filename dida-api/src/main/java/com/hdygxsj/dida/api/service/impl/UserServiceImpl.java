@@ -165,5 +165,11 @@ public class UserServiceImpl implements UserService {
         Assert.isTrue(!userDO.isSuperUser(),"超级用户不允许被删除");
         userMapper.deleteById(username);
     }
+
+    @Override
+    @Permission(objType = OpObjType.USER, opRight = {OpRight.WRITE})
+    public void update(UserDO userDO) {
+        userMapper.updateById(userDO);
+    }
 }
 

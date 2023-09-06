@@ -42,7 +42,18 @@ public class NamespaceServiceImpl implements NamespaceService {
     public void add(NamespaceDO namespaceDO) {
         UserDO opUser = UserAuthenticationContextHolder.getContext().getOpUser();
         Assert.isTrue(groupService.hasGroup(opUser, namespaceDO.getGroupCode()), "没有权限操作");
+        Assert.isTrue(exist(namespaceDO.getCode()),"命名空间已被占用");
         namespaceMapper.insert(namespaceDO);
+    }
+
+    @Override
+    public boolean exist(String code){
+        return get(code) == null;
+    }
+
+    @Override
+    public NamespaceDO get(String code){
+        return namespaceMapper.selectById(code);
     }
 
     @Override
@@ -51,5 +62,10 @@ public class NamespaceServiceImpl implements NamespaceService {
         namespaceDO.setGroupCode(groupCode);
         QueryWrapper<NamespaceDO> namespaceDOQueryWrapper = new QueryWrapper<>(namespaceDO);
         return namespaceMapper.selectList(namespaceDOQueryWrapper);
+    }
+
+    @Override
+    public void delete(NamespaceDO namespaceDO) {
+        namespaceMapper.deleteById(namespaceDO);
     }
 }

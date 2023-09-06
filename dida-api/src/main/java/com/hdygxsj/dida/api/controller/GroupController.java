@@ -18,6 +18,7 @@ package com.hdygxsj.dida.api.controller;
 
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.hdygxsj.dida.api.service.entity.GroupDO;
+import com.hdygxsj.dida.api.service.entity.UserDO;
 import com.hdygxsj.dida.api.service.entity.UserGroupRelDO;
 import com.hdygxsj.dida.api.service.GroupService;
 import com.hdygxsj.dida.tools.Result;
@@ -26,9 +27,12 @@ import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestAttribute;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
+
+import java.util.List;
 
 @RestController
 @RequestMapping("api/v1/")
@@ -62,6 +66,15 @@ public class GroupController {
                                       @RequestParam(required = false) String name,
                                       @RequestParam(required = false) String code) {
         return Result.success(groupService.page(pageNum, pageSize, name, code));
+    }
+
+    @GetMapping("groups")
+    public Result<List<GroupDO>> get(@RequestParam(required = false) String search,
+                                     @RequestAttribute UserDO opUser) {
+        if(opUser.isSuperUser()){
+            return Result.success(groupService.listAll());
+        }
+        return Result.success(groupService.list(opUser.getUsername(),search));
     }
 
     @DeleteMapping("groups/{code}")

@@ -37,3 +37,10 @@ export function addUser(params: any) {
     params
   })
 }
+
+export function resetPasswordByAdmin(username: string): any {
+  return axios({
+    url: `api/v1/users/${username}/reset-password-admin`,
+    method: 'put'
+  })
+}

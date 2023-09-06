@@ -33,10 +33,7 @@ const Sidebar = defineComponent({
   },
   setup() {
     const collapsedRef = ref(false)
-    const defaultExpandedKeys = [
-      'null',
-
-    ]
+    const defaultExpandedKeys = ['null']
 
     const { handleMenuClick } = useMenuClick()
 

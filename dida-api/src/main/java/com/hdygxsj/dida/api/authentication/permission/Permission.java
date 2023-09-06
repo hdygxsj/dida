@@ -33,5 +33,4 @@ public @interface Permission {
 
     OpRight[] opRight();
 
-    String paramName() default "";
 }

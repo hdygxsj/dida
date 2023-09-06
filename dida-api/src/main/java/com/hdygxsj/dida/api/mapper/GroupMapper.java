@@ -17,6 +17,9 @@ package com.hdygxsj.dida.api.mapper;
 
 import com.baomidou.mybatisplus.core.mapper.BaseMapper;
 import com.hdygxsj.dida.api.service.entity.GroupDO;
+import org.apache.ibatis.annotations.Param;
+
+import java.util.List;
 
 /**
  * <p>
@@ -28,4 +31,6 @@ import com.hdygxsj.dida.api.service.entity.GroupDO;
  */
 public interface GroupMapper extends BaseMapper<GroupDO> {
 
+
+    List<GroupDO> listMyGroup(@Param("username") String username,@Param("search") String search);
 }

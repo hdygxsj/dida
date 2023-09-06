@@ -15,6 +15,7 @@
 
 package com.hdygxsj.dida.api.service.entity;
 
+import com.baomidou.mybatisplus.annotation.TableId;
 import com.baomidou.mybatisplus.annotation.TableName;
 import io.swagger.v3.oas.annotations.media.Schema;
 import lombok.Getter;
@@ -25,7 +26,7 @@ import java.time.LocalDateTime;
 
 /**
  * <p>
- * 
+ *
  * </p>
  *
  * @author hdygxsj
@@ -39,7 +40,8 @@ public class NamespaceDO implements Serializable {
 
     private static final long serialVersionUID = 1L;
 
-      private String code;
+    @TableId
+    private String code;
 
     private String name;
 

@@ -31,13 +31,15 @@ public interface GroupService {
 
     Page<GroupDO> page(int pageNum, int pageSize,String name,String code);
 
-    List<GroupDO> listByUser(UserDO userDO);
-
-    boolean hasGroup(UserDO userDO, String groupCode);
+      boolean hasGroup(UserDO userDO, String groupCode);
 
     void deleteByCode(String code);
 
     Page<UserGroupRelDO> pageGroupMember(String code,String username, int pageNum, int pageSize);
 
     void deleteMember(String code,String username);
+
+    List<GroupDO> list(String username,String searchText);
+
+    List<GroupDO> listAll();
 }

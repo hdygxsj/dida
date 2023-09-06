@@ -76,19 +76,6 @@ public class GroupServiceImpl implements GroupService {
     }
 
     @Override
-    public List<GroupDO> listByUser(UserDO userDO) {
-        if (userDO.isSuperUser()) {
-            return groupMapper.selectList(null);
-        }
-        QueryWrapper<UserGroupRelDO> relQuery = new QueryWrapper<>();
-        List<UserGroupRelDO> userGroupRelDOS = userGroupRelMapper.selectList(relQuery);
-        QueryWrapper<GroupDO> groupQuery = new QueryWrapper<>();
-        List<String> groupCode = userGroupRelDOS.stream().map(UserGroupRelDO::getGroupCode).collect(Collectors.toList());
-        groupQuery.in("group_code", groupCode);
-        return groupMapper.selectList(groupQuery);
-    }
-
-    @Override
     public boolean hasGroup(UserDO userDO, String groupCode) {
         QueryWrapper<GroupDO> groupQuery = new QueryWrapper<>();
         groupQuery.eq("code", groupCode);
@@ -127,5 +114,15 @@ public class GroupServiceImpl implements GroupService {
         queryWrapper.eq("group_code", code);
         queryWrapper.eq("username", username);
         userGroupRelMapper.delete(queryWrapper);
+    }
+
+    @Override
+    public List<GroupDO> list(String username, String searchText) {
+        return groupMapper.listMyGroup(username,searchText);
+    }
+
+    @Override
+    public List<GroupDO> listAll() {
+        return groupMapper.selectList(null);
     }
 }

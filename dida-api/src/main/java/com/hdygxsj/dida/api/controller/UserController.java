@@ -74,19 +74,15 @@ public class UserController {
         return Result.success(userService.page(username, pageNum, pageSize));
     }
 
-    @PutMapping("{username}/reset-password")
+    @PutMapping("{username}/reset-password-admin")
     public Result<String> resetPassword(@PathVariable String username, @RequestAttribute UserDO opUser) {
-        Assert.isTrue(opUser.isSuperUser(), "没有操作权限");
-        String words = "0123456789abcdefghijklmmopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ!@#$%^&*()_+{}:<>?/.,";
-        StringBuilder sb = new StringBuilder();
-        for (int i = 0; i < 16; i++) {
-            sb.append(words.charAt((int) (Math.random() * words.length())));
-        }
-        String newPassword = sb.toString();
         UserDO userDO = new UserDO();
-        userDO.setPassword(Sm4.execute(newPassword, Sm4.ENCRYPT));
         userDO.setUsername(username);
-        return Result.success(newPassword);
+        userDO.setSuperUser(false);
+        String password = RandomUtil.randomString(10);
+        userDO.setPassword(Sm4.execute(password, Sm4.ENCRYPT));
+        userService.update(userDO);
+        return Result.success(password);
     }
 
     @PostMapping("{username}/roles")

@@ -52,4 +52,6 @@ public interface UserService {
     Page<UserDO> page(String username, int pageNum, int pageSize);
 
     void deleteUser(String username);
+
+    void update(UserDO userDO);
 }

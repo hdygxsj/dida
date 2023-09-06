@@ -23,5 +23,11 @@ public interface NamespaceService {
 
     void add(NamespaceDO namespaceDO);
 
+    boolean exist(String code);
+
+    NamespaceDO get(String code);
+
     List<NamespaceDO> list(String groupCode);
+
+    void delete(NamespaceDO namespaceDO);
 }

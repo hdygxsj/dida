@@ -1,6 +1,14 @@
 import { COLUMN_WIDTH_CONFIG } from '@/common/column-width-config'
-import { deleteUser, pageUsers } from '@/service/modules/user'
-import { DeleteOutlined, TrademarkCircleOutlined } from '@vicons/antd'
+import {
+  deleteUser,
+  pageUsers,
+  resetPasswordByAdmin
+} from '@/service/modules/user'
+import {
+  DeleteOutlined,
+  TrademarkCircleOutlined,
+  KeyOutlined
+} from '@vicons/antd'
 import TooltipButton from '@/components/tooltip-button'
 import { NSpace, useDialog } from 'naive-ui'
 import { h, reactive } from 'vue'
@@ -20,18 +28,24 @@ export const useTable = (vars: any, ctx: any) => {
     }
   })
   const handlerDeleteUser = (username: string) => {
-    
     deleteUser(username).then(() => {
       window.$message.success('删除成功')
       getTableData()
     })
   }
   const handleUserAdd = (password: any) => {
-    
     resetPageNum()
     window.$dialog.create({
       title: '创建成功',
       content: `用户的初始密码是${password},你将是最后一次见到这个密码，请立即修改密码`
+    })
+  }
+  const handleRestPassword = (username: any) => {
+    resetPasswordByAdmin(username).then((res: any) => {
+      window.$dialog.create({
+        title: '修改成功',
+        content: `用户的新密码是${res},你将是最后一次见到这个密码，请立即修改密码`
+      })
     })
   }
   const createColumns = (variables: any) => {
@@ -57,7 +71,7 @@ export const useTable = (vars: any, ctx: any) => {
           }
         }
       },
-            {
+      {
         title: '是否启用',
         key: 'type',
         resizable: true,
@@ -80,7 +94,7 @@ export const useTable = (vars: any, ctx: any) => {
       //   }
       {
         title: '操作',
-        ...COLUMN_WIDTH_CONFIG.operation(2),
+        ...COLUMN_WIDTH_CONFIG.operation(3),
         render: (row: any) => {
           return h(NSpace, null, {
             default: () => [
@@ -89,8 +103,20 @@ export const useTable = (vars: any, ctx: any) => {
                 {
                   type: 'info',
                   size: 'small',
+                  text: '重制密码',
+                  onClick: () => handleRestPassword(row.username)
+                },
+                {
+                  icon: () => h(KeyOutlined)
+                }
+              ),
+              h(
+                TooltipButton,
+                {
+                  type: 'info',
+                  size: 'small',
                   text: '设置角色',
-                  onClick: () => vars.editModalRef.onEditOpen(row.username)
+                  onClick: () => vars.editModalRef.handleEditOpen(row.username)
                 },
                 {
                   icon: () => h(TrademarkCircleOutlined)

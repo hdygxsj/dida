@@ -16,5 +16,15 @@
 
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="com.hdygxsj.dida.api.mapper.GroupMapper">
+    <select id="listMyGroup" resultType="com.hdygxsj.dida.api.service.entity.GroupDO">
+        select dg.* from dida_group as dg
+        inner join dida_user_group_rel as dugr on  dugr.group_code = dg.code
+        <where>
+            <if test="search !=null and search !=''">
+                (`name` like concat('%',#{search},'%') or `code` like concat('%',#{search},'%'))
+            </if>
+                and dugr.username = #{username}
+        </where>
 
+    </select>
 </mapper>

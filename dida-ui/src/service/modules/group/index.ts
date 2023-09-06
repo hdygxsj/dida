@@ -52,3 +52,11 @@ export const deleteGroupUser = (params: any): any => {
     method: 'delete'
   })
 }
+
+export const listMyGroup = (params: any): any => {
+  return axios({
+    url: `api/v1/groups`,
+    method: 'get',
+    params
+  })
+}

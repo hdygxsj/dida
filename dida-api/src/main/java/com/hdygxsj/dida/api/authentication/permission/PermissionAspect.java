@@ -38,27 +38,45 @@ public class PermissionAspect {
 
     @Around("@annotation(com.hdygxsj.dida.api.authentication.permission.Permission)")
     public Object permissionCheck(ProceedingJoinPoint proceedingJoinPoint) throws Throwable {
+        Map<String, Object> params = getParams(proceedingJoinPoint);
+        MethodSignature signature = (MethodSignature) proceedingJoinPoint.getSignature();
+        Permission checkPermission = signature.getMethod().getAnnotation(Permission.class);
+        doCheck(checkPermission, params);
+        return proceedingJoinPoint.proceed();
+    }
+
+    private void doCheck(Permission checkPermission, Map<String, Object> params) {
+        OpObjType opObjType = checkPermission.objType();
+        OpRight[] opRights = checkPermission.opRight();
+        boolean hasPermission = rolePermissionCache.checkPermission(opObjType, opRights);
+        if (!hasPermission) {
+            throw new CheckPermissionException(ApiStatus.INSUFFICIENT_PERMISSION);
+        }
+    }
+
+    @Around("@annotation(com.hdygxsj.dida.api.authentication.permission.Permissions)")
+    public Object permissionsCheck(ProceedingJoinPoint proceedingJoinPoint) throws Throwable {
+        Map<String, Object> params = getParams(proceedingJoinPoint);
+        MethodSignature signature = (MethodSignature) proceedingJoinPoint.getSignature();
+        Permissions permissions = signature.getMethod().getAnnotation(Permissions.class);
+        if(permissions !=null){
+            for (Permission permission : permissions.value()) {
+                doCheck(permission,params);
+            }
+        }
+        return proceedingJoinPoint.proceed();
+    }
+
+    private static Map<String, Object> getParams(ProceedingJoinPoint proceedingJoinPoint) {
         Map<String, Object> map = new HashMap<>();
         Object[] values = proceedingJoinPoint.getArgs();
         String[] names = ((CodeSignature) proceedingJoinPoint.getSignature()).getParameterNames();
         for (int i = 0; i < names.length; i++) {
             map.put(names[i], values[i]);
         }
-        MethodSignature signature = (MethodSignature) proceedingJoinPoint.getSignature();
-        Permission checkPermission = signature.getMethod().getAnnotation(Permission.class);
-        OpObjType opObjType = checkPermission.objType();
-        String belong = opObjType.getBelong();
-        OpRight[] opRights = checkPermission.opRight();
-        boolean hasPermission = rolePermissionCache.checkPermission(opObjType, opRights);
-        if (!hasPermission) {
-            throw new CheckPermissionException(ApiStatus.INSUFFICIENT_PERMISSION);
-        }
-        String paramName = checkPermission.paramName();
-        if (!"cluster".equals(belong) && !"".equals(paramName) && !checkBelong(belong, map.get(paramName))) {
-            throw new CheckPermissionException(ApiStatus.INSUFFICIENT_PERMISSION);
-        }
-        return proceedingJoinPoint.proceed();
+        return map;
     }
+
 
     public boolean checkBelong(String belong, Object objName) {
         //TODO
