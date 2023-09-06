@@ -32,6 +32,11 @@ const Switch = defineComponent({
             key: `${e.code}`
           }
         })
+        if (options.value.length == 0) {
+          window.$message.warning(
+            '用户组没有命名空间，请前往管理命名空间中添加'
+          )
+        }
       })
     }
     handleGetNamespaces()
@@ -59,14 +64,14 @@ const Switch = defineComponent({
                 <NButton style='width: 100%' onClick={this.gotoNamespacePage}>
                   管理命名空间
                 </NButton>
-                <div style={{ maxHeight: '1000px' }}>
+                <div style={{ maxHeight: '1000px', marginTop: '10px' }}>
                   <NMenu
                     v-model:options={this.options}
                     v-model:value={this.selectedNamespace}
                     style={{
                       width: '15vw',
-                      maxHeight: '1000px',
-                      overflowY: 'scroll'
+                      height: '1000px',
+                      overflowY: 'auto'
                     }}
                     default-value='1'
                   />
