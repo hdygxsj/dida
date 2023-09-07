@@ -25,7 +25,7 @@ import java.time.LocalDateTime;
 
 /**
  * <p>
- * 
+ *
  * </p>
  *
  * @author hdygxsj
@@ -39,9 +39,9 @@ public class SwitchDO implements Serializable {
 
     private static final long serialVersionUID = 1L;
 
-      private String namespaceCode;
+    private String namespaceCode;
 
-      private String swithKey;
+    private String switchKey;
 
     private String type;
 

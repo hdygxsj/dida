@@ -21,22 +21,29 @@ export const useTable = (state: any) => {
   const createColumns = (variables: any) => {
     variables.columns = [
       {
-        title: '编码',
-        key: 'code',
+        title: '开关编码',
+        key: 'switchKey',
         resizable: true,
         minWidth: 100,
         maxWidth: 200
       },
       {
-        title: '名称',
-        key: 'name',
+        title: '开关状态',
+        key: 'value',
         resizable: true,
         minWidth: 200,
         maxWidth: 300
       },
       {
-        title: '描述',
-        key: 'descp',
+        title: '创建时间',
+        key: 'createTime',
+        resizable: true,
+        minWidth: 200,
+        maxWidth: 600
+      },
+      {
+        title: '修改时间',
+        key: 'updateTime',
         resizable: true,
         minWidth: 200,
         maxWidth: 600
@@ -53,7 +60,7 @@ export const useTable = (state: any) => {
                   type: 'error',
                   size: 'small',
                   text: '删除',
-                  onClick: () => handleDeleteNamespace(row.code)
+                  onClick: () => handleDeleteSwitch(row.key)
                 },
                 {
                   icon: () => h(DeleteOutlined)
@@ -65,21 +72,12 @@ export const useTable = (state: any) => {
       }
     ]
   }
-  const getTableData = () => {
-    listNamespace(state.groupCode).then((res: any) => {
-      variables.data = res
-    })
-  }
+  const getTableData = () => {}
   const resetPageNum = () => {
     variables.pagination.pageNum = 1
     getTableData()
   }
-  const handleDeleteNamespace = (code: string) => {
-    deleteNamespace(state.groupCode, code).then(() => {
-      window.$message.success('删除成功')
-      getTableData()
-    })
-  }
+  const handleDeleteSwitch = (key: string) => {}
   return {
     variables,
     createColumns,

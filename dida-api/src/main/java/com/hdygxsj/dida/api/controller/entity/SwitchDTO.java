@@ -13,16 +13,23 @@
  * limitations under the License.
  */
 
-package com.hdygxsj.dida.api.service;
+package com.hdygxsj.dida.api.controller.entity;
 
-import com.hdygxsj.dida.api.service.entity.SwitchDO;
+import com.alibaba.fastjson.JSONObject;
+import lombok.Getter;
+import lombok.Setter;
 
-public interface SwitchService {
+import java.util.List;
 
+@Getter
+@Setter
+public class SwitchDTO {
 
-    void setValue(String group, String namespace, String key, String value);
+    public String key;
 
-    String getValue(String group, String namespace, String key);
+    public String type;
 
-    void add(SwitchDO switchDO);
+    public String defaultValue;
+
+    public List<JSONObject> options;
 }
