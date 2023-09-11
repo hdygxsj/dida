@@ -25,11 +25,7 @@ import java.util.List;
 @Setter
 public class SwitchDTO {
 
-    public String key;
+    public String switchKey;
 
     public String type;
-
-    public String defaultValue;
-
-    public List<JSONObject> options;
 }

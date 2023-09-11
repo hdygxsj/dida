@@ -33,8 +33,8 @@ import java.time.LocalDateTime;
  */
 @Getter
 @Setter
-@TableName("dida_swith")
-@Schema(name = "SwithDO", description = "")
+@TableName("dida_switch")
+@Schema(name = "SwitchDO", description = "")
 public class SwitchDO implements Serializable {
 
     private static final long serialVersionUID = 1L;

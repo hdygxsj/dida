@@ -13,23 +13,25 @@
  * limitations under the License.
  */
 
-package com.hdygxsj.dida.api.service;
+package com.hdygxsj.dida.api.service.entity;
 
-import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
-import com.hdygxsj.dida.api.service.entity.SwitchDO;
+import cn.hutool.core.bean.BeanUtil;
+import lombok.Getter;
+import lombok.Setter;
 
-public interface SwitchService {
+@Getter
+@Setter
+public class SwitchValueDO extends SwitchDO{
 
+    private String switchValue;
 
-    void setValue(String group, String namespace, String key, String value);
+    private String groupCode;
 
-    String getValue(String group, String namespace, String key);
+    public SwitchValueDO(){}
 
-    void add(SwitchDO switchDO,String group);
-
-    boolean exsit(SwitchDO switchDO);
-
-    SwitchDO get(SwitchDO switchDO);
-
-    Page<SwitchDO> page(int pageNum, int pageSize,String group, String namespaceCode, String searchText);
+    public SwitchValueDO(SwitchDO switchDO,String switchValue,String groupCode){
+        this.switchValue = switchValue;
+        this.groupCode = groupCode;
+        BeanUtil.copyProperties(switchDO,this);
+    }
 }

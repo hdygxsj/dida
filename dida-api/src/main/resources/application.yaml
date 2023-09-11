@@ -32,7 +32,7 @@ server:
 engine:
   type: nacos
   nacos:
-    host: 192.168.85.130:8848
+    host: 192.168.85.131:8848
     namespace: switch
 
 security:
@@ -60,3 +60,6 @@ security:
           callbackUrl: ""
           iconUri: ""
           provider: google
+mybatis-plus:
+  configuration:
+    cache-enabled: false

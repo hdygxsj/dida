@@ -1,5 +1,5 @@
 import { NLayout, NLayoutContent, NLayoutHeader, useMessage } from 'naive-ui'
-import { defineComponent, onMounted, ref, toRefs, watch } from 'vue'
+import { KeepAlive, defineComponent, onMounted, ref, toRefs, watch } from 'vue'
 import { useRoute } from 'vue-router'
 import Navbar from './components/navbar'
 import SideBar from './components/sidebar'
@@ -80,7 +80,9 @@ const Content = defineComponent({
             contentStyle={'height: 100%'}
           >
             {/* das */}
-            <router-view key={this.$route.fullPath} />
+            <KeepAlive>
+              <router-view key={this.$route.fullPath} />
+            </KeepAlive>
           </NLayoutContent>
         </NLayout>
       </NLayout>

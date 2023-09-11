@@ -57,7 +57,7 @@ public class NacosSwitchClient implements SwitchClient {
 
     private static final Map<String, JSONObject> switchConfigCache = new ConcurrentHashMap<>();
 
-    private final  String type = "nacos";
+    private final String type = "nacos";
 
     private final ConfigService configService;
 
@@ -91,10 +91,11 @@ public class NacosSwitchClient implements SwitchClient {
             if (object == null) {
                 object = new JSONObject();
             }
+            switchConfigCache.put(dataId, object);
             object.put(key, value);
             boolean result = configService.publishConfig(dataId, nacosGroup
                     , JSONObject.toJSONString(object, true));
-            if(!result){
+            if (!result) {
                 throw new DidaRuntimeException("发布配置失败");
             }
         } catch (NacosException e) {

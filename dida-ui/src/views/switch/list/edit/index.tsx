@@ -1,6 +1,7 @@
 import Modal from '@/components/modal'
 import {
   NButton,
+  NDynamicInput,
   NForm,
   NFormItem,
   NInput,
@@ -108,28 +109,12 @@ export default defineComponent({
           </NFormItem>
           {this.form.type.switchType == 1 && (
             <NFormItem path='type.options' label='选项'>
-              <NSpace vertical>
-                {this.form.type.options?.map((e: any) => {
-                  return (
-                    <NSpace>
-                      <NInput
-                        v-model:value={e.label}
-                        placeholder='输入选项名'
-                      ></NInput>
-                      <NInput
-                        v-model:value={e.value}
-                        placeholder='输入选项值'
-                      ></NInput>
-                      <NButton onClick={() => this.handleDeleteOption(e)}>
-                        删除
-                      </NButton>
-                    </NSpace>
-                  )
-                })}
-                <NButton size='small' onClick={this.handleAddOption}>
-                  添加选项
-                </NButton>
-              </NSpace>
+              <NDynamicInput
+                v-model:value={this.form.type.options}
+                preset='pair'
+                keyPlaceholder='选项名'
+                valuePlaceholder='选项值-唯一'
+              ></NDynamicInput>
             </NFormItem>
           )}
           <NFormItem path='type.default' label='默认值'>
@@ -139,7 +124,9 @@ export default defineComponent({
             {this.form.type.switchType == 1 && (
               <NSelect
                 v-model:value={this.form.type.defaultValue}
-                options={this.form.type.options}
+                options={this.form.type.options?.map((e) => {
+                  return { label: e.key, value: e.value }
+                })}
               ></NSelect>
             )}
           </NFormItem>

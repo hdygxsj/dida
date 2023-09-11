@@ -23,22 +23,23 @@ const Switch = defineComponent({
     const groupSelected = useSelectedGroup()
     const router = useRouter()
     const options: any = ref<Array<any>>([])
-    const groupCode = ref(groupSelected.code)
     const state = reactive({
       editModalRef: ref(),
-      editModalShow: false
+      editModalShow: false,
+      selectedNamespace: '',
+      groupCode: groupSelected.code
     })
     const { variables, getTableData, resetPageNum, createColumns } =
       useTable(state)
     createColumns(variables)
     getTableData()
-    const selectedNamespace = ref()
     const gotoNamespacePage = () => {
       router.push({ path: '/switch/namespace' })
     }
     const handleGetNamespaces = () => {
-      selectedNamespace.value = null
-      listNamespace(groupCode.value).then((res: any) => {
+      debugger
+      state.selectedNamespace = ''
+      listNamespace(state.groupCode).then((res: any) => {
         options.value = res?.map((e: any) => {
           return {
             label: `${e.name} (${e.code})`,
@@ -56,15 +57,20 @@ const Switch = defineComponent({
     watch(
       () => groupSelected.code,
       (newVal) => {
-        groupCode.value = newVal
+        state.groupCode = newVal
         handleGetNamespaces()
+      }
+    )
+    watch(
+      () => state.selectedNamespace,
+      () => {
+        getTableData()
       }
     )
     return {
       options,
-      groupCode,
+      groupSelected,
       gotoNamespacePage,
-      selectedNamespace,
       ...toRefs(variables),
       getTableData,
       resetPageNum,
@@ -110,10 +116,16 @@ const Switch = defineComponent({
                         <NSpace>
                           <NButton
                             type='primary'
-                            onClick={() => this.editModalRef.handleAddOpen()}
+                            onClick={() =>
+                              this.editModalRef.handleAddOpen(
+                                this.groupCode,
+                                this.selectedNamespace
+                              )
+                            }
                           >
                             新增
                           </NButton>
+                          <NButton onClick={this.getTableData}>刷新</NButton>
                         </NSpace>
                         <NSpace></NSpace>
                       </NSpace>

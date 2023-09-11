@@ -15,6 +15,8 @@
 
 package com.hdygxsj.dida.api.controller;
 
+import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
+import com.hdygxsj.dida.api.controller.entity.SwitchDTO;
 import com.hdygxsj.dida.api.service.SwitchService;
 import com.hdygxsj.dida.api.service.entity.SwitchDO;
 import com.hdygxsj.dida.tools.Result;
@@ -45,19 +47,28 @@ public class SwitchController {
 
     @PutMapping("/{key}/set-value")
     public void setSwitch(@PathVariable("namespace") String namespace,
-                         @PathVariable("groupCode") String group,
-                         @RequestParam("key") String key,
-                         @RequestParam("value") String value) {
+                          @PathVariable("groupCode") String group,
+                          @PathVariable("key") String key,
+                          @RequestParam("value") String value) {
         switchService.setValue(group, namespace, key, value);
     }
 
     @PostMapping
     public void addSwitch(@PathVariable String groupCode, @PathVariable String namespace,
-                          @RequestBody String key, @RequestParam String type){
+                          @RequestBody SwitchDTO switchDTO) {
         SwitchDO switchDO = new SwitchDO();
         switchDO.setNamespaceCode(namespace);
-        switchDO.setType(type);
-        switchDO.setSwitchKey(key);
-        switchService.add(switchDO);
+        switchDO.setType(switchDTO.getType());
+        switchDO.setSwitchKey(switchDTO.getSwitchKey());
+        switchService.add(switchDO,groupCode);
+    }
+
+    @GetMapping("/page")
+    public Result<Page<SwitchDO>> page(@RequestParam Integer pageNum,
+                                       @RequestParam Integer pageSize,
+                                       @PathVariable String namespace,
+                                       @PathVariable String groupCode,
+                                       @RequestParam(required = false) String searchText) {
+        return Result.success(switchService.page(pageNum, pageSize, groupCode, namespace, searchText));
     }
 }
