@@ -18,10 +18,9 @@ package com.hdygxsj.dida.api.controller;
 import cn.hutool.core.util.RandomUtil;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.hdygxsj.dida.api.controller.entity.UserInfoDTO;
+import com.hdygxsj.dida.api.service.UserService;
 import com.hdygxsj.dida.api.service.entity.UserDO;
 import com.hdygxsj.dida.api.service.entity.UserRoleRelDO;
-import com.hdygxsj.dida.api.service.UserService;
-import com.hdygxsj.dida.exceptions.Assert;
 import com.hdygxsj.dida.security.Sm4;
 import com.hdygxsj.dida.tools.Result;
 import io.swagger.v3.oas.annotations.Operation;
@@ -78,7 +77,6 @@ public class UserController {
     public Result<String> resetPassword(@PathVariable String username, @RequestAttribute UserDO opUser) {
         UserDO userDO = new UserDO();
         userDO.setUsername(username);
-        userDO.setSuperUser(false);
         String password = RandomUtil.randomString(10);
         userDO.setPassword(Sm4.execute(password, Sm4.ENCRYPT));
         userService.update(userDO);

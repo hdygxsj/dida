@@ -21,6 +21,7 @@ import com.hdygxsj.dida.api.authentication.base.UserAuthenticationContextHolder;
 import com.hdygxsj.dida.api.service.entity.RoleDO;
 import com.hdygxsj.dida.api.service.entity.UserDO;
 import com.hdygxsj.dida.api.service.UserService;
+import com.hdygxsj.dida.exceptions.Assert;
 import com.hdygxsj.dida.security.Sm4;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
@@ -45,6 +46,7 @@ public class TokenUserDetailsService implements UserDetailsService {
     @Override
     public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
         UserDO userDO = userService.get(username);
+        Assert.notNull(userDO,"找不到对应的用户");
         UserAuthenticationContextHolder context = UserAuthenticationContextHolder.getContext();
         Set<RoleDO> nowRoles = context.getRoles(username);
         if (CollectionUtil.isEmpty(nowRoles)) {

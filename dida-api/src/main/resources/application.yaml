@@ -32,13 +32,13 @@ server:
 engine:
   type: nacos
   nacos:
-    host: 192.168.85.131:8848
+    host: ${NACOS_HOST}
     namespace: switch
 
 security:
   authentication:
     oauth2:
-      enable: true
+      enable: false
       provider:
         github:
           authorizationUri: ""
