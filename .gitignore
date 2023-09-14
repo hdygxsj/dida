@@ -6,3 +6,4 @@
 target/
 **/package-lock.json
 **/*drawio*
+**/node

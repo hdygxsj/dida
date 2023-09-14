@@ -26,27 +26,27 @@ import java.util.concurrent.TimeUnit;
 @Slf4j
 public class ClientTest {
 
-    @Test
-    public void nacosPlugin() {
-        long epochMilli = Instant.now().toEpochMilli();
-
-            DidaClient didaClient = DidaClientBuilder.builder()
-                    .host("127.0.0.1:8080")
-                    .username("admin")
-                    .password("admin")
-                    .build();
-            String engineType = didaClient.getEngineType();
-            Properties engineProperties = didaClient.getEngineProperties();
-            log.info(engineType);
-            log.info(String.valueOf(engineProperties));
-        while (Instant.now().toEpochMilli() - epochMilli < 60000) {
-            String value = didaClient.getValue("otsp", "yd01", "key1");
-            log.info("value is {}", value);
-            try {
-                TimeUnit.SECONDS.sleep(2);
-            } catch (InterruptedException e) {
-                throw new RuntimeException(e);
-            }
-        }
-    }
+//    @Test
+//    public void nacosPlugin() {
+//        long epochMilli = Instant.now().toEpochMilli();
+//
+//            DidaClient didaClient = DidaClientBuilder.builder()
+//                    .host("127.0.0.1:8080")
+//                    .username("admin")
+//                    .password("admin")
+//                    .build();
+//            String engineType = didaClient.getEngineType();
+//            Properties engineProperties = didaClient.getEngineProperties();
+//            log.info(engineType);
+//            log.info(String.valueOf(engineProperties));
+//        while (Instant.now().toEpochMilli() - epochMilli < 60000) {
+//            String value = didaClient.getValue("otsp", "yd01", "key1");
+//            log.info("value is {}", value);
+//            try {
+//                TimeUnit.SECONDS.sleep(2);
+//            } catch (InterruptedException e) {
+//                throw new RuntimeException(e);
+//            }
+//        }
+//    }
 }

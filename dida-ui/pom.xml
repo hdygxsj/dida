@@ -24,16 +24,14 @@
         <version>${revision}</version>
     </parent>
 
+
+    <artifactId>dida-ui</artifactId>
     <properties>
         <node.version>v16.13.1</node.version>
-        <pnpm.version>v6.32.6</pnpm.version>
+        <npm.version>8.19.4</npm.version>
         <sonar.sources>src</sonar.sources>
         <frontend-maven-plugin.version>1.12.1</frontend-maven-plugin.version>
     </properties>
-
-
-    <artifactId>dida-ui</artifactId>
-
 
     <profiles>
         <profile>
@@ -50,19 +48,19 @@
                         </configuration>
                         <executions>
                             <execution>
-                                <id>install node and pnpm</id>
+                                <id>install node and npm</id>
                                 <goals>
-                                    <goal>install-node-and-pnpm</goal>
+                                    <goal>install-node-and-npm</goal>
                                 </goals>
                                 <configuration>
                                     <nodeVersion>${node.version}</nodeVersion>
-                                    <pnpmVersion>${pnpm.version}</pnpmVersion>
+                                    <npmVersion>${npm.version}</npmVersion>
                                 </configuration>
                             </execution>
                             <execution>
-                                <id>pnpm install</id>
+                                <id>npm install</id>
                                 <goals>
-                                    <goal>pnpm</goal>
+                                    <goal>npm</goal>
                                 </goals>
                                 <phase>generate-resources</phase>
                                 <configuration>
@@ -70,12 +68,12 @@
                                 </configuration>
                             </execution>
                             <execution>
-                                <id>pnpm run build:prod</id>
+                                <id>npm run build:prod</id>
                                 <goals>
-                                    <goal>pnpm</goal>
+                                    <goal>npm</goal>
                                 </goals>
                                 <configuration>
-                                    <arguments>run build:prod</arguments>
+                                    <arguments>run build</arguments>
                                 </configuration>
                             </execution>
                         </executions>
@@ -85,5 +83,4 @@
             </build>
         </profile>
     </profiles>
-
 </project>

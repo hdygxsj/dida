@@ -27,6 +27,44 @@
 
     <artifactId>dida-dist</artifactId>
 
+    <dependencies>
+        <dependency>
+            <groupId>com.hdygxsj.dida</groupId>
+            <artifactId>dida-api</artifactId>
+            <version>${project.version}</version>
+        </dependency>
+    </dependencies>
 
+    <build>
+        <finalName>dida-${project.version}</finalName>
+    </build>
+
+    <profiles>
+        <profile>
+            <id>release</id>
+            <build>
+                <plugins>
+                    <plugin>
+                        <artifactId>maven-assembly-plugin</artifactId>
+                        <executions>
+                            <execution>
+                                <id>dida-bin</id>
+                                <goals>
+                                    <goal>single</goal>
+                                </goals>
+                                <phase>package</phase>
+                                <configuration>
+                                    <descriptors>
+                                        <descriptor>src/main/assembly/dida-bin.xml</descriptor>
+                                    </descriptors>
+                                    <appendAssemblyId>true</appendAssemblyId>
+                                </configuration>
+                            </execution>
+                        </executions>
+                    </plugin>
+                </plugins>
+            </build>
+        </profile>
+    </profiles>
 
 </project>
