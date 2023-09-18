@@ -16,6 +16,6 @@
 #
 export UI_PATH=$DIDA_HOME/ui
 export MYSQL_HOST=127.0.0.1:30001
-export MYSQL_PASSWORD=ZYYroot456@=
+export MYSQL_PASSWORD=
 export MYSQL_USERNAME=root
 export NACOS_HOST=127.0.0.1:8848
