@@ -84,7 +84,7 @@
             <groupId>com.hdygxsj.dida</groupId>
             <artifactId>dida-plugin-nacos</artifactId>
             <version>${project.version}</version>
-            <scope>provided</scope>
+<!--            <scope>provided</scope>-->
         </dependency>
         <dependency>
             <groupId>com.hdygxsj.dida</groupId>

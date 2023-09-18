@@ -60,6 +60,15 @@
             <directory>${basedir}/../dida-ui/dist</directory>
             <outputDirectory>./ui</outputDirectory>
         </fileSet>
+        <fileSet>
+            <directory>${basedir}/../script/env</directory>
+            <outputDirectory>conf</outputDirectory>
+            <includes>
+                <include>dida_env.sh</include>
+            </includes>
+            <fileMode>0755</fileMode>
+            <directoryMode>0755</directoryMode>
+        </fileSet>
     </fileSets>
     <dependencySets>
         <dependencySet>

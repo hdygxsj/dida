@@ -66,7 +66,7 @@ public class SpringSecurityConfiguration {
                 .antMatchers(LOGIN_PATH_PATTERN, REGISTER_PATH_PATTERN,
                         "/swagger-resources/**", "/webjars/**", "/v3/api-docs/**",
                         "/api-docs/**", "/swagger-ui.html",
-                        "/doc.html", "/swagger-ui/**", "*.html", "/ui/**", "/error",
+                        "/doc.html", "/swagger-ui/**", "*.html", "/","/ui/**", "/error",
                         "/**/redirect/login/oauth2","/**/oauth2-providers")
                 .permitAll()
                 .anyRequest()

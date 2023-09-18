@@ -1,4 +1,3 @@
-#!/bin/bash
 #
 # Licensed to the Apache Software Foundation (ASF) under one or more
 # contributor license agreements.  See the NOTICE file distributed with
@@ -15,34 +14,8 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 #
-
-BIN_DIR=$(dirname $0)
-DIDA_HOME=${DIDA_HOME:-$(cd $BIN_DIR/..; pwd)}
-
-#source "$DIDA_HOME/conf/dida.sh"
-source "$DIDA_HOME/conf/dida_env.sh"
-
-JVM_ARGS_ENV_FILE=${BIN_DIR}/jvm_args_env.sh
-JVM_ARGS="-server"
-
-if [ -f $JVM_ARGS_ENV_FILE ]; then
-  while read line
-  do
-      if [[ "$line" == -* ]]; then
-        JVM_ARGS="${JVM_ARGS} $line"
-      fi
-  done < $JVM_ARGS_ENV_FILE
-fi
-
-JAVA_OPTS=${JAVA_OPTS:-"${JVM_ARGS}"}
-
-if [[ "$DOCKER" == "true" ]]; then
-  JAVA_OPTS="${JAVA_OPTS} -XX:-UseContainerSupport"
-fi
-
-echo "JAVA_HOME=${JAVA_HOME}"
-echo "JAVA_OPTS=${JAVA_OPTS}"
-
-$JAVA_HOME/bin/java $JAVA_OPTS \
-  -cp "$DIDA_HOME/conf":"$DIDA_HOME/libs/*" \
-  com.hdygxsj.dida.api.ApiApplicationServer
+export UI_PATH=$DIDA_HOME/ui
+export MYSQL_HOST=127.0.0.1:30001
+export MYSQL_PASSWORD=ZYYroot456@=
+export MYSQL_USERNAME=root
+export NACOS_HOST=127.0.0.1:8848
